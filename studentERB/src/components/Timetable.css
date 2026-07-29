@@ -1,0 +1,186 @@
+/* src/components/Timetable.css */
+
+.timetable-card {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 25px;
+  margin-top: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.timetable-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+/* Header */
+
+.timetable-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.timetable-header h2 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.timetable-header p {
+  margin-top: 8px;
+  color: #64748b;
+  font-size: 16px;
+}
+
+/* Responsive Table */
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Table */
+
+.timetable-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 850px;
+}
+
+.timetable-table th,
+.timetable-table td {
+  border: 1px solid #e2e8f0;
+  padding: 14px;
+  text-align: center;
+  font-size: 15px;
+}
+
+/* Header Row */
+
+.timetable-table thead th {
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Day Column */
+
+.day {
+  background: #f1f5f9;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+/* Table Rows */
+
+.timetable-table tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.timetable-table tbody tr:hover {
+  background: #eaf2ff;
+  transition: 0.3s;
+}
+
+/* Break Cell */
+
+.timetable-table td {
+  color: #334155;
+}
+
+.timetable-table td:contains("Break") {
+  background: #fff8dc;
+}
+
+/* Dark Theme */
+
+.dark-theme .timetable-card {
+  background: #1e293b;
+}
+
+.dark-theme .timetable-header h2 {
+  color: #ffffff;
+}
+
+.dark-theme .timetable-header p {
+  color: #cbd5e1;
+}
+
+.dark-theme .timetable-table th {
+  background: #3b82f6;
+}
+
+.dark-theme .timetable-table td {
+  border-color: #475569;
+  color: #e2e8f0;
+}
+
+.dark-theme .day {
+  background: #334155;
+  color: #ffffff;
+}
+
+.dark-theme .timetable-table tbody tr:nth-child(even) {
+  background: #263548;
+}
+
+.dark-theme .timetable-table tbody tr:hover {
+  background: #334155;
+}
+
+/* Scrollbar */
+
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #2563eb;
+  border-radius: 20px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #e2e8f0;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .timetable-card {
+    padding: 18px;
+  }
+
+  .timetable-header h2 {
+    font-size: 24px;
+  }
+
+  .timetable-header p {
+    font-size: 14px;
+  }
+
+  .timetable-table th,
+  .timetable-table td {
+    padding: 10px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .timetable-card {
+    padding: 15px;
+  }
+
+  .timetable-header h2 {
+    font-size: 22px;
+  }
+
+  .timetable-table th,
+  .timetable-table td {
+    font-size: 13px;
+    padding: 8px;
+  }
+}

@@ -1,0 +1,245 @@
+/* src/index.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+body {
+  background: #f4f7fc;
+  color: #222;
+  transition: all 0.3s ease;
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ececec;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3f51b5;
+  border-radius: 20px;
+}
+
+/* =========================
+        LIGHT THEME
+========================= */
+
+.light-theme {
+  background: #f4f7fc;
+  color: #222;
+}
+
+.light-theme .sidebar,
+.light-theme .topbar,
+.light-theme .dashboard-card,
+.light-theme .card,
+.light-theme .table-card,
+.light-theme .notice-card,
+.light-theme .summary-card,
+.light-theme .report-card,
+.light-theme .students-table,
+.light-theme .faculty-table,
+.light-theme .courses-table,
+.light-theme .fees-table,
+.light-theme .library-table,
+.light-theme .settings-card,
+.light-theme .search-box,
+.light-theme table,
+.light-theme input,
+.light-theme textarea,
+.light-theme select {
+  background: #ffffff;
+  color: #222;
+}
+
+.light-theme table th {
+  background: #3f51b5;
+  color: white;
+}
+
+.light-theme table td {
+  color: #333;
+}
+
+/* =========================
+        DARK THEME
+========================= */
+
+.dark-theme {
+  background: #111827;
+  color: #f5f5f5;
+}
+
+.dark-theme .sidebar,
+.dark-theme .topbar,
+.dark-theme .dashboard-card,
+.dark-theme .card,
+.dark-theme .table-card,
+.dark-theme .notice-card,
+.dark-theme .summary-card,
+.dark-theme .report-card,
+.dark-theme .students-table,
+.dark-theme .faculty-table,
+.dark-theme .courses-table,
+.dark-theme .fees-table,
+.dark-theme .library-table,
+.dark-theme .settings-card,
+.dark-theme .search-box,
+.dark-theme table,
+.dark-theme input,
+.dark-theme textarea,
+.dark-theme select {
+  background: #1f2937;
+  color: white;
+}
+
+.dark-theme table th {
+  background: #3949ab;
+}
+
+.dark-theme table td {
+  border-bottom: 1px solid #374151;
+}
+
+.dark-theme input,
+.dark-theme textarea,
+.dark-theme select {
+  border: 1px solid #555;
+}
+
+.dark-theme input::placeholder,
+.dark-theme textarea::placeholder {
+  color: #bdbdbd;
+}
+
+.dark-theme .search-box svg,
+.dark-theme svg {
+  color: #90caf9;
+}
+
+/* Links */
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Buttons */
+
+button {
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+/* Card Animation */
+
+.dashboard-card,
+.card,
+.report-card,
+.summary-card {
+  transition: 0.3s ease;
+}
+
+.dashboard-card:hover,
+.card:hover,
+.report-card:hover,
+.summary-card:hover {
+  transform: translateY(-5px);
+}
+
+
+
+/* ===============================
+   APP LAYOUT
+==================================*/
+
+.app-container{
+    display:flex;
+    min-height:100vh;
+    background:#f4f7fc;
+}
+
+/* Main Area */
+
+.main-container{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+min-width:0;
+    margin-left:0px;
+
+    transition:all .3s ease;
+
+    min-height:100vh;
+
+}
+
+/* Sidebar collapsed */
+
+
+
+.main-container.collapsed{
+    margin-left:80px;
+}
+/* Page */
+
+.page-container{
+    margin-top:72px;
+    padding:25px;
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
+    box-sizing:border-box;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+@media(max-width:992px){
+
+.main-container{
+
+margin-left:0;
+
+}
+
+.topbar{
+
+left:0;
+
+}
+
+.page-container{
+
+padding:15px;
+
+}
+
+}

@@ -1,0 +1,147 @@
+.students-page{
+    padding:25px;
+    background:#f4f7fc;
+    min-height:100vh;
+}
+
+.students-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.students-header h1{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#222;
+}
+
+.students-header p{
+    color:#666;
+    margin-top:5px;
+}
+
+.add-btn{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#3f51b5;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.add-btn:hover{
+    background:#283593;
+}
+
+.search-box{
+    display:flex;
+    align-items:center;
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    margin-bottom:25px;
+}
+
+.search-icon{
+    color:#3f51b5;
+    margin-right:10px;
+}
+
+.search-box input{
+    width:100%;
+    border:none;
+    outline:none;
+    font-size:16px;
+}
+
+.students-table{
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    overflow-x:auto;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table th{
+    background:#3f51b5;
+    color:white;
+    padding:14px;
+    text-align:left;
+}
+
+table td{
+    padding:14px;
+    border-bottom:1px solid #eee;
+}
+
+table tbody tr:hover{
+    background:#eef3ff;
+}
+
+.edit-btn,
+.delete-btn{
+    border:none;
+    padding:8px 12px;
+    margin-right:8px;
+    border-radius:6px;
+    cursor:pointer;
+    color:white;
+}
+
+.edit-btn{
+    background:#2196f3;
+}
+
+.edit-btn:hover{
+    background:#1976d2;
+}
+
+.delete-btn{
+    background:#f44336;
+}
+
+.delete-btn:hover{
+    background:#d32f2f;
+}
+
+.no-data{
+    text-align:center;
+    color:#777;
+    padding:25px;
+}
+
+@media(max-width:768px){
+
+.students-page{
+    padding:15px;
+}
+
+.students-header{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:15px;
+}
+
+.add-btn{
+    width:100%;
+    justify-content:center;
+}
+
+table{
+    min-width:900px;
+}
+
+}

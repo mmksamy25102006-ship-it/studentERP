@@ -1,0 +1,197 @@
+/* src/components/Calculator.css */
+
+.calculator-card {
+  width: 100%;
+  max-width: 360px;
+  margin: 20px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.calculator-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+/* Heading */
+
+.calculator-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #1e293b;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Display */
+
+.display {
+  width: 100%;
+  height: 60px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0 15px;
+  font-size: 24px;
+  text-align: right;
+  margin-bottom: 20px;
+  outline: none;
+  background: #f8fafc;
+  color: #0f172a;
+  box-sizing: border-box;
+}
+
+/* Top Buttons */
+
+.top-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.top-buttons button {
+  flex: 1;
+  height: 50px;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.clear-btn {
+  background: #ef4444;
+}
+
+.clear-btn:hover {
+  background: #dc2626;
+}
+
+.delete-btn {
+  background: #f59e0b;
+}
+
+.delete-btn:hover {
+  background: #d97706;
+}
+
+/* Calculator Grid */
+
+.calculator-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.calculator-grid button {
+  height: 60px;
+  border: none;
+  border-radius: 10px;
+  background: #2563eb;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.calculator-grid button:hover {
+  background: #1d4ed8;
+  transform: scale(1.05);
+}
+
+.calculator-grid button:active {
+  transform: scale(0.96);
+}
+
+/* Equal Button */
+
+.equal-btn {
+  background: #16a34a !important;
+}
+
+.equal-btn:hover {
+  background: #15803d !important;
+}
+
+/* Dark Theme */
+
+.dark-theme .calculator-card {
+  background: #1e293b;
+}
+
+.dark-theme .calculator-card h2 {
+  color: #f8fafc;
+}
+
+.dark-theme .display {
+  background: #334155;
+  color: #ffffff;
+  border: 2px solid #475569;
+}
+
+.dark-theme .calculator-grid button {
+  background: #3b82f6;
+}
+
+.dark-theme .calculator-grid button:hover {
+  background: #2563eb;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .calculator-card {
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  .display {
+    height: 55px;
+    font-size: 22px;
+  }
+
+  .calculator-grid button {
+    height: 55px;
+    font-size: 18px;
+  }
+
+  .top-buttons button {
+    height: 48px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .calculator-card {
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .calculator-card h2 {
+    font-size: 20px;
+  }
+
+  .display {
+    height: 50px;
+    font-size: 20px;
+  }
+
+  .calculator-grid {
+    gap: 10px;
+  }
+
+  .calculator-grid button {
+    height: 50px;
+    font-size: 17px;
+  }
+
+  .top-buttons button {
+    height: 45px;
+    font-size: 15px;
+  }
+}

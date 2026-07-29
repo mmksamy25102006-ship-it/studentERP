@@ -1,0 +1,103 @@
+/* src/components/AttendanceChart.css */
+
+.attendance-chart-card {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.attendance-chart-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Header */
+
+.chart-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.chart-header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.chart-header p {
+  margin-top: 6px;
+  color: #64748b;
+  font-size: 15px;
+}
+
+/* Chart */
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 380px;
+}
+
+/* Responsive */
+
+@media (max-width: 1024px) {
+  .chart-container {
+    height: 330px;
+  }
+}
+
+@media (max-width: 768px) {
+  .attendance-chart-card {
+    padding: 18px;
+  }
+
+  .chart-header h2 {
+    font-size: 20px;
+  }
+
+  .chart-header p {
+    font-size: 14px;
+  }
+
+  .chart-container {
+    height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .attendance-chart-card {
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .chart-header h2 {
+    font-size: 18px;
+  }
+
+  .chart-header p {
+    font-size: 13px;
+  }
+
+  .chart-container {
+    height: 250px;
+  }
+}
+
+/* Dark Theme */
+
+.dark-theme .attendance-chart-card {
+  background: #1e293b;
+}
+
+.dark-theme .chart-header h2 {
+  color: #f8fafc;
+}
+
+.dark-theme .chart-header p {
+  color: #cbd5e1;
+}
