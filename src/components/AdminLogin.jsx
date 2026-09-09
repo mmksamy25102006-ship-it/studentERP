@@ -55,7 +55,7 @@ const AdminLogin = () => {
       console.log("Admin login payload:", { email: payload.email, role: payload.role });
 
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://studenterp-5wuj.onrender.com/api/auth/login",
         payload
       );
 
@@ -212,3 +212,4 @@ const AdminLogin = () => {
 };
 
 export default AdminLogin;
+

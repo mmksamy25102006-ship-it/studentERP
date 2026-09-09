@@ -12,7 +12,7 @@ function StudentNotification() {
   const loadNotifications = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/notifications"
+        "https://studenterp-5wuj.onrender.com/api/notifications"
       );
 
       setNotifications(res.data);

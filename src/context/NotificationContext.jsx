@@ -18,7 +18,7 @@ const NotificationContext = createContext();
 // API URL
 // ========================================
 
-const API_URL = "http://localhost:5000/api/notifications";
+const API_URL = "https://studenterp-5wuj.onrender.com/api/notifications";
 
 
 // ========================================

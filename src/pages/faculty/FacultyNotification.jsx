@@ -17,7 +17,7 @@ function FacultyNotification() {
         try {
 
             await axios.post(
-                "http://localhost:5000/api/notifications",
+                "https://studenterp-5wuj.onrender.com/api/notifications",
                 {
                     title,
                     message,
