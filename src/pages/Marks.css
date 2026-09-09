@@ -1,124 +1,1568 @@
-.marks-page{
-    padding:25px;
-    background:#f4f7fc;
-    min-height:100vh;
+/* =====================================================
+   MARKS & GPA
+   MODERN NEXUS ERP DESIGN
+===================================================== */
+
+.marks-page {
+  min-height: 100vh;
+  
+  padding: 26px 34px 70px;
+  color: var(--text-primary);
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
 }
 
-.marks-header{
-    margin-bottom:25px;
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.marks-header {
+  margin-bottom: 16px;
 }
 
-.marks-header h1{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    color:#222;
+.marks-title-studentdashboard {
+  display: flex;
+  align-items: center;
+  /* justify-content:start */
+  gap: 14px;
 }
 
-.marks-header p{
-    color:#777;
+.marks-title-icon {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: linear-gradient(
+    135deg,
+    #06b6d4,
+    #3b82f6
+  );
+
+  color: white;
+  font-size: 21px;
+
+  box-shadow:
+    0 8px 22px rgba(6, 182, 212, 0.22);
 }
 
-.marks-summary{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
-    margin-bottom:30px;
+.marks-title-studentdashboard h1 {
+  margin: 0;
+
+  font-size: 26px;
+  font-weight: 700;
+
+  letter-spacing: -0.5px;
 }
 
-.summary-card{
-    background:#fff;
-    padding:25px;
-    border-radius:15px;
-    text-align:center;
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
+.marks-title-studentdashboard p {
+  margin: 3px 0 0;
+
+  font-size: 13px;
+
+  color: var(--text-secondary);
 }
 
-.summary-icon{
-    font-size:35px;
-    color:#3f51b5;
-    margin-bottom:10px;
+
+/* =====================================================
+   TABS
+===================================================== */
+
+.marks-tabs {
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+
+  border-bottom: 1px solid
+    var(--border-color);
+
+  margin-bottom: 18px;
+
+  /* overflow-x: auto; */
 }
 
-.summary-card h2{
-    color:#666;
-    margin:10px 0;
+.marks-tabs button {
+  position: relative;
+
+  border: none;
+  background: transparent;
+
+  padding: 12px 17px;
+
+  color: var(--text-secondary);
+
+  font-size: 13px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    color 0.25s ease,
+    background 0.25s ease;
 }
 
-.summary-card h1{
-    color:#3f51b5;
-    font-size:34px;
+.marks-tabs button:hover {
+  color: #06b6d4;
 }
 
-.marks-table-card{
-    background:#fff;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
-    overflow-x:auto;
+.marks-tabs button.active {
+  color: var(--text-primary);
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
+.marks-tabs button.active::after {
+  content: "";
+
+  position: absolute;
+
+  left: 10px;
+  right: 10px;
+  bottom: -1px;
+
+  height: 2px;
+
+  background: #06b6d4;
+
+  border-radius: 5px;
 }
 
-table th{
-    background:#3f51b5;
-    color:#fff;
-    padding:15px;
+.marks-tabs button svg {
+  margin-right: 7px;
 }
 
-table td{
-    padding:15px;
-    border-bottom:1px solid #eee;
+
+/* =====================================================
+   STUDENT INFO
+===================================================== */
+
+.student-info-bar {
+  display: grid;
+
+  grid-template-columns:
+    1.5fr 1fr 1fr;
+
+  gap: 14px;
+
+  margin-bottom: 18px;
+
+  padding: 13px 18px;
+
+  border: 1px solid
+    var(--border-color);
+
+  border-radius: 14px;
+
+  background: var(--glass-bg);
+
+  backdrop-filter: blur(12px);
 }
 
-table tbody tr:hover{
-    background:#eef3ff;
+.student-info-bar div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
 }
 
-.grade{
-    padding:6px 12px;
-    border-radius:20px;
-    color:#fff;
-    font-weight:bold;
+.student-info-bar span {
+  font-size: 9px;
+
+  letter-spacing: 1px;
+
+  color: var(--text-muted);
+
+  font-weight: 700;
 }
 
-.grade.O{
-    background:#4caf50;
+.student-info-bar strong {
+  font-size: 13px;
+
+  color: var(--text-primary);
 }
 
-.grade.A\+{
-    background:#2196f3;
+
+/* =====================================================
+   MAIN CARD
+===================================================== */
+
+.marks-card {
+  width: 100%;
+
+  border-radius: 17px;
+
+  border: 1px solid
+    var(--border-color);
+
+  background: var(--card-bg);
+
+  box-shadow: var(--card-shadow);
+
+  overflow: hidden;
+
+  transition:
+    background 0.3s ease,
+    border 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-.grade.A{
-    background:#ff9800;
+
+/* =====================================================
+   CARD HEADING
+===================================================== */
+
+.card-heading {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 19px 22px;
+
+  border-bottom: 1px solid
+    var(--border-color);
 }
 
-.grade.B{
-    background:#9c27b0;
+.card-heading h2 {
+  margin: 0;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  color: var(--text-primary);
 }
 
-.grade.C{
-    background:#f44336;
+.card-heading p {
+  margin: 5px 0 0;
+
+  font-size: 12px;
+
+  color: var(--text-secondary);
 }
 
-@media(max-width:768px){
+.semester-badge {
+  padding: 8px 14px;
 
-.marks-page{
-    padding:15px;
+  border: 1px solid
+    rgba(6, 182, 212, 0.4);
+
+  border-radius: 20px;
+
+  color: #06b6d4;
+
+  background: rgba(6, 182, 212, 0.08);
+
+  font-size: 11px;
+  font-weight: 700;
 }
 
-table th,
-table td{
-    padding:10px;
-    font-size:14px;
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
 }
 
-.summary-card h1{
-    font-size:28px;
+.marks-table {
+  width: 100%;
+
+  min-width: 850px;
+
+  border-collapse: collapse;
+
+  table-layout: fixed;
 }
 
+.marks-table th {
+  padding: 13px 10px;
+
+  background: var(--table-head);
+
+  color: var(--text-muted);
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.7px;
+
+  text-align: center;
+
+  border-bottom: 1px solid
+    var(--border-color);
+}
+
+.marks-table th:first-child {
+  width: 25%;
+
+  text-align: left;
+
+  padding-left: 24px;
+}
+
+.marks-table td {
+  padding: 13px 10px;
+
+  text-align: center;
+
+  font-size: 13px;
+
+  color: var(--text-primary);
+
+  border-bottom: 1px solid
+    var(--border-color);
+
+  transition:
+    background 0.2s ease;
+}
+
+.marks-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.marks-table tbody tr:hover td {
+  background: var(--row-hover);
+}
+
+.subject-name {
+  text-align: left !important;
+
+  padding-left: 24px !important;
+
+  font-weight: 600;
+
+  color: var(--text-primary) !important;
+}
+
+.total-cell {
+  font-weight: 700;
+
+  color: #06b6d4 !important;
+}
+
+.points-cell {
+  font-weight: 700;
+
+  color: #06b6d4 !important;
+}
+
+
+/* =====================================================
+   GRADE
+===================================================== */
+
+.grade {
+  display: inline-flex;
+
+  min-width: 34px;
+
+  justify-content: center;
+  align-items: center;
+
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+.grade-Aplus {
+  color: #0284c7;
+  background: rgba(14, 165, 233, 0.13);
+}
+
+.grade-A {
+  color: #0284c7;
+  background: rgba(56, 189, 248, 0.13);
+}
+
+.grade-Bplus {
+  color: #7c3aed;
+  background: rgba(139, 92, 246, 0.13);
+}
+
+.grade-B {
+  color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.1);
+}
+
+.grade-C {
+  color: #d97706;
+  background: rgba(245, 158, 11, 0.12);
+}
+
+.grade-minus {
+  color: var(--text-muted);
+  background: var(--glass-bg);
+}
+
+
+/* =====================================================
+   GPA SUMMARY
+===================================================== */
+
+.gpa-summary {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 18px;
+
+  margin-top: 18px;
+}
+
+.gpa-card {
+  min-height: 112px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 20px 24px;
+
+  border-radius: 17px;
+
+  border: 1px solid
+    var(--border-color);
+
+  background: var(--card-bg);
+
+  box-shadow: var(--card-shadow);
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.gpa-card:hover {
+  transform: translateY(-3px);
+
+  border-color:
+    rgba(6, 182, 212, 0.35);
+
+  box-shadow:
+    0 12px 30px
+    rgba(6, 182, 212, 0.1);
+}
+
+.gpa-card-content {
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+.gpa-card span {
+  color: var(--text-secondary);
+
+  font-size: 11px;
+}
+
+.gpa-card strong {
+  color: #06b6d4;
+
+  font-size: 29px;
+
+  line-height: 1;
+
+  letter-spacing: -1px;
+}
+
+.gpa-card > svg {
+  font-size: 26px;
+
+  color: #06b6d4;
+
+  opacity: 0.75;
+}
+
+
+/* =====================================================
+   FOOTER STAT
+===================================================== */
+
+.marks-footer-stat {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 18px;
+
+  margin-top: 18px;
+
+  padding: 18px 22px;
+
+  border-radius: 15px;
+
+  border: 1px solid
+    var(--border-color);
+
+  background: var(--glass-bg);
+}
+
+.marks-footer-stat div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.marks-footer-stat span {
+  font-size: 10px;
+
+  color: var(--text-muted);
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.6px;
+}
+
+.marks-footer-stat strong {
+  font-size: 14px;
+
+  color: var(--text-primary);
+}
+
+.status-pass {
+  color: #10b981 !important;
+}
+
+
+/* =====================================================
+   GPA CALCULATOR
+===================================================== */
+
+.gpa-calculator-card {
+  min-height: 330px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  border: 1px solid
+    var(--border-color);
+
+  border-radius: 18px;
+
+  background: var(--card-bg);
+
+  box-shadow: var(--card-shadow);
+
+  text-align: center;
+}
+
+.calculator-icon {
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background:
+    rgba(6, 182, 212, 0.12);
+
+  color: #06b6d4;
+
+  font-size: 22px;
+
+  margin-bottom: 15px;
+}
+
+.gpa-calculator-card h2 {
+  margin: 0;
+
+  font-size: 20px;
+}
+
+.gpa-calculator-card p {
+  color: var(--text-secondary);
+
+  font-size: 12px;
+}
+
+.big-gpa {
+  margin-top: 22px;
+
+  font-size: 55px;
+
+  font-weight: 800;
+
+  color: #06b6d4;
+
+  letter-spacing: -2px;
+}
+
+.gpa-label {
+  color: var(--text-muted);
+
+  font-size: 11px;
+}
+
+
+/* =====================================================
+   PERFORMANCE
+===================================================== */
+
+.performance-card {
+  padding: 24px;
+
+  border-radius: 18px;
+
+  border: 1px solid
+    var(--border-color);
+
+  background: var(--card-bg);
+
+  box-shadow: var(--card-shadow);
+}
+
+.performance-header h2 {
+  margin: 0;
+
+  font-size: 18px;
+}
+
+.performance-header p {
+  margin-top: 5px;
+
+  color: var(--text-secondary);
+
+  font-size: 12px;
+}
+
+.performance-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+
+  margin-top: 28px;
+}
+
+.performance-info {
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-bottom: 8px;
+}
+
+.performance-info strong {
+  font-size: 13px;
+}
+
+.performance-info span {
+  color: #06b6d4;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.progress-track {
+  height: 7px;
+
+  border-radius: 20px;
+
+  background: var(--progress-bg);
+
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #06b6d4,
+      #3b82f6
+    );
+
+  transition: width 0.5s ease;
+}
+
+
+/* =====================================================
+   EMPTY STATE
+===================================================== */
+
+.marks-empty {
+  min-height: 400px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  text-align: center;
+
+  border: 1px solid
+    var(--border-color);
+
+  border-radius: 18px;
+
+  background: var(--card-bg);
+}
+
+.marks-empty svg {
+  font-size: 42px;
+
+  color: #06b6d4;
+
+  margin-bottom: 15px;
+}
+
+.marks-empty h2 {
+  margin: 0 0 7px;
+}
+
+.marks-empty p {
+  margin: 0;
+
+  color: var(--text-secondary);
+
+  font-size: 13px;
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.marks-loading {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  min-height: 500px;
+
+  color: var(--text-secondary);
+}
+
+.loading-spinner {
+  width: 35px;
+  height: 35px;
+
+  border: 3px solid
+    var(--border-color);
+
+  border-top-color: #06b6d4;
+
+  border-radius: 50%;
+
+  animation:
+    marksSpin 0.8s linear infinite;
+
+  margin-bottom: 14px;
+}
+
+@keyframes marksSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =====================================================
+   FLOATING AI BUTTON
+===================================================== */
+
+.marks-ai-button {
+  position: fixed;
+
+  right: 27px;
+  bottom: 26px;
+
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #06b6d4,
+      #3b82f6
+    );
+
+  color: white;
+
+  font-size: 22px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 10px 30px
+    rgba(6, 182, 212, 0.3);
+
+  z-index: 100;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.marks-ai-button:hover {
+  transform: translateY(-4px) scale(1.04);
+
+  box-shadow:
+    0 15px 35px
+    rgba(6, 182, 212, 0.4);
+}
+
+
+/* =====================================================
+   THEME VARIABLES
+   These work with your existing
+   .light-theme / .dark-theme
+===================================================== */
+
+.light-theme {
+  --text-primary: #07112f;
+  --text-secondary: #33446d;
+  --text-muted: #63749b;
+
+  --border-color: rgba(71, 85, 120, 0.18);
+
+  --card-bg:
+    rgba(255, 255, 255, 0.88);
+
+  --glass-bg:
+    rgba(255, 255, 255, 0.55);
+
+  --table-head:
+    rgba(226, 232, 240, 0.45);
+
+  --row-hover:
+    rgba(6, 182, 212, 0.045);
+
+  --progress-bg:
+    rgba(148, 163, 184, 0.2);
+
+  --card-shadow:
+    0 10px 35px
+    rgba(30, 64, 175, 0.08);
+}
+
+
+/* =====================================================
+   DARK THEME
+===================================================== */
+/* =====================================================
+   NEXUS DARK THEME
+   Matches the provided screenshot
+===================================================== */
+
+.dark-theme {
+  --text-primary: #f5f7ff;
+  --text-secondary: #9aa8ca;
+  --text-muted: #7180a4;
+
+  --border-color: rgba(91, 116, 190, 0.30);
+
+  --card-bg:
+    linear-gradient(
+      110deg,
+      rgba(12, 28, 55, 0.96) 0%,
+      rgba(21, 24, 59, 0.96) 55%,
+      rgba(30, 18, 59, 0.96) 100%
+    );
+
+  --glass-bg:
+    rgba(11, 25, 51, 0.72);
+
+  --table-head:
+    rgba(22, 34, 68, 0.55);
+
+  --row-hover:
+    rgba(0, 207, 255, 0.045);
+
+  --progress-bg:
+    rgba(78, 96, 140, 0.25);
+
+  --card-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.38);
+}
+
+
+/* =====================================================
+   DARK PAGE BACKGROUND
+===================================================== */
+
+.dark-theme .marks-page {
+  background:
+    radial-gradient(
+      circle at 5% 0%,
+      rgba(0, 207, 255, 0.055),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 95% 0%,
+      rgba(124, 58, 237, 0.08),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #020817 0%,
+      #071426 48%,
+      #10091f 100%
+    );
+}
+
+
+/* =====================================================
+   DARK HEADER
+===================================================== */
+
+.dark-theme .marks-title-studentdashboard h1 {
+  color: #f8fafc;
+}
+
+.dark-theme .marks-title-studentdashboard p {
+  color: #8f9fc3;
+}
+
+.dark-theme .marks-title-icon {
+  background:
+    linear-gradient(
+      135deg,
+      #079bd3,
+      #2878ed
+    );
+
+  box-shadow:
+    0 0 25px
+    rgba(0, 207, 255, 0.20);
+}
+
+
+/* =====================================================
+   DARK TABS
+===================================================== */
+
+.dark-theme .marks-tabs {
+  border-bottom:
+    1px solid rgba(88, 111, 174, 0.28);
+}
+
+.dark-theme .marks-tabs button {
+  color: #94a3c8;
+}
+
+.dark-theme .marks-tabs button:hover {
+  color: #00cfff;
+}
+
+.dark-theme .marks-tabs button.active {
+  color: #f8fafc;
+}
+
+.dark-theme .marks-tabs button.active::after {
+  background: #00cfff;
+
+  box-shadow:
+    0 0 8px
+    rgba(0, 207, 255, 0.55);
+}
+
+
+/* =====================================================
+   DARK STUDENT INFO
+===================================================== */
+
+.dark-theme .student-info-bar {
+  background:
+    linear-gradient(
+      110deg,
+      rgba(10, 28, 55, 0.78),
+      rgba(27, 19, 55, 0.78)
+    );
+
+  border-color:
+    rgba(79, 113, 190, 0.32);
+
+  box-shadow:
+    inset 0 1px 0
+    rgba(255, 255, 255, 0.025);
+}
+
+.dark-theme .student-info-bar span {
+  color: #7485aa;
+}
+
+.dark-theme .student-info-bar strong {
+  color: #eef4ff;
+}
+
+
+/* =====================================================
+   DARK MAIN CARD
+===================================================== */
+
+.dark-theme .marks-card {
+  background:
+    linear-gradient(
+      110deg,
+      #0b1c37 0%,
+      #101d3b 45%,
+      #1c1437 100%
+    );
+
+  border:
+    1px solid
+    rgba(79, 113, 190, 0.36);
+
+  box-shadow:
+    0 12px 35px
+    rgba(0, 0, 0, 0.32);
+}
+
+
+/* =====================================================
+   DARK CARD HEADING
+===================================================== */
+
+.dark-theme .card-heading {
+  border-bottom:
+    1px solid
+    rgba(80, 105, 166, 0.26);
+}
+
+.dark-theme .card-heading h2 {
+  color: #f5f7ff;
+}
+
+.dark-theme .card-heading p {
+  color: #8d9fc4;
+}
+
+.dark-theme .semester-badge {
+  color: #00cfff;
+
+  background:
+    rgba(0, 207, 255, 0.055);
+
+  border:
+    1px solid
+    rgba(0, 207, 255, 0.38);
+
+  box-shadow:
+    0 0 12px
+    rgba(0, 207, 255, 0.05);
+}
+
+
+/* =====================================================
+   DARK TABLE
+===================================================== */
+
+.dark-theme .marks-table th {
+  background:
+    rgba(24, 36, 73, 0.58);
+
+  color: #7788ad;
+
+  border-bottom:
+    1px solid
+    rgba(82, 105, 165, 0.28);
+}
+
+.dark-theme .marks-table td {
+  color: #edf3ff;
+
+  border-bottom:
+    1px solid
+    rgba(75, 100, 160, 0.27);
+}
+
+.dark-theme .marks-table tbody tr:hover td {
+  background:
+    rgba(0, 207, 255, 0.035);
+}
+
+.dark-theme .subject-name {
+  color: #f3f6ff !important;
+}
+
+.dark-theme .total-cell {
+  color: #00cfff !important;
+}
+
+.dark-theme .points-cell {
+  color: #00cfff !important;
+}
+
+
+/* =====================================================
+   DARK GRADES
+===================================================== */
+
+.dark-theme .grade-Aplus {
+  color: #38bdf8;
+
+  background:
+    rgba(56, 189, 248, 0.12);
+
+  border:
+    1px solid
+    rgba(56, 189, 248, 0.08);
+}
+
+.dark-theme .grade-A {
+  color: #38bdf8;
+
+  background:
+    rgba(56, 189, 248, 0.11);
+}
+
+.dark-theme .grade-Bplus {
+  color: #a78bfa;
+
+  background:
+    rgba(139, 92, 246, 0.13);
+}
+
+.dark-theme .grade-B {
+  color: #a78bfa;
+
+  background:
+    rgba(139, 92, 246, 0.11);
+}
+
+.dark-theme .grade-C {
+  color: #fbbf24;
+
+  background:
+    rgba(245, 158, 11, 0.11);
+}
+
+.dark-theme .grade-minus {
+  color: #8797b8;
+
+  background:
+    rgba(100, 116, 139, 0.10);
+}
+
+
+/* =====================================================
+   DARK GPA CARDS
+===================================================== */
+
+.dark-theme .gpa-card {
+  background:
+    linear-gradient(
+      110deg,
+      #0c1d38 0%,
+      #101c39 50%,
+      #1d1438 100%
+    );
+
+  border:
+    1px solid
+    rgba(78, 108, 180, 0.32);
+
+  box-shadow:
+    0 12px 30px
+    rgba(0, 0, 0, 0.28);
+}
+
+.dark-theme .gpa-card:hover {
+  border-color:
+    rgba(0, 207, 255, 0.38);
+
+  box-shadow:
+    0 12px 32px
+    rgba(0, 207, 255, 0.08);
+}
+
+.dark-theme .gpa-card span {
+  color: #8798bc;
+}
+
+.dark-theme .gpa-card strong {
+  color: #00cfff;
+
+  text-shadow:
+    0 0 16px
+    rgba(0, 207, 255, 0.16);
+}
+
+.dark-theme .gpa-card > svg {
+  color: #00cfff;
+
+  opacity: 0.72;
+}
+
+
+/* =====================================================
+   DARK FOOTER STAT
+===================================================== */
+
+.dark-theme .marks-footer-stat {
+  background:
+    linear-gradient(
+      110deg,
+      rgba(11, 28, 53, 0.70),
+      rgba(28, 19, 55, 0.70)
+    );
+
+  border-color:
+    rgba(78, 108, 180, 0.28);
+}
+
+.dark-theme .marks-footer-stat span {
+  color: #7182a7;
+}
+
+.dark-theme .marks-footer-stat strong {
+  color: #f0f5ff;
+}
+
+.dark-theme .marks-footer-stat .status-pass {
+  color: #34d399 !important;
+}
+
+
+/* =====================================================
+   DARK GPA CALCULATOR
+===================================================== */
+
+.dark-theme .gpa-calculator-card {
+  background:
+    linear-gradient(
+      110deg,
+      #0b1c37,
+      #111c3b,
+      #1d1438
+    );
+
+  border-color:
+    rgba(78, 108, 180, 0.32);
+}
+
+.dark-theme .calculator-icon {
+  color: #00cfff;
+
+  background:
+    rgba(0, 207, 255, 0.08);
+
+  border:
+    1px solid
+    rgba(0, 207, 255, 0.15);
+}
+
+.dark-theme .gpa-calculator-card h2 {
+  color: #f5f7ff;
+}
+
+.dark-theme .gpa-calculator-card p {
+  color: #8798bc;
+}
+
+.dark-theme .big-gpa {
+  color: #00cfff;
+
+  text-shadow:
+    0 0 20px
+    rgba(0, 207, 255, 0.14);
+}
+
+.dark-theme .gpa-label {
+  color: #7182a7;
+}
+
+
+/* =====================================================
+   DARK PERFORMANCE
+===================================================== */
+
+.dark-theme .performance-card {
+  background:
+    linear-gradient(
+      110deg,
+      #0b1c37,
+      #111c3b,
+      #1d1438
+    );
+
+  border-color:
+    rgba(78, 108, 180, 0.32);
+}
+
+.dark-theme .performance-header h2 {
+  color: #f5f7ff;
+}
+
+.dark-theme .performance-header p {
+  color: #8798bc;
+}
+
+.dark-theme .performance-info strong {
+  color: #eef4ff;
+}
+
+.dark-theme .performance-info span {
+  color: #00cfff;
+}
+
+.dark-theme .progress-track {
+  background:
+    rgba(68, 86, 130, 0.27);
+}
+
+.dark-theme .progress-fill {
+  background:
+    linear-gradient(
+      90deg,
+      #00cfff,
+      #2984ed
+    );
+
+  box-shadow:
+    0 0 10px
+    rgba(0, 207, 255, 0.18);
+}
+
+
+/* =====================================================
+   DARK EMPTY STATE
+===================================================== */
+
+.dark-theme .marks-empty {
+  background:
+    linear-gradient(
+      110deg,
+      #0b1c37,
+      #111c3b,
+      #1d1438
+    );
+
+  border-color:
+    rgba(78, 108, 180, 0.32);
+}
+
+.dark-theme .marks-empty h2 {
+  color: #f5f7ff;
+}
+
+.dark-theme .marks-empty p {
+  color: #8798bc;
+}
+
+.dark-theme .marks-empty svg {
+  color: #00cfff;
+}
+
+
+/* =====================================================
+   DARK LOADING
+===================================================== */
+
+.dark-theme .marks-loading {
+  color: #8798bc;
+}
+
+.dark-theme .loading-spinner {
+  border-color:
+    rgba(78, 108, 180, 0.25);
+
+  border-top-color: #00cfff;
+}
+
+
+/* =====================================================
+   DARK AI BUTTON
+===================================================== */
+
+.dark-theme .marks-ai-button {
+  background:
+    linear-gradient(
+      135deg,
+      #08c8f4,
+      #3478f2
+    );
+
+  box-shadow:
+    0 0 28px
+    rgba(0, 207, 255, 0.28);
+}
+
+.dark-theme .marks-ai-button:hover {
+  box-shadow:
+    0 0 35px
+    rgba(0, 207, 255, 0.40);
+}
+/* =====================================================
+   PAGE BACKGROUND
+===================================================== */
+
+.light-theme .marks-page {
+  background:
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(56, 189, 248, 0.12),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(139, 92, 246, 0.12),
+      transparent 35%
+    );
+}
+/* 
+.dark-theme .marks-page {
+  background:
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(14, 165, 233, 0.08),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(124, 58, 237, 0.09),
+      transparent 35%
+    );
+}
+ */
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1000px) {
+
+  .marks-page {
+    padding: 22px;
+  }
+
+  .gpa-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .marks-footer-stat {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+@media (max-width: 700px) {
+
+  .marks-page {
+    padding: 18px 14px 80px;
+  }
+
+  .marks-title h1 {
+    font-size: 22px;
+  }
+
+  .marks-title p {
+    font-size: 11px;
+  }
+
+  .marks-title-icon {
+    width: 40px;
+    height: 40px;
+
+    font-size: 18px;
+  }
+
+  .student-info-bar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .student-info-bar div:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .card-heading {
+    padding: 17px;
+  }
+
+  .marks-table th:first-child,
+  .marks-table td:first-child {
+    padding-left: 17px;
+  }
+
+  .gpa-card {
+    min-height: 100px;
+  }
+
+  .marks-ai-button {
+    width: 53px;
+    height: 53px;
+
+    right: 18px;
+    bottom: 18px;
+  }
+}
+
+
+@media (max-width: 480px) {
+
+  .student-info-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .student-info-bar div:first-child {
+    grid-column: auto;
+  }
+
+  .marks-tabs button {
+    padding: 11px 13px;
+
+    font-size: 11px;
+  }
+
+  .card-heading {
+    align-items: flex-start;
+
+    gap: 12px;
+
+    flex-direction: column;
+  }
+
+  .semester-badge {
+    align-self: flex-start;
+  }
 }

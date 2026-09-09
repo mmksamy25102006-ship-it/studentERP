@@ -1,102 +1,299 @@
-/* src/components/GPAChart.css */
+
+/* =========================================================
+   GPA PERFORMANCE CHART
+   Fully scoped — does not affect other pages/components
+   ========================================================= */
 
 .gpa-card {
-  width: 100%;
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 24px;
-  margin: 20px 0;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+    --gpa-primary: #4f46e5;
+    --gpa-primary-light: #eef2ff;
+    --gpa-secondary: #06b6d4;
+
+    --gpa-bg: #ffffff;
+    --gpa-surface: #f8fafc;
+    --gpa-border: #e5e7eb;
+
+    --gpa-text: #172033;
+    --gpa-muted: #64748b;
+
+    width: 100%;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 24px;
+    margin: 20px 0;
+
+    box-sizing: border-box;
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(79, 70, 229, 0.06),
+            transparent 28%
+        ),
+        var(--gpa-bg);
+
+    border: 1px solid var(--gpa-border);
+    border-radius: 20px;
+
+    box-shadow:
+        0 8px 30px rgba(15, 23, 42, 0.06),
+        0 2px 8px rgba(15, 23, 42, 0.025);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
 }
 
 .gpa-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px);
+
+    border-color: rgba(79, 70, 229, 0.18);
+
+    box-shadow:
+        0 14px 35px rgba(15, 23, 42, 0.09),
+        0 4px 12px rgba(15, 23, 42, 0.04);
 }
 
-/* Header */
 
-.gpa-header {
-  margin-bottom: 20px;
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.gpa-card .gpa-header {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+
+    border-bottom: 1px solid var(--gpa-border);
 }
 
-.gpa-header h2 {
-  margin: 0;
-  font-size: 26px;
-  font-weight: 700;
-  color: #1e293b;
+.gpa-card .gpa-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin: 0;
+
+    color: var(--gpa-text);
+
+    font-size: 22px;
+    font-weight: 750;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
 }
 
-.gpa-header p {
-  margin-top: 8px;
-  font-size: 15px;
-  color: #64748b;
+.gpa-card .gpa-header h2::before {
+    content: "";
+
+    width: 4px;
+    height: 24px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        180deg,
+        var(--gpa-primary),
+        var(--gpa-secondary)
+    );
 }
 
-/* Chart */
+.gpa-card .gpa-header p {
+    margin: 6px 0 0 14px;
 
-.gpa-chart {
-  position: relative;
-  width: 100%;
-  height: 400px;
+    color: var(--gpa-muted);
+
+    font-size: 13px;
+    font-weight: 500;
 }
 
-/* Dark Theme */
+
+/* =========================================================
+   CHART
+   ========================================================= */
+
+.gpa-card .gpa-chart {
+    position: relative;
+
+    width: 100%;
+    height: 400px;
+
+    padding: 8px 4px 2px;
+
+    box-sizing: border-box;
+
+    border-radius: 14px;
+
+    background: linear-gradient(
+        180deg,
+        rgba(248, 250, 252, 0.65),
+        rgba(255, 255, 255, 0)
+    );
+}
+
+
+/* =========================================================
+   DARK THEME
+   Uses the existing .dark-theme class
+   ========================================================= */
 
 .dark-theme .gpa-card {
-  background: #1e293b;
+    --gpa-primary: #818cf8;
+    --gpa-primary-light: rgba(99, 102, 241, 0.12);
+    --gpa-secondary: #22d3ee;
+
+    --gpa-bg: #111827;
+    --gpa-surface: #182235;
+    --gpa-border: #273449;
+
+    --gpa-text: #f8fafc;
+    --gpa-muted: #94a3b8;
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(99, 102, 241, 0.12),
+            transparent 30%
+        ),
+        var(--gpa-bg);
+
+    border-color: var(--gpa-border);
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.2),
+        0 3px 10px rgba(0, 0, 0, 0.12);
 }
 
-.dark-theme .gpa-header h2 {
-  color: #ffffff;
+.dark-theme .gpa-card:hover {
+    border-color: rgba(129, 140, 248, 0.3);
+
+    box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.28),
+        0 4px 14px rgba(0, 0, 0, 0.16);
 }
 
-.dark-theme .gpa-header p {
-  color: #cbd5e1;
+.dark-theme .gpa-card .gpa-header {
+    border-bottom-color: #273449;
 }
 
-/* Responsive */
+.dark-theme .gpa-card .gpa-header h2 {
+    color: #f8fafc;
+}
+
+.dark-theme .gpa-card .gpa-header p {
+    color: #94a3b8;
+}
+
+.dark-theme .gpa-card .gpa-chart {
+    background: linear-gradient(
+        180deg,
+        rgba(24, 34, 53, 0.65),
+        rgba(17, 24, 39, 0)
+    );
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
 
 @media (max-width: 1024px) {
-  .gpa-chart {
-    height: 350px;
-  }
+    .gpa-card {
+        padding: 22px;
+    }
+
+    .gpa-card .gpa-chart {
+        height: 350px;
+    }
 }
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
 
 @media (max-width: 768px) {
-  .gpa-card {
-    padding: 20px;
-  }
+    .gpa-card {
+        padding: 18px;
+        margin: 16px 0;
 
-  .gpa-header h2 {
-    font-size: 22px;
-  }
+        border-radius: 16px;
+    }
 
-  .gpa-header p {
-    font-size: 14px;
-  }
+    .gpa-card .gpa-header {
+        margin-bottom: 16px;
+        padding-bottom: 13px;
+    }
 
-  .gpa-chart {
-    height: 300px;
-  }
+    .gpa-card .gpa-header h2 {
+        font-size: 19px;
+    }
+
+    .gpa-card .gpa-header h2::before {
+        width: 3px;
+        height: 21px;
+    }
+
+    .gpa-card .gpa-header p {
+        margin-left: 13px;
+        font-size: 12px;
+    }
+
+    .gpa-card .gpa-chart {
+        height: 300px;
+        padding: 5px 0 0;
+    }
 }
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
 
 @media (max-width: 480px) {
-  .gpa-card {
-    padding: 16px;
-    border-radius: 14px;
-  }
+    .gpa-card {
+        padding: 15px;
+        margin: 12px 0;
 
-  .gpa-header h2 {
-    font-size: 20px;
-  }
+        border-radius: 14px;
+    }
 
-  .gpa-header p {
-    font-size: 13px;
-  }
+    .gpa-card .gpa-header h2 {
+        font-size: 17px;
+    }
 
-  .gpa-chart {
-    height: 250px;
-  }
+    .gpa-card .gpa-header p {
+        font-size: 11px;
+    }
+
+    .gpa-card .gpa-chart {
+        height: 250px;
+    }
 }
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+   ========================================================= */
+
+@media (max-width: 360px) {
+    .gpa-card {
+        padding: 12px;
+    }
+
+    .gpa-card .gpa-header h2 {
+        font-size: 16px;
+    }
+
+    .gpa-card .gpa-chart {
+        height: 225px;
+    }
+}
+

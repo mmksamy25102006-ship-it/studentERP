@@ -1,186 +1,547 @@
-/* src/components/Timetable.css */
+
+/* =========================================================
+   CLASS TIMETABLE
+   Fully scoped — does not affect other pages
+   ========================================================= */
 
 .timetable-card {
-  width: 100%;
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 25px;
-  margin-top: 25px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+    --timetable-primary: #4f46e5;
+    --timetable-primary-hover: #4338ca;
+    --timetable-primary-soft: #eef2ff;
+    --timetable-secondary: #06b6d4;
+
+    --timetable-bg: #ffffff;
+    --timetable-surface: #f8fafc;
+    --timetable-border: #e5e7eb;
+
+    --timetable-text: #172033;
+    --timetable-muted: #64748b;
+
+    width: 100%;
+    min-width: 0;
+
+    margin-top: 20px;
+    padding: 24px;
+
+    box-sizing: border-box;
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(79, 70, 229, 0.06),
+            transparent 28%
+        ),
+        var(--timetable-bg);
+
+    border: 1px solid var(--timetable-border);
+    border-radius: 20px;
+
+    box-shadow:
+        0 8px 30px rgba(15, 23, 42, 0.06),
+        0 2px 8px rgba(15, 23, 42, 0.025);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
 }
 
 .timetable-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px);
+
+    border-color: rgba(79, 70, 229, 0.18);
+
+    box-shadow:
+        0 14px 35px rgba(15, 23, 42, 0.09),
+        0 4px 12px rgba(15, 23, 42, 0.04);
 }
 
-/* Header */
 
-.timetable-header {
-  text-align: center;
-  margin-bottom: 25px;
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.timetable-card .timetable-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+
+    border-bottom: 1px solid var(--timetable-border);
 }
 
-.timetable-header h2 {
-  margin: 0;
-  color: #1e293b;
-  font-size: 28px;
-  font-weight: 700;
+.timetable-card .timetable-header h2 {
+    position: relative;
+
+    margin: 0;
+    padding-left: 13px;
+
+    color: var(--timetable-text);
+
+    font-size: 23px;
+    font-weight: 750;
+
+    line-height: 1.3;
+    letter-spacing: -0.3px;
 }
 
-.timetable-header p {
-  margin-top: 8px;
-  color: #64748b;
-  font-size: 16px;
+.timetable-card .timetable-header h2::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 50%;
+
+    width: 4px;
+    height: 25px;
+
+    transform: translateY(-50%);
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        180deg,
+        var(--timetable-primary),
+        var(--timetable-secondary)
+    );
 }
 
-/* Responsive Table */
+.timetable-card .timetable-header p {
+    margin: 6px 0 0;
 
-.table-responsive {
-  width: 100%;
-  overflow-x: auto;
+    color: var(--timetable-muted);
+
+    font-size: 13px;
+    font-weight: 500;
 }
 
-/* Table */
 
-.timetable-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 850px;
+/* =========================================================
+   RESPONSIVE TABLE WRAPPER
+   ========================================================= */
+
+.timetable-card .table-responsive {
+    width: 100%;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    border: 1px solid var(--timetable-border);
+    border-radius: 14px;
+
+    background: var(--timetable-bg);
+
+    box-sizing: border-box;
 }
 
-.timetable-table th,
-.timetable-table td {
-  border: 1px solid #e2e8f0;
-  padding: 14px;
-  text-align: center;
-  font-size: 15px;
+.timetable-card .table-responsive::-webkit-scrollbar {
+    height: 7px;
 }
 
-/* Header Row */
-
-.timetable-table thead th {
-  background: #2563eb;
-  color: #ffffff;
-  font-weight: 600;
-  white-space: nowrap;
+.timetable-card .table-responsive::-webkit-scrollbar-track {
+    background: var(--timetable-surface);
 }
 
-/* Day Column */
-
-.day {
-  background: #f1f5f9;
-  font-weight: 700;
-  color: #1e293b;
+.timetable-card .table-responsive::-webkit-scrollbar-thumb {
+    background: #a5b4fc;
+    border-radius: 20px;
 }
 
-/* Table Rows */
-
-.timetable-table tbody tr:nth-child(even) {
-  background: #f8fafc;
+.timetable-card .table-responsive::-webkit-scrollbar-thumb:hover {
+    background: var(--timetable-primary);
 }
 
-.timetable-table tbody tr:hover {
-  background: #eaf2ff;
-  transition: 0.3s;
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.timetable-card .timetable-table {
+    width: 100%;
+    min-width: 900px;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    background: var(--timetable-bg);
+
+    table-layout: fixed;
 }
 
-/* Break Cell */
 
-.timetable-table td {
-  color: #334155;
+/* =========================================================
+   TABLE HEADER
+   ========================================================= */
+
+.timetable-card .timetable-table thead {
+    background: linear-gradient(
+        135deg,
+        #4338ca,
+        #4f46e5,
+        #6366f1
+    );
 }
 
-.timetable-table td:contains("Break") {
-  background: #fff8dc;
+.timetable-card .timetable-table thead th {
+    padding: 15px 12px;
+
+    background: transparent;
+    color: #ffffff;
+
+    border: 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.14);
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-align: center;
+
+    white-space: nowrap;
+    letter-spacing: 0.3px;
 }
 
-/* Dark Theme */
+.timetable-card .timetable-table thead th:last-child {
+    border-right: 0;
+}
+
+
+/* =========================================================
+   TABLE CELLS
+   ========================================================= */
+
+.timetable-card .timetable-table td {
+    padding: 14px 10px;
+
+    color: var(--timetable-text);
+
+    background: var(--timetable-bg);
+
+    border-right: 1px solid var(--timetable-border);
+    border-bottom: 1px solid var(--timetable-border);
+
+    font-size: 12px;
+    font-weight: 550;
+
+    text-align: center;
+
+    line-height: 1.4;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.timetable-card .timetable-table td:last-child {
+    border-right: 0;
+}
+
+.timetable-card .timetable-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+
+/* =========================================================
+   DAY COLUMN
+   ========================================================= */
+
+.timetable-card .timetable-table td.day {
+    background: var(--timetable-primary-soft);
+
+    color: var(--timetable-primary);
+
+    font-size: 13px;
+    font-weight: 750;
+
+    border-right-color: #dfe3ff;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   ALTERNATING ROWS
+   ========================================================= */
+
+.timetable-card .timetable-table tbody tr:nth-child(even) td {
+    background: var(--timetable-surface);
+}
+
+.timetable-card .timetable-table tbody tr:nth-child(even) td.day {
+    background: #eef2ff;
+}
+
+
+/* =========================================================
+   ROW HOVER
+   ========================================================= */
+
+.timetable-card .timetable-table tbody tr:hover td {
+    background: #f1f5ff;
+}
+
+.timetable-card .timetable-table tbody tr:hover td.day {
+    background: #e0e7ff;
+}
+
+
+/* =========================================================
+   SUBJECT CELLS
+   ========================================================= */
+
+.timetable-card .timetable-table tbody td:not(.day) {
+    position: relative;
+}
+
+
+/* =========================================================
+   DARK THEME
+   Uses existing .dark-theme class
+   ========================================================= */
 
 .dark-theme .timetable-card {
-  background: #1e293b;
+    --timetable-primary: #818cf8;
+    --timetable-primary-hover: #6366f1;
+    --timetable-primary-soft: rgba(99, 102, 241, 0.13);
+    --timetable-secondary: #22d3ee;
+
+    --timetable-bg: #111827;
+    --timetable-surface: #182235;
+    --timetable-border: #273449;
+
+    --timetable-text: #e2e8f0;
+    --timetable-muted: #94a3b8;
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(99, 102, 241, 0.12),
+            transparent 30%
+        ),
+        var(--timetable-bg);
+
+    border-color: var(--timetable-border);
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.2),
+        0 3px 10px rgba(0, 0, 0, 0.12);
 }
 
-.dark-theme .timetable-header h2 {
-  color: #ffffff;
+.dark-theme .timetable-card:hover {
+    border-color: rgba(129, 140, 248, 0.3);
+
+    box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.28),
+        0 4px 14px rgba(0, 0, 0, 0.16);
 }
 
-.dark-theme .timetable-header p {
-  color: #cbd5e1;
+.dark-theme .timetable-card .timetable-header {
+    border-bottom-color: #273449;
 }
 
-.dark-theme .timetable-table th {
-  background: #3b82f6;
+.dark-theme .timetable-card .timetable-header h2 {
+    color: #f8fafc;
 }
 
-.dark-theme .timetable-table td {
-  border-color: #475569;
-  color: #e2e8f0;
+.dark-theme .timetable-card .timetable-header p {
+    color: #94a3b8;
 }
 
-.dark-theme .day {
-  background: #334155;
-  color: #ffffff;
+
+/* Dark table */
+
+.dark-theme .timetable-card .table-responsive {
+    background: #111827;
+    border-color: #273449;
 }
 
-.dark-theme .timetable-table tbody tr:nth-child(even) {
-  background: #263548;
+.dark-theme .timetable-card .timetable-table {
+    background: #111827;
 }
 
-.dark-theme .timetable-table tbody tr:hover {
-  background: #334155;
+.dark-theme .timetable-card .timetable-table thead {
+    background: linear-gradient(
+        135deg,
+        #3730a3,
+        #4f46e5,
+        #6366f1
+    );
 }
 
-/* Scrollbar */
+.dark-theme .timetable-card .timetable-table td {
+    background: #111827;
 
-.table-responsive::-webkit-scrollbar {
-  height: 8px;
+    color: #cbd5e1;
+
+    border-right-color: #273449;
+    border-bottom-color: #273449;
 }
 
-.table-responsive::-webkit-scrollbar-thumb {
-  background: #2563eb;
-  border-radius: 20px;
+.dark-theme .timetable-card .timetable-table td.day {
+    background: rgba(99, 102, 241, 0.13);
+
+    color: #a5b4fc;
+
+    border-right-color: #334155;
 }
 
-.table-responsive::-webkit-scrollbar-track {
-  background: #e2e8f0;
+.dark-theme .timetable-card .timetable-table tbody tr:nth-child(even) td {
+    background: #182235;
 }
 
-/* Responsive */
+.dark-theme .timetable-card .timetable-table tbody tr:nth-child(even) td.day {
+    background: rgba(99, 102, 241, 0.17);
+}
+
+.dark-theme .timetable-card .timetable-table tbody tr:hover td {
+    background: #202c42;
+}
+
+.dark-theme .timetable-card .timetable-table tbody tr:hover td.day {
+    background: rgba(99, 102, 241, 0.22);
+}
+
+.dark-theme .timetable-card .table-responsive::-webkit-scrollbar-track {
+    background: #182235;
+}
+
+.dark-theme .timetable-card .table-responsive::-webkit-scrollbar-thumb {
+    background: #4f46e5;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1024px) {
+    .timetable-card {
+        padding: 21px;
+    }
+
+    .timetable-card .timetable-table {
+        min-width: 850px;
+    }
+
+    .timetable-card .timetable-table th,
+    .timetable-card .timetable-table td {
+        padding: 12px 9px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
 
 @media (max-width: 768px) {
-  .timetable-card {
-    padding: 18px;
-  }
+    .timetable-card {
+        padding: 18px;
 
-  .timetable-header h2 {
-    font-size: 24px;
-  }
+        border-radius: 17px;
+    }
 
-  .timetable-header p {
-    font-size: 14px;
-  }
+    .timetable-card .timetable-header {
+        margin-bottom: 16px;
+        padding-bottom: 13px;
+    }
 
-  .timetable-table th,
-  .timetable-table td {
-    padding: 10px;
-    font-size: 14px;
-  }
+    .timetable-card .timetable-header h2 {
+        font-size: 20px;
+    }
+
+    .timetable-card .timetable-header h2::before {
+        width: 3px;
+        height: 22px;
+    }
+
+    .timetable-card .timetable-header p {
+        font-size: 12px;
+    }
+
+    .timetable-card .table-responsive {
+        border-radius: 12px;
+    }
+
+    .timetable-card .timetable-table {
+        min-width: 800px;
+    }
+
+    .timetable-card .timetable-table th {
+        padding: 12px 8px;
+
+        font-size: 10px;
+    }
+
+    .timetable-card .timetable-table td {
+        padding: 12px 8px;
+
+        font-size: 11px;
+    }
+
+    .timetable-card .timetable-table td.day {
+        font-size: 12px;
+    }
 }
 
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
 @media (max-width: 480px) {
-  .timetable-card {
-    padding: 15px;
-  }
+    .timetable-card {
+        padding: 15px;
 
-  .timetable-header h2 {
-    font-size: 22px;
-  }
+        border-radius: 14px;
+    }
 
-  .timetable-table th,
-  .timetable-table td {
-    font-size: 13px;
-    padding: 8px;
-  }
+    .timetable-card .timetable-header h2 {
+        font-size: 18px;
+    }
+
+    .timetable-card .timetable-header p {
+        font-size: 11px;
+    }
+
+    .timetable-card .timetable-table {
+        min-width: 760px;
+    }
+
+    .timetable-card .timetable-table th {
+        padding: 10px 7px;
+
+        font-size: 9px;
+    }
+
+    .timetable-card .timetable-table td {
+        padding: 10px 7px;
+
+        font-size: 10px;
+    }
+
+    .timetable-card .timetable-table td.day {
+        font-size: 11px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+   ========================================================= */
+
+@media (max-width: 360px) {
+    .timetable-card {
+        padding: 12px;
+    }
+
+    .timetable-card .timetable-header h2 {
+        font-size: 16px;
+    }
+
+    .timetable-card .timetable-table {
+        min-width: 720px;
+    }
 }

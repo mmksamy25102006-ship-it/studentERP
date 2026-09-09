@@ -1,102 +1,739 @@
-.library-page{
-    padding:25px;
-    background:#f4f7fc;
-    min-height:100vh;
+/* =========================================================
+   LIBRARY PAGE
+   NEXUS ERP - Modern Glass UI
+========================================================= */
+
+.library-page {
+    min-height: 100vh;
+    padding: 30px;
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(59, 130, 246, 0.08),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #f4f7fc 0%,
+            #eef3fb 100%
+        );
+    color: #1e293b;
 }
 
-.library-header{
-    margin-bottom:25px;
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.library-header {
+    margin-bottom: 28px;
 }
 
-.library-header h1{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    color:#222;
+.library-header h1 {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin: 0;
+    font-size: 32px;
+    font-weight: 700;
+    color: #172554;
 }
 
-.library-header p{
-    color:#666;
+.library-header h1 svg {
+    width: 34px;
+    height: 34px;
+    padding: 8px;
+    box-sizing: content-box;
+    border-radius: 12px;
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.10);
 }
 
-.search-box{
-    background:white;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:15px;
-    border-radius:10px;
-    margin-bottom:25px;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
+.library-header p {
+    margin: 8px 0 0 47px;
+    color: #64748b;
+    font-size: 16px;
+    font-weight: 400;
 }
 
-.search-box input{
-    flex:1;
-    border:none;
-    outline:none;
-    font-size:16px;
+
+/* =========================================================
+   SEARCH BOX
+========================================================= */
+
+.search-box {
+    width: 100%;
+    min-height: 62px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    padding: 0 20px;
+    margin-bottom: 25px;
+
+    box-sizing: border-box;
+
+    background: rgba(255, 255, 255, 0.82);
+
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    border-radius: 15px;
+
+    box-shadow:
+        0 8px 25px rgba(15, 23, 42, 0.07);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
 }
 
-.search-icon{
-    color:#3f51b5;
-    font-size:18px;
+.search-box:hover {
+    border-color: rgba(37, 99, 235, 0.25);
+    box-shadow:
+        0 12px 30px rgba(37, 99, 235, 0.10);
 }
 
-.library-table{
-    background:white;
-    border-radius:15px;
-    overflow-x:auto;
-    padding:20px;
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
+.search-box:focus-within {
+    border-color: #3b82f6;
+    box-shadow:
+        0 0 0 4px rgba(59, 130, 246, 0.10),
+        0 12px 30px rgba(37, 99, 235, 0.10);
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
+.search-icon {
+    flex-shrink: 0;
+    color: #2563eb;
+    font-size: 19px;
 }
 
-table th{
-    background:#3f51b5;
-    color:white;
-    padding:15px;
-    text-align:left;
+.search-box input {
+    flex: 1;
+    min-width: 0;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: #1e293b;
+
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 400;
 }
 
-table td{
-    padding:15px;
-    border-bottom:1px solid #eee;
+.search-box input::placeholder {
+    color: #94a3b8;
 }
 
-table tbody tr:hover{
-    background:#eef3ff;
+
+/* =========================================================
+   LIBRARY TABLE CONTAINER
+========================================================= */
+
+.library-table {
+    width: 100%;
+
+    background: rgba(255, 255, 255, 0.88);
+
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 18px;
+
+    padding: 6px;
+
+    box-sizing: border-box;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.08);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
-.available{
-    color:#4CAF50;
-    font-weight:bold;
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.library-table table {
+    width: 100%;
+    min-width: 700px;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    table-layout: fixed;
 }
 
-.issued{
-    color:#F44336;
-    font-weight:bold;
+
+/* =========================================================
+   TABLE HEADER
+========================================================= */
+
+.library-table thead {
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #3b82f6
+        );
 }
 
-.no-books{
-    text-align:center;
-    padding:25px;
-    color:#888;
+.library-table th {
+    padding: 17px 20px;
+
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    text-align: left;
+
+    white-space: nowrap;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-@media(max-width:768px){
-
-.library-page{
-    padding:15px;
+.library-table th:first-child {
+    width: 42%;
+    border-radius: 12px 0 0 0;
 }
 
-table th,
-table td{
-    padding:10px;
-    font-size:14px;
+.library-table th:nth-child(2) {
+    width: 33%;
 }
 
+.library-table th:last-child {
+    width: 25%;
+    border-radius: 0 12px 0 0;
+}
+
+
+/* =========================================================
+   TABLE BODY
+========================================================= */
+
+.library-table tbody {
+    background: transparent;
+}
+
+.library-table td {
+    padding: 18px 20px;
+
+    color: #334155;
+
+    font-size: 15px;
+    font-weight: 400;
+
+    text-align: left;
+
+    border-bottom: 1px solid #e8edf5;
+
+    vertical-align: middle;
+
+    white-space: normal;
+    word-break: normal;
+}
+
+
+/* Last row */
+
+.library-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =========================================================
+   TABLE ROW
+========================================================= */
+
+.library-table tbody tr {
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.library-table tbody tr:nth-child(even) {
+    background: rgba(248, 250, 252, 0.75);
+}
+
+.library-table tbody tr:hover {
+    background: rgba(219, 234, 254, 0.55);
+}
+
+
+/* =========================================================
+   BOOK NAME
+========================================================= */
+
+.library-table tbody td:first-child {
+    color: #172554;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   STATUS BADGES
+========================================================= */
+
+.available,
+.issued {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    min-width: 105px;
+
+    padding: 7px 13px;
+
+    border-radius: 999px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* Available */
+
+.available {
+    color: #15803d;
+
+    background: rgba(220, 252, 231, 0.85);
+
+    border: 1px solid rgba(34, 197, 94, 0.20);
+}
+
+.available svg {
+    font-size: 13px;
+}
+
+
+/* Issued */
+
+.issued {
+    color: #dc2626;
+
+    background: rgba(254, 226, 226, 0.85);
+
+    border: 1px solid rgba(239, 68, 68, 0.20);
+}
+
+.issued svg {
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   NO BOOKS
+========================================================= */
+
+.no-books {
+    text-align: center !important;
+
+    padding: 45px 20px !important;
+
+    color: #64748b !important;
+
+    font-size: 16px !important;
+    font-weight: 500 !important;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.library-table::-webkit-scrollbar {
+    height: 7px;
+}
+
+.library-table::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.library-table::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 20px;
+}
+
+.library-table::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+
+/* Firefox */
+
+.library-table {
+    scrollbar-width: thin;
+    scrollbar-color: #94a3b8 transparent;
+}
+
+
+/* =========================================================
+   DARK THEME
+   GLASS EFFECT
+========================================================= */
+
+.dark-theme .library-page {
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(59, 130, 246, 0.12),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom left,
+            rgba(14, 165, 233, 0.07),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #07111f 0%,
+            #0b1728 45%,
+            #0f1c2e 100%
+        );
+
+    color: #f8fafc;
+}
+
+
+/* Header */
+
+.dark-theme .library-header h1 {
+    color: #f8fafc;
+}
+
+.dark-theme .library-header h1 svg {
+    color: #60a5fa;
+
+    background:
+        rgba(59, 130, 246, 0.12);
+
+    border:
+        1px solid rgba(96, 165, 250, 0.12);
+}
+
+.dark-theme .library-header p {
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   DARK SEARCH GLASS
+========================================================= */
+
+.dark-theme .search-box {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(30, 41, 59, 0.78),
+            rgba(15, 30, 48, 0.72)
+        );
+
+    border:
+        1px solid rgba(148, 163, 184, 0.16);
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.dark-theme .search-box:hover {
+    border-color:
+        rgba(96, 165, 250, 0.30);
+
+    box-shadow:
+        0 12px 35px rgba(37, 99, 235, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.dark-theme .search-box:focus-within {
+    border-color: #3b82f6;
+
+    box-shadow:
+        0 0 0 4px rgba(59, 130, 246, 0.12),
+        0 15px 35px rgba(0, 0, 0, 0.28);
+}
+
+.dark-theme .search-icon {
+    color: #60a5fa;
+}
+
+.dark-theme .search-box input {
+    color: #f8fafc;
+}
+
+.dark-theme .search-box input::placeholder {
+    color: #64748b;
+}
+
+
+/* =========================================================
+   DARK TABLE GLASS
+========================================================= */
+
+.dark-theme .library-table {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(30, 41, 59, 0.82),
+            rgba(15, 30, 48, 0.78)
+        );
+
+    border:
+        1px solid rgba(148, 163, 184, 0.14);
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.30),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+
+/* =========================================================
+   DARK TABLE HEADER
+========================================================= */
+
+.dark-theme .library-table thead {
+    background:
+        linear-gradient(
+            135deg,
+            #1d4ed8,
+            #2563eb
+        );
+}
+
+.dark-theme .library-table th {
+    color: #ffffff;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+/* =========================================================
+   DARK TABLE BODY
+========================================================= */
+
+.dark-theme .library-table td {
+    color: #cbd5e1;
+
+    border-bottom:
+        1px solid rgba(148, 163, 184, 0.10);
+}
+
+.dark-theme .library-table tbody tr:nth-child(even) {
+    background:
+        rgba(51, 65, 85, 0.24);
+}
+
+.dark-theme .library-table tbody tr:hover {
+    background:
+        rgba(59, 130, 246, 0.10);
+}
+
+.dark-theme .library-table tbody td:first-child {
+    color: #f1f5f9;
+}
+
+
+/* =========================================================
+   DARK STATUS BADGES
+========================================================= */
+
+.dark-theme .available {
+    color: #86efac;
+
+    background:
+        rgba(22, 101, 52, 0.22);
+
+    border:
+        1px solid rgba(74, 222, 128, 0.16);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.dark-theme .issued {
+    color: #fca5a5;
+
+    background:
+        rgba(127, 29, 29, 0.22);
+
+    border:
+        1px solid rgba(248, 113, 113, 0.16);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+
+/* =========================================================
+   DARK EMPTY STATE
+========================================================= */
+
+.dark-theme .no-books {
+    color: #94a3b8 !important;
+}
+
+
+/* =========================================================
+   DARK SCROLLBAR
+========================================================= */
+
+.dark-theme .library-table::-webkit-scrollbar-thumb {
+    background: #475569;
+}
+
+.dark-theme .library-table::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+.dark-theme .library-table {
+    scrollbar-color: #475569 transparent;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 992px) {
+
+    .library-page {
+        padding: 25px;
+    }
+
+    .library-header h1 {
+        font-size: 29px;
+    }
+
+    .library-header p {
+        font-size: 15px;
+    }
+
+    .library-table table {
+        min-width: 680px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .library-page {
+        padding: 18px 15px;
+    }
+
+    .library-header {
+        margin-bottom: 22px;
+    }
+
+    .library-header h1 {
+        font-size: 25px;
+        gap: 10px;
+    }
+
+    .library-header h1 svg {
+        width: 29px;
+        height: 29px;
+    }
+
+    .library-header p {
+        margin-left: 40px;
+        font-size: 14px;
+    }
+
+    .search-box {
+        min-height: 56px;
+        padding: 0 16px;
+        border-radius: 13px;
+    }
+
+    .search-box input {
+        font-size: 15px;
+    }
+
+    .library-table {
+        padding: 5px;
+        border-radius: 15px;
+    }
+
+    .library-table table {
+        min-width: 650px;
+    }
+
+    .library-table th {
+        padding: 14px 15px;
+        font-size: 14px;
+    }
+
+    .library-table td {
+        padding: 15px;
+        font-size: 14px;
+    }
+
+    .available,
+    .issued {
+        min-width: 95px;
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .library-page {
+        padding: 15px 12px;
+    }
+
+    .library-header h1 {
+        font-size: 22px;
+    }
+
+    .library-header p {
+        margin-left: 36px;
+        font-size: 13px;
+    }
+
+    .search-box {
+        min-height: 52px;
+    }
+
+    .search-box input {
+        font-size: 14px;
+    }
+
+    .library-table table {
+        min-width: 620px;
+    }
+
+    .library-table th,
+    .library-table td {
+        padding: 13px;
+        font-size: 13px;
+    }
 }

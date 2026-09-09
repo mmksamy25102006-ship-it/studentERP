@@ -1,0 +1,1067 @@
+/* =========================================================
+   STUDENTERB — MY CLASSES
+   Premium Light + Dark ERP Theme
+========================================================= */
+
+.myclasses-page {
+  min-height: 100%;
+  padding: 30px;
+
+  background: #f5f7fb;
+  color: #0f172a;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.classes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 25px;
+  margin-bottom: 28px;
+}
+
+.classes-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 10px;
+
+  color: #64748b;
+  font-size: 13px;
+}
+
+.classes-breadcrumb svg {
+  color: #2563eb;
+  font-size: 9px;
+}
+
+.classes-title h1 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin: 0;
+
+  color: #0f172a;
+
+  font-size: 31px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.classes-title-icon {
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+
+  color: #2563eb;
+
+  font-size: 18px;
+}
+
+.classes-title p {
+  margin: 8px 0 0 57px;
+
+  color: #64748b;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.classes-search {
+  position: relative;
+
+  width: 320px;
+}
+
+.classes-search svg {
+  position: absolute;
+
+  left: 15px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #94a3b8;
+
+  font-size: 14px;
+
+  pointer-events: none;
+}
+
+.classes-search input {
+  width: 100%;
+  height: 46px;
+
+  box-sizing: border-box;
+
+  padding: 0 16px 0 42px;
+
+  border: 1px solid #dbe3ec;
+  border-radius: 10px;
+
+  outline: none;
+
+  background: #ffffff;
+  color: #0f172a;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  transition: 0.2s;
+
+  box-shadow:
+    0 5px 15px rgba(15, 23, 42, 0.04);
+}
+
+.classes-search input::placeholder {
+  color: #94a3b8;
+}
+
+.classes-search input:focus {
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+.classes-search:focus-within svg {
+  color: #2563eb;
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.summary-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 18px;
+
+  margin-bottom: 30px;
+}
+
+.summary-card {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 20px;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 15px;
+
+  box-shadow:
+    0 7px 20px rgba(15, 23, 42, 0.05);
+
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.summary-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 12px 25px rgba(15, 23, 42, 0.08);
+}
+
+.summary-icon {
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  font-size: 18px;
+}
+
+.blue-icon {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.green-icon {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.purple-icon {
+  background: #f5f3ff;
+  color: #7c3aed;
+}
+
+.summary-content {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.summary-content span {
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+.summary-content strong {
+  color: #0f172a;
+
+  font-size: 26px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.class-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 18px;
+}
+
+.class-section-header h2 {
+  margin: 0;
+
+  color: #0f172a;
+
+  font-size: 20px;
+}
+
+.class-section-header p {
+  margin: 5px 0 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+.class-count {
+  padding: 7px 12px;
+
+  border-radius: 20px;
+
+  background: #eff6ff;
+
+  border: 1px solid #dbeafe;
+
+  color: #2563eb;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   CLASS GRID
+========================================================= */
+
+.class-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(310px, 1fr));
+
+  gap: 18px;
+}
+
+
+/* =========================================================
+   CLASS CARD
+========================================================= */
+
+.class-card {
+  position: relative;
+
+  padding: 20px;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 15px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 7px 20px rgba(15, 23, 42, 0.04);
+
+  transition:
+    transform 0.25s,
+    border-color 0.25s,
+    box-shadow 0.25s;
+}
+
+.class-card::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 3px;
+  height: 100%;
+
+  background: #2563eb;
+
+  opacity: 0;
+
+  transition: opacity 0.25s;
+}
+
+.class-card:hover {
+  transform: translateY(-4px);
+
+  border-color: #bfdbfe;
+
+  box-shadow:
+    0 14px 30px rgba(15, 23, 42, 0.08);
+}
+
+.class-card:hover::before {
+  opacity: 1;
+}
+
+
+/* =========================================================
+   CARD TOP
+========================================================= */
+
+.class-card-top {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.class-subject-icon {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #eff6ff;
+
+  color: #2563eb;
+
+  font-size: 15px;
+}
+
+.class-badge {
+  padding: 5px 9px;
+
+  border-radius: 20px;
+
+  background: #f1f5f9;
+
+  color: #475569;
+
+  font-size: 10px;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   SUBJECT
+========================================================= */
+
+.subject {
+  margin-top: 16px;
+}
+
+.subject h3 {
+  margin: 0;
+
+  color: #1e293b;
+
+  font-size: 18px;
+  font-weight: 650;
+
+  line-height: 1.4;
+}
+
+.subject p {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  margin: 7px 0 0;
+
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+.subject p svg {
+  color: #6366f1;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   DETAILS
+========================================================= */
+
+.myclass-info {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+
+  margin-top: 19px;
+
+  padding: 15px;
+
+  border-radius: 11px;
+
+  background: #f8fafc;
+
+  border: 1px solid #eef2f7;
+}
+
+.class-detail {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+}
+
+.detail-icon {
+  width: 30px;
+  height: 30px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #64748b;
+
+  font-size: 11px;
+}
+
+.class-detail div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.class-detail small {
+  color: #94a3b8;
+
+  font-size: 10px;
+}
+
+.class-detail strong {
+  color: #475569;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.class-footer {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 17px;
+
+  padding-top: 15px;
+
+  border-top: 1px solid #e2e8f0;
+}
+
+.students {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  color: #2563eb;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.students svg {
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.view-btn {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 9px 13px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #2563eb;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+
+.view-btn:hover {
+  background: #1d4ed8;
+
+  transform: translateX(2px);
+}
+
+.view-btn svg {
+  font-size: 9px;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.no-classes {
+  padding: 55px 20px;
+
+  border: 1px dashed #cbd5e1;
+
+  border-radius: 14px;
+
+  text-align: center;
+}
+
+.no-classes-icon {
+  width: 50px;
+  height: 50px;
+
+  margin: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #eff6ff;
+
+  color: #2563eb;
+
+  font-size: 17px;
+}
+
+.no-classes h3 {
+  margin: 14px 0 5px;
+
+  color: #334155;
+
+  font-size: 16px;
+}
+
+.no-classes p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   DARK THEME
+========================================================= */
+
+.dark-theme .myclasses-page {
+  background: #0b1120;
+
+  color: #f8fafc;
+}
+
+
+/* HEADER */
+
+.dark-theme .classes-breadcrumb {
+  color: #64748b;
+}
+
+.dark-theme .classes-breadcrumb svg {
+  color: #38bdf8;
+}
+
+.dark-theme .classes-title h1 {
+  color: #f8fafc;
+}
+
+.dark-theme .classes-title-icon {
+  background: #132337;
+
+  border-color: #1e3a52;
+
+  color: #38bdf8;
+}
+
+.dark-theme .classes-title p {
+  color: #64748b;
+}
+
+
+/* SEARCH */
+
+.dark-theme .classes-search input {
+  background: #111827;
+
+  border-color: #1e293b;
+
+  color: #f8fafc;
+
+  box-shadow: none;
+}
+
+.dark-theme .classes-search input::placeholder {
+  color: #475569;
+}
+
+.dark-theme .classes-search input:focus {
+  border-color: #38bdf8;
+
+  box-shadow:
+    0 0 0 3px rgba(56, 189, 248, 0.07);
+}
+
+.dark-theme .classes-search svg {
+  color: #475569;
+}
+
+.dark-theme .classes-search:focus-within svg {
+  color: #38bdf8;
+}
+
+
+/* SUMMARY */
+
+.dark-theme .summary-card {
+  background: #111827;
+
+  border-color: #1e293b;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.dark-theme .summary-card:hover {
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+.dark-theme .blue-icon {
+  background: #132337;
+
+  color: #38bdf8;
+}
+
+.dark-theme .green-icon {
+  background: rgba(52, 211, 153, 0.08);
+
+  color: #34d399;
+}
+
+.dark-theme .purple-icon {
+  background: rgba(129, 140, 248, 0.08);
+
+  color: #818cf8;
+}
+
+.dark-theme .summary-content span {
+  color: #64748b;
+}
+
+.dark-theme .summary-content strong {
+  color: #f8fafc;
+}
+
+
+/* SECTION */
+
+.dark-theme .class-section-header h2 {
+  color: #f8fafc;
+}
+
+.dark-theme .class-section-header p {
+  color: #64748b;
+}
+
+.dark-theme .class-count {
+  background: #132337;
+
+  border-color: #1e3a52;
+
+  color: #38bdf8;
+}
+
+
+/* CLASS CARD */
+
+.dark-theme .class-card {
+  background: #111827;
+
+  border-color: #1e293b;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.dark-theme .class-card:hover {
+  background: #121c2e;
+
+  border-color: #294158;
+
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+.dark-theme .class-card::before {
+  background: #38bdf8;
+}
+
+.dark-theme .class-subject-icon {
+  background: #132337;
+
+  color: #38bdf8;
+}
+
+.dark-theme .class-badge {
+  background: #172033;
+
+  color: #94a3b8;
+}
+
+
+/* SUBJECT */
+
+.dark-theme .subject h3 {
+  color: #e2e8f0;
+}
+
+.dark-theme .subject p {
+  color: #64748b;
+}
+
+.dark-theme .subject p svg {
+  color: #818cf8;
+}
+
+
+/* DETAILS */
+
+.dark-theme .myclass-info {
+  background: #0f172a;
+
+  border-color: #1e293b;
+}
+
+.dark-theme .detail-icon {
+  background: #172033;
+
+  color: #64748b;
+}
+
+.dark-theme .class-detail small {
+  color: #475569;
+}
+
+.dark-theme .class-detail strong {
+  color: #cbd5e1;
+}
+
+
+/* FOOTER */
+
+.dark-theme .class-footer {
+  border-color: #1e293b;
+}
+
+.dark-theme .students {
+  color: #38bdf8;
+}
+
+
+/* BUTTON */
+
+.dark-theme .view-btn {
+  background: #2563eb;
+}
+
+.dark-theme .view-btn:hover {
+  background: #3b82f6;
+}
+
+
+/* EMPTY */
+
+.dark-theme .no-classes {
+  border-color: #263449;
+}
+
+.dark-theme .no-classes-icon {
+  background: #132337;
+
+  color: #38bdf8;
+}
+
+.dark-theme .no-classes h3 {
+  color: #cbd5e1;
+}
+
+.dark-theme .no-classes p {
+  color: #64748b;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 950px) {
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .classes-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .classes-search {
+    width: 100%;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .myclasses-page {
+    padding: 18px;
+  }
+
+  .classes-title h1 {
+    font-size: 27px;
+  }
+
+  .classes-title p {
+    margin-left: 0;
+  }
+
+  .class-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .class-section-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 10px;
+  }
+
+  .class-footer {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .view-btn {
+    width: 100%;
+
+    justify-content: center;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   SELECTIVE FONT SIZE BOOST
+========================================================= */
+
+/* Main page title */
+.classes-title h1 {
+  font-size: 29px;
+  font-weight: 700;
+}
+
+/* Header description */
+.classes-title p {
+  font-size: 14px;
+}
+
+
+/* Summary card labels */
+.summary-content span {
+  font-size: 13px;
+}
+
+/* Summary numbers */
+.summary-content strong {
+  font-size: 28px;
+}
+
+
+/* Assigned Classes */
+.class-section-header h2 {
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.class-section-header p {
+  font-size: 13px;
+}
+
+
+/* Subject name */
+.subject h3 {
+  font-size: 19px;
+  font-weight: 650;
+}
+
+/* Department */
+.subject p {
+  font-size: 12px;
+}
+
+
+/* Detail values */
+.class-detail strong {
+  font-size: 12px;
+}
+
+/* Detail labels */
+.class-detail small {
+  font-size: 10px;
+}
+
+
+/* Students */
+.students {
+  font-size: 12px;
+}
+
+
+/* Button */
+.view-btn {
+  font-size: 11px;
+}
+
+
+/* Search */
+.classes-search input {
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .classes-title h1 {
+    font-size: 26px;
+  }
+
+  .summary-content strong {
+    font-size: 25px;
+  }
+
+  .class-section-header h2 {
+    font-size: 19px;
+  }
+
+  .subject h3 {
+    font-size: 18px;
+  }
+
+}

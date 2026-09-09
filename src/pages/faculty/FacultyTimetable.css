@@ -1,0 +1,1264 @@
+/* =========================================================
+   STUDENTERB
+   FACULTY TIMETABLE
+   COMPLETE CSS
+========================================================= */
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.faculty-timetable-page {
+  width: 100%;
+  min-height: 100vh;
+
+  padding: 32px;
+
+  box-sizing: border-box;
+
+  background: #f5f7fb;
+  color: #172033;
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.faculty-timetable-header {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 25px;
+
+  margin-bottom: 28px;
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.timetable-heading {
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+
+  min-width: 0;
+}
+
+
+/* =========================================================
+   HEADER ICON
+========================================================= */
+
+.timetable-icon {
+  width: 60px;
+  height: 60px;
+
+  min-width: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: #eff6ff;
+
+  color: #2563eb;
+
+  border: 1px solid #dbeafe;
+
+  font-size: 26px;
+
+  box-shadow:
+    0 6px 16px rgba(37, 99, 235, 0.08);
+}
+
+
+/* =========================================================
+   SMALL LABEL
+========================================================= */
+
+.timetable-label {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #2563eb;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  letter-spacing: 1.4px;
+}
+
+
+/* =========================================================
+   MAIN TITLE
+========================================================= */
+
+.timetable-heading h1 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 36px;
+  font-weight: 750;
+
+  line-height: 1.2;
+
+  letter-spacing: -0.7px;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.timetable-heading p {
+  margin: 8px 0 0;
+
+  color: #64748b;
+
+  font-size: 17px;
+  font-weight: 500;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   WEEK SELECTOR
+========================================================= */
+
+.week-selector {
+  min-width: 235px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 15px 18px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 15px;
+
+  box-shadow:
+    0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+
+/* Icon */
+
+.week-selector > svg {
+  flex-shrink: 0;
+
+  color: #2563eb;
+
+  font-size: 23px;
+}
+
+
+/* Text */
+
+.week-selector div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+
+/* Current Week */
+
+.week-selector span {
+  color: #64748b;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* Academic Schedule */
+
+.week-selector strong {
+  color: #172033;
+
+  font-size: 15px;
+  font-weight: 750;
+}
+
+
+/* =========================================================
+   LEGEND
+========================================================= */
+
+.timetable-legend {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 25px;
+
+  margin-bottom: 20px;
+
+  padding: 15px 18px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 13px;
+
+  box-shadow:
+    0 5px 15px rgba(15, 23, 42, 0.04);
+}
+
+
+/* Legend Item */
+
+.timetable-legend > div {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  color: #475569;
+
+  font-size: 15px;
+  font-weight: 650;
+}
+
+
+/* Legend Dot */
+
+.legend-dot {
+  width: 11px;
+  height: 11px;
+
+  display: inline-block;
+
+  border-radius: 50%;
+}
+
+
+/* Classes */
+
+.class-dot {
+  background: #2563eb;
+}
+
+
+/* Activities */
+
+.activity-dot {
+  background: #8b5cf6;
+}
+
+
+/* Break */
+
+.break-dot {
+  background: #f59e0b;
+}
+
+
+/* Lunch */
+
+.lunch-dot {
+  background: #10b981;
+}
+
+
+/* =========================================================
+   SCHEDULE WRAPPER
+========================================================= */
+
+.schedule-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  padding-bottom: 10px;
+
+  box-sizing: border-box;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+
+/* =========================================================
+   SCHEDULE GRID
+========================================================= */
+
+.schedule-grid {
+  display: grid;
+
+  /*
+     SIX DAYS
+     All columns have equal width.
+  */
+
+  grid-template-columns:
+    repeat(6, minmax(210px, 1fr));
+
+  gap: 16px;
+
+  /*
+     Keeps the timetable usable on
+     smaller screens without breaking.
+  */
+
+  min-width: 1320px;
+
+  align-items: start;
+}
+
+
+/* =========================================================
+   DAY COLUMN
+========================================================= */
+
+.day-column {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 16px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 7px 20px rgba(15, 23, 42, 0.06);
+}
+
+
+/* =========================================================
+   DAY HEADER
+========================================================= */
+
+.day-header {
+  width: 100%;
+
+  height: 80px;
+  min-height: 80px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 14px 16px;
+
+  box-sizing: border-box;
+
+  background: #f8fafc;
+
+  border-bottom: 1px solid #e2e8f0;
+}
+
+
+/* =========================================================
+   SHORT DAY
+========================================================= */
+
+.day-header span {
+  width: 44px;
+  height: 44px;
+
+  min-width: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #2563eb;
+
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  letter-spacing: 0.5px;
+}
+
+
+/* =========================================================
+   FULL DAY NAME
+========================================================= */
+
+.day-header strong {
+  color: #172033;
+
+  font-size: 18px;
+  font-weight: 750;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   PERIOD CONTAINER
+========================================================= */
+
+.day-periods {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  padding: 12px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   PERIOD CARD
+========================================================= */
+
+.period-card {
+  position: relative;
+
+  width: 100%;
+
+  /*
+     IMPORTANT:
+     Every period gets exactly the same
+     height so rows remain aligned.
+  */
+
+  height: 120px;
+  min-height: 120px;
+  max-height: 120px;
+
+  padding: 14px 14px 14px 16px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 13px;
+
+  border: 1px solid #e2e8f0;
+
+  background: #ffffff;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+
+/* =========================================================
+   LEFT COLOR LINE
+========================================================= */
+
+.period-card::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 4px;
+  height: 100%;
+
+  background: #2563eb;
+}
+
+
+/* =========================================================
+   PERIOD HOVER
+========================================================= */
+
+.period-card:hover {
+  transform: translateY(-3px);
+
+  border-color: #cbd5e1;
+
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, 0.09);
+}
+
+
+/* =========================================================
+   TIME
+========================================================= */
+
+.period-time {
+  width: 100%;
+
+  height: 19px;
+  min-height: 19px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  margin-bottom: 8px;
+
+  color: #64748b;
+
+  font-size: 12px;
+  font-weight: 650;
+
+  line-height: 1.2;
+
+  white-space: nowrap;
+}
+
+
+.period-time svg {
+  flex-shrink: 0;
+
+  color: #2563eb;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   PERIOD CONTENT
+========================================================= */
+
+.period-content {
+  width: 100%;
+
+  flex: 1;
+
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  justify-content: flex-start;
+}
+
+
+/* =========================================================
+   MAIN ICON
+========================================================= */
+
+.period-main-icon {
+  flex-shrink: 0;
+
+  margin-bottom: 6px;
+
+  color: #2563eb;
+
+  font-size: 17px;
+}
+
+
+/* =========================================================
+   SUBJECT
+========================================================= */
+
+.period-content h3 {
+  width: 100%;
+
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  line-height: 1.35;
+
+  display: -webkit-box;
+
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  overflow: hidden;
+
+  overflow-wrap: break-word;
+}
+
+
+/* =========================================================
+   ROOM
+========================================================= */
+
+.period-room {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  margin-top: auto;
+  padding-top: 6px;
+
+  color: #64748b;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  line-height: 1.2;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+.period-room svg {
+  flex-shrink: 0;
+
+  color: #94a3b8;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   CLASS
+========================================================= */
+
+.period-card.class {
+  background: #ffffff;
+}
+
+.period-card.class::before {
+  background: #2563eb;
+}
+
+
+/* =========================================================
+   ACTIVITY
+========================================================= */
+
+.period-card.activity {
+  background: #faf7ff;
+
+  border-color: #ede9fe;
+}
+
+.period-card.activity::before {
+  background: #8b5cf6;
+}
+
+.period-card.activity .period-main-icon {
+  color: #8b5cf6;
+}
+
+
+/* =========================================================
+   BREAK
+========================================================= */
+
+.period-card.break {
+  background: #fffbeb;
+
+  border-color: #fde68a;
+}
+
+.period-card.break::before {
+  background: #f59e0b;
+}
+
+.period-card.break .period-main-icon {
+  color: #f59e0b;
+}
+
+.period-card.break .period-content h3 {
+  color: #b45309;
+}
+
+
+/* =========================================================
+   LUNCH
+========================================================= */
+
+.period-card.lunch {
+  background: #ecfdf5;
+
+  border-color: #a7f3d0;
+}
+
+.period-card.lunch::before {
+  background: #10b981;
+}
+
+.period-card.lunch .period-main-icon {
+  color: #10b981;
+}
+
+.period-card.lunch .period-content h3 {
+  color: #047857;
+}
+
+/* =========================================================
+   PREMIUM DARK THEME
+   STUDENTERB
+========================================================= */
+
+/* Main page */
+.dark-theme .faculty-timetable-page {
+  background: #0b1220;
+  color: #f8fafc;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.dark-theme .timetable-icon {
+  background: rgba(37, 99, 235, 0.12);
+  color: #60a5fa;
+
+  border: 1px solid rgba(96, 165, 250, 0.18);
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.22);
+}
+
+
+.dark-theme .timetable-label {
+  color: #60a5fa;
+}
+
+
+.dark-theme .timetable-heading h1 {
+  color: #f8fafc;
+}
+
+
+.dark-theme .timetable-heading p {
+  color: #94a3b8;
+}
+
+
+/* =========================================================
+   WEEK SELECTOR
+========================================================= */
+
+.dark-theme .week-selector {
+  background: #111a2b;
+
+  border: 1px solid #243047;
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.24);
+}
+
+
+.dark-theme .week-selector > svg {
+  color: #60a5fa;
+}
+
+
+.dark-theme .week-selector span {
+  color: #94a3b8;
+}
+
+
+.dark-theme .week-selector strong {
+  color: #e2e8f0;
+}
+
+
+/* =========================================================
+   LEGEND
+========================================================= */
+
+.dark-theme .timetable-legend {
+  background: #111a2b;
+
+  border: 1px solid #243047;
+
+  box-shadow:
+    0 7px 20px rgba(0, 0, 0, 0.18);
+}
+
+
+.dark-theme .timetable-legend > div {
+  color: #cbd5e1;
+}
+
+
+/* =========================================================
+   DAY COLUMN
+========================================================= */
+
+.dark-theme .day-column {
+  background: #111a2b;
+
+  border: 1px solid #25324a;
+
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================================================
+   DAY HEADER
+========================================================= */
+
+.dark-theme .day-header {
+  background: #172238;
+
+  border-bottom: 1px solid #293750;
+}
+
+
+.dark-theme .day-header span {
+  background: #2563eb;
+
+  color: #ffffff;
+
+  box-shadow:
+    0 5px 14px rgba(37, 99, 235, 0.28);
+}
+
+
+.dark-theme .day-header strong {
+  color: #f1f5f9;
+}
+
+
+/* =========================================================
+   NORMAL CLASS CARD
+========================================================= */
+
+.dark-theme .period-card {
+  background: #151f32;
+
+  border: 1px solid #293750;
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.14);
+}
+
+
+.dark-theme .period-card:hover {
+  background: #19253a;
+
+  border-color: #3b4b68;
+
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.28);
+}
+
+
+/* Blue line */
+.dark-theme .period-card.class::before {
+  background: #3b82f6;
+}
+
+
+/* =========================================================
+   TIME
+========================================================= */
+
+.dark-theme .period-time {
+  color: #94a3b8;
+}
+
+
+.dark-theme .period-time svg {
+  color: #60a5fa;
+}
+
+
+/* =========================================================
+   SUBJECT
+========================================================= */
+
+.dark-theme .period-content h3 {
+  color: #f1f5f9;
+}
+
+
+/* =========================================================
+   ROOM
+========================================================= */
+
+.dark-theme .period-room {
+  color: #94a3b8;
+}
+
+
+.dark-theme .period-room svg {
+  color: #64748b;
+}
+
+
+/* =========================================================
+   ACTIVITY
+========================================================= */
+
+.dark-theme .period-card.activity {
+  background: rgba(139, 92, 246, 0.08);
+
+  border-color: rgba(139, 92, 246, 0.24);
+}
+
+
+.dark-theme .period-card.activity::before {
+  background: #8b5cf6;
+}
+
+
+.dark-theme .period-card.activity .period-main-icon {
+  color: #a78bfa;
+}
+
+
+.dark-theme .period-card.activity .period-content h3 {
+  color: #e9d5ff;
+}
+
+
+/* =========================================================
+   BREAK
+========================================================= */
+
+.dark-theme .period-card.break {
+  background: rgba(245, 158, 11, 0.08);
+
+  border-color: rgba(245, 158, 11, 0.24);
+}
+
+
+.dark-theme .period-card.break::before {
+  background: #f59e0b;
+}
+
+
+.dark-theme .period-card.break .period-main-icon {
+  color: #fbbf24;
+}
+
+
+.dark-theme .period-card.break .period-content h3 {
+  color: #fcd34d;
+}
+
+
+/* =========================================================
+   LUNCH
+========================================================= */
+
+.dark-theme .period-card.lunch {
+  background: rgba(16, 185, 129, 0.08);
+
+  border-color: rgba(16, 185, 129, 0.24);
+}
+
+
+.dark-theme .period-card.lunch::before {
+  background: #10b981;
+}
+
+
+.dark-theme .period-card.lunch .period-main-icon {
+  color: #34d399;
+}
+
+
+.dark-theme .period-card.lunch .period-content h3 {
+  color: #6ee7b7;
+}
+
+
+/* =========================================================
+   DARK SCROLLBAR
+========================================================= */
+
+.dark-theme .schedule-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+
+.dark-theme .schedule-wrapper::-webkit-scrollbar-track {
+  background: #0f172a;
+
+  border-radius: 10px;
+}
+
+
+.dark-theme .schedule-wrapper::-webkit-scrollbar-thumb {
+  background: #334155;
+
+  border-radius: 10px;
+}
+
+
+.dark-theme .schedule-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .faculty-timetable-page {
+    padding: 25px;
+  }
+
+  .faculty-timetable-header {
+    align-items: flex-start;
+  }
+
+  .timetable-heading h1 {
+    font-size: 32px;
+  }
+
+  .timetable-heading p {
+    font-size: 16px;
+  }
+
+  .schedule-grid {
+    min-width: 1300px;
+
+    grid-template-columns:
+      repeat(6, minmax(205px, 1fr));
+
+    gap: 14px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .faculty-timetable-page {
+    padding: 18px;
+  }
+
+
+  /* Header */
+
+  .faculty-timetable-header {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 18px;
+  }
+
+
+  /* Heading */
+
+  .timetable-heading {
+    gap: 13px;
+  }
+
+
+  .timetable-icon {
+    width: 52px;
+    height: 52px;
+
+    min-width: 52px;
+
+    border-radius: 13px;
+
+    font-size: 22px;
+  }
+
+
+  .timetable-label {
+    font-size: 11px;
+
+    letter-spacing: 1.1px;
+  }
+
+
+  .timetable-heading h1 {
+    font-size: 28px;
+  }
+
+
+  .timetable-heading p {
+    font-size: 14px;
+
+    line-height: 1.45;
+  }
+
+
+  /* Week selector */
+
+  .week-selector {
+    width: 100%;
+
+    min-width: 0;
+  }
+
+
+  /* Legend */
+
+  .timetable-legend {
+    gap: 12px 20px;
+
+    padding: 13px 15px;
+  }
+
+
+  .timetable-legend > div {
+    font-size: 13px;
+  }
+
+
+  /* =====================================================
+     IMPORTANT:
+     KEEP 6 COLUMNS ON MOBILE.
+     DO NOT CHANGE TO 1 COLUMN.
+  ===================================================== */
+
+  .schedule-grid {
+    min-width: 1240px;
+
+    grid-template-columns:
+      repeat(6, 195px);
+
+    gap: 12px;
+  }
+
+
+  /* Day */
+
+  .day-header {
+    height: 72px;
+    min-height: 72px;
+
+    padding: 12px;
+  }
+
+
+  .day-header span {
+    width: 39px;
+    height: 39px;
+
+    min-width: 39px;
+
+    font-size: 10px;
+  }
+
+
+  .day-header strong {
+    font-size: 16px;
+  }
+
+
+  /* Period */
+
+  .period-card {
+    height: 118px;
+    min-height: 118px;
+    max-height: 118px;
+
+    padding: 13px;
+  }
+
+
+  .period-time {
+    font-size: 11px;
+  }
+
+
+  .period-main-icon {
+    font-size: 16px;
+  }
+
+
+  .period-content h3 {
+    font-size: 15px;
+  }
+
+
+  .period-room {
+    font-size: 11px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+  .faculty-timetable-page {
+    padding: 14px;
+  }
+
+
+  .timetable-heading h1 {
+    font-size: 25px;
+  }
+
+
+  .timetable-heading p {
+    font-size: 13px;
+  }
+
+
+  .schedule-grid {
+    min-width: 1200px;
+
+    grid-template-columns:
+      repeat(6, 190px);
+  }
+
+
+  .period-card {
+    height: 116px;
+    min-height: 116px;
+    max-height: 116px;
+  }
+}

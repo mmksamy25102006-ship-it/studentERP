@@ -1,178 +1,513 @@
-/* src/components/QRCodeCard.css */
+
+/* =========================================================
+   QR CODE CARD
+   Scoped styles only — JSX unchanged
+========================================================= */
 
 .qr-card {
+  --qr-bg: #ffffff;
+  --qr-surface: #f8fafc;
+  --qr-border: #e5e7eb;
+  --qr-primary: #4f46e5;
+  --qr-primary-dark: #4338ca;
+  --qr-accent: #06b6d4;
+  --qr-text: #172033;
+  --qr-muted: #64748b;
+  --qr-shadow: rgba(15, 23, 42, 0.08);
+
   width: 100%;
   max-width: 380px;
   margin: 20px auto;
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 25px;
+  padding: 26px;
+
+  background: var(--qr-bg);
+  border: 1px solid var(--qr-border);
+  border-radius: 22px;
+
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+
+  box-shadow:
+    0 10px 30px var(--qr-shadow),
+    0 2px 6px rgba(15, 23, 42, 0.04);
+
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
+
+/* Decorative top glow */
+
+.qr-card::before {
+  content: "";
+  position: absolute;
+  top: -90px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 220px;
+  height: 160px;
+
+  background: rgba(79, 70, 229, 0.12);
+  filter: blur(45px);
+
+  pointer-events: none;
+}
+
+/* Hover */
 
 .qr-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px);
+
+  border-color: rgba(79, 70, 229, 0.25);
+
+  box-shadow:
+    0 18px 45px rgba(15, 23, 42, 0.12),
+    0 4px 12px rgba(15, 23, 42, 0.05);
 }
 
-/* Header */
 
-.qr-header {
+/* =========================================================
+   HEADER
+========================================================= */
+
+.qr-card .qr-header {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 25px;
+
+  gap: 11px;
+  margin-bottom: 24px;
+
+  position: relative;
+  z-index: 1;
 }
 
-.qr-header svg {
-  font-size: 28px;
-  color: #2563eb;
+.qr-card .qr-header svg {
+  width: 28px;
+  height: 28px;
+
+  color: var(--qr-primary);
+
+  filter: drop-shadow(
+    0 3px 7px rgba(79, 70, 229, 0.25)
+  );
 }
 
-.qr-header h2 {
+.qr-card .qr-header h2 {
   margin: 0;
-  font-size: 24px;
-  color: #1e293b;
+
+  color: var(--qr-text);
+
+  font-size: 23px;
   font-weight: 700;
+  line-height: 1.3;
+
+  letter-spacing: -0.3px;
 }
 
-/* Student Information */
 
-.student-info {
-  margin-bottom: 25px;
+/* =========================================================
+   STUDENT INFORMATION
+========================================================= */
+
+.qr-card .student-info {
+  margin-bottom: 22px;
+
+  position: relative;
+  z-index: 1;
 }
 
-.id-icon {
-  font-size: 60px;
-  color: #2563eb;
-  margin-bottom: 12px;
+.qr-card .student-info .id-icon {
+  width: 58px;
+  height: 58px;
+
+  margin-bottom: 11px;
+
+  color: var(--qr-primary);
+
+  filter: drop-shadow(
+    0 5px 10px rgba(79, 70, 229, 0.2)
+  );
 }
 
-.student-info h3 {
-  margin-bottom: 8px;
-  color: #1e293b;
-  font-size: 22px;
+.qr-card .student-info h3 {
+  margin: 0 0 9px;
+
+  color: var(--qr-text);
+
+  font-size: 21px;
+  font-weight: 700;
+
+  letter-spacing: -0.2px;
 }
 
-.student-info p {
-  margin: 6px 0;
-  color: #64748b;
-  font-size: 15px;
+.qr-card .student-info p {
+  margin: 5px 0;
+
+  color: var(--qr-muted);
+
+  font-size: 14px;
+  font-weight: 500;
+
+  line-height: 1.5;
 }
 
-/* QR Code */
 
-.qr-code-box {
+/* =========================================================
+   QR CODE AREA
+========================================================= */
+
+.qr-card .qr-code-box {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  margin: 20px 0;
-  background: #f8fafc;
-  border: 2px dashed #2563eb;
-  border-radius: 15px;
-}
 
-/* Download Button */
-
-.download-btn {
   width: 100%;
-  height: 50px;
-  border: none;
+
+  padding: 22px;
+  margin: 20px 0 22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f8fafc
+    );
+
+  border: 2px dashed rgba(79, 70, 229, 0.45);
+  border-radius: 18px;
+
+  position: relative;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8),
+    0 5px 15px rgba(15, 23, 42, 0.04);
+
+  transition:
+    border-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.qr-card .qr-code-box:hover {
+  border-color: var(--qr-primary);
+
+  transform: scale(1.01);
+}
+
+/* QR code itself */
+
+.qr-card .qr-code-box svg {
+  display: block;
+
+  max-width: 100%;
+  height: auto;
+
+  background: #ffffff;
+
+  padding: 8px;
+
   border-radius: 10px;
-  background: #2563eb;
+
+  box-shadow:
+    0 5px 15px rgba(15, 23, 42, 0.08);
+}
+
+
+/* =========================================================
+   DOWNLOAD BUTTON
+========================================================= */
+
+.qr-card .download-btn {
+  width: 100%;
+  min-height: 50px;
+
+  border: none;
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--qr-primary),
+      var(--qr-accent)
+    );
+
   color: #ffffff;
-  font-size: 16px;
-  font-weight: 600;
+
+  font-size: 15px;
+  font-weight: 650;
+
   cursor: pointer;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   gap: 10px;
-  transition: 0.3s;
+
+  position: relative;
+  overflow: hidden;
+
+  box-shadow:
+    0 7px 18px rgba(79, 70, 229, 0.25);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
 }
 
-.download-btn:hover {
-  background: #1d4ed8;
-  transform: scale(1.02);
+/* Button shine */
+
+.qr-card .download-btn::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -100%;
+
+  width: 70%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+
+  transition: left 0.55s ease;
 }
 
-.download-btn svg {
-  font-size: 18px;
+.qr-card .download-btn:hover::before {
+  left: 130%;
 }
 
-/* Dark Theme */
+.qr-card .download-btn:hover {
+  transform: translateY(-2px);
+
+  filter: brightness(1.04);
+
+  box-shadow:
+    0 10px 25px rgba(79, 70, 229, 0.32);
+}
+
+.qr-card .download-btn:active {
+  transform: translateY(0);
+
+  box-shadow:
+    0 5px 12px rgba(79, 70, 229, 0.22);
+}
+
+.qr-card .download-btn svg {
+  width: 17px;
+  height: 17px;
+
+  position: relative;
+  z-index: 1;
+}
+
+.qr-card .download-btn {
+  isolation: isolate;
+}
+
+
+/* =========================================================
+   DARK THEME
+   Assumes your application adds .dark-theme
+========================================================= */
 
 .dark-theme .qr-card {
-  background: #1e293b;
+  --qr-bg: #111827;
+  --qr-surface: #182235;
+  --qr-border: #273449;
+  --qr-primary: #818cf8;
+  --qr-primary-dark: #6366f1;
+  --qr-accent: #22d3ee;
+  --qr-text: #f8fafc;
+  --qr-muted: #94a3b8;
+  --qr-shadow: rgba(0, 0, 0, 0.3);
+
+  background: var(--qr-bg);
+
+  border-color: var(--qr-border);
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.28),
+    0 2px 8px rgba(0, 0, 0, 0.18);
 }
 
-.dark-theme .qr-header h2,
-.dark-theme .student-info h3 {
-  color: #ffffff;
+.dark-theme .qr-card::before {
+  background: rgba(99, 102, 241, 0.16);
 }
 
-.dark-theme .student-info p {
-  color: #cbd5e1;
+.dark-theme .qr-card:hover {
+  border-color: rgba(129, 140, 248, 0.35);
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.36);
 }
 
-.dark-theme .qr-code-box {
-  background: #334155;
-  border-color: #3b82f6;
+.dark-theme .qr-card .qr-code-box {
+  background:
+    linear-gradient(
+      145deg,
+      #182235,
+      #111827
+    );
+
+  border-color: rgba(129, 140, 248, 0.55);
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02),
+    0 6px 18px rgba(0, 0, 0, 0.18);
 }
 
-.dark-theme .download-btn {
-  background: #3b82f6;
+.dark-theme .qr-card .qr-code-box svg {
+  background: #ffffff;
+
+  box-shadow:
+    0 5px 18px rgba(0, 0, 0, 0.25);
 }
 
-.dark-theme .download-btn:hover {
-  background: #2563eb;
+.dark-theme .qr-card .download-btn {
+  background:
+    linear-gradient(
+      135deg,
+      #6366f1,
+      #06b6d4
+    );
+
+  box-shadow:
+    0 8px 22px rgba(99, 102, 241, 0.28);
 }
 
-/* Responsive */
+.dark-theme .qr-card .download-btn:hover {
+  box-shadow:
+    0 12px 28px rgba(99, 102, 241, 0.38);
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+========================================================= */
 
 @media (max-width: 768px) {
   .qr-card {
     max-width: 100%;
-    padding: 20px;
+
+    padding: 22px;
+
+    border-radius: 20px;
   }
 
-  .qr-header h2 {
+  .qr-card .qr-header h2 {
     font-size: 22px;
   }
 
-  .id-icon {
-    font-size: 55px;
+  .qr-card .student-info .id-icon {
+    width: 55px;
+    height: 55px;
+  }
+
+  .qr-card .student-info h3 {
+    font-size: 20px;
+  }
+
+  .qr-card .qr-code-box {
+    padding: 20px;
   }
 }
 
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+========================================================= */
+
 @media (max-width: 480px) {
   .qr-card {
+    margin: 15px auto;
+
     padding: 18px;
+
+    border-radius: 17px;
+  }
+
+  .qr-card .qr-header {
+    gap: 9px;
+
+    margin-bottom: 20px;
+  }
+
+  .qr-card .qr-header svg {
+    width: 25px;
+    height: 25px;
+  }
+
+  .qr-card .qr-header h2 {
+    font-size: 20px;
+  }
+
+  .qr-card .student-info {
+    margin-bottom: 18px;
+  }
+
+  .qr-card .student-info .id-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .qr-card .student-info h3 {
+    font-size: 19px;
+  }
+
+  .qr-card .student-info p {
+    font-size: 13px;
+  }
+
+  .qr-card .qr-code-box {
+    padding: 15px;
+
+    margin: 18px 0 20px;
+
     border-radius: 15px;
   }
 
-  .qr-header h2 {
-    font-size: 20px;
+  .qr-card .qr-code-box svg {
+    padding: 6px;
   }
 
-  .student-info h3 {
-    font-size: 20px;
-  }
+  .qr-card .download-btn {
+    min-height: 47px;
 
-  .student-info p {
     font-size: 14px;
+
+    border-radius: 10px;
+  }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .qr-card,
+  .qr-card .qr-code-box,
+  .qr-card .download-btn,
+  .qr-card .download-btn::before {
+    transition: none;
   }
 
-  .qr-code-box {
-    padding: 15px;
-  }
-
-  .download-btn {
-    height: 46px;
-    font-size: 15px;
+  .qr-card:hover,
+  .qr-card .qr-code-box:hover,
+  .qr-card .download-btn:hover {
+    transform: none;
   }
 }

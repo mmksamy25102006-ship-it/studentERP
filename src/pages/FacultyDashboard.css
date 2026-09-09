@@ -1,119 +1,877 @@
-.faculty-dashboard{
-    padding:25px;
-    background:#f5f7fb;
-    min-height:100vh;
+/* =========================================================
+   FACULTY DASHBOARD
+   PREMIUM LIGHT + DARK THEME
+========================================================= */
+
+.faculty-dashboard {
+  min-height: 100vh;
+  padding: 30px;
+
+  background: #f4f7fc;
+  color: #172033;
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
 }
 
-.dashboard-header{
-    margin-bottom:25px;
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.dashboard-header {
+  margin-bottom: 28px;
 }
 
-.dashboard-header h1{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    color:#222;
+.dashboard-header h1 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin: 0;
+
+  color: #172554;
+
+  font-size: 32px;
+  font-weight: 750;
 }
 
-.dashboard-header p{
-    color:#666;
+.dashboard-header h1 svg {
+  color: #2563eb;
+  font-size: 29px;
 }
 
-.stats-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
-    margin-bottom:30px;
+.dashboard-header p {
+  margin: 7px 0 0;
+
+  color: #64748b;
+
+  font-size: 15px;
+  font-weight: 500;
 }
 
-.stat-card{
-    background:#fff;
-    padding:20px;
-    border-radius:12px;
-    display:flex;
-    align-items:center;
-    gap:20px;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+/* =========================================================
+   STATISTICS GRID
+========================================================= */
+
+.stats-grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 20px;
+
+  margin-bottom: 30px;
 }
 
-.icon{
-    width:60px;
-    height:60px;
-    border-radius:50%;
-    color:#fff;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:24px;
+
+/* =========================================================
+   STAT CARD
+========================================================= */
+
+.stat-card {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  gap: 17px;
+
+  min-height: 130px;
+
+  padding: 22px;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 18px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 8px 25px rgba(15, 23, 42, 0.07);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
 
-.dashboard-content{
-    display:grid;
-    grid-template-columns:2fr 1fr;
-    gap:20px;
+
+.stat-card:hover {
+  transform: translateY(-6px);
+
+  box-shadow:
+    0 16px 35px rgba(15, 23, 42, 0.13);
 }
 
-.card{
-    background:#fff;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.stat-card .icon {
+  position: relative;
+  z-index: 2;
+
+  width: 58px;
+  height: 58px;
+
+  min-width: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 15px;
+
+  font-size: 24px;
+
+  transition: transform 0.3s ease;
 }
 
-.card h2{
-    margin-bottom:20px;
+
+.stat-card:hover .icon {
+  transform: scale(1.1) rotate(-5deg);
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
+
+/* =========================================================
+   STAT TEXT
+========================================================= */
+
+.stat-info {
+  position: relative;
+  z-index: 2;
 }
 
-table th{
-    background:#3f51b5;
-    color:white;
-    padding:12px;
+.stat-card h2 {
+  margin: 0 0 5px;
+
+  font-size: 29px;
+  font-weight: 750;
 }
 
-table td{
-    padding:12px;
-    border-bottom:1px solid #eee;
+.stat-card p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.notice-list{
-    list-style:none;
-    padding:0;
+
+/* =========================================================
+   DECORATION
+========================================================= */
+
+.stat-decoration {
+  position: absolute;
+
+  width: 120px;
+  height: 120px;
+
+  right: -55px;
+  top: -55px;
+
+  border-radius: 50%;
+
+  opacity: 0.08;
+
+  transition: transform 0.4s ease;
 }
 
-.notice-list li{
-    padding:12px;
-    margin-bottom:10px;
-    background:#f4f7fc;
-    border-left:5px solid #3f51b5;
-    border-radius:6px;
+
+.stat-card:hover .stat-decoration {
+  transform: scale(1.35);
 }
 
-@media(max-width:900px){
 
-.dashboard-content{
-    grid-template-columns:1fr;
+/* =========================================================
+   STUDENTS - GREEN
+========================================================= */
+
+.students-stat {
+  border-top: 4px solid #10b981;
 }
 
+.students-stat .icon {
+  background: #dcfce7;
+  color: #16a34a;
 }
 
-@media(max-width:768px){
-
-.faculty-dashboard{
-    padding:15px;
+.students-stat h2 {
+  color: #15803d;
 }
 
-.stats-grid{
-    grid-template-columns:1fr;
+.students-stat .stat-decoration {
+  background: #10b981;
 }
 
-table{
-    display:block;
-    overflow-x:auto;
+
+/* =========================================================
+   SUBJECTS - BLUE
+========================================================= */
+
+.subjects-stat {
+  border-top: 4px solid #3b82f6;
 }
 
+.subjects-stat .icon {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.subjects-stat h2 {
+  color: #1d4ed8;
+}
+
+.subjects-stat .stat-decoration {
+  background: #3b82f6;
+}
+
+
+/* =========================================================
+   ATTENDANCE - ORANGE
+========================================================= */
+
+.attendance-stat {
+  border-top: 4px solid #f59e0b;
+}
+
+.attendance-stat .icon {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.attendance-stat h2 {
+  color: #b45309;
+}
+
+.attendance-stat .stat-decoration {
+  background: #f59e0b;
+}
+
+
+/* =========================================================
+   CLASSES - PURPLE
+========================================================= */
+
+.classes-stat {
+  border-top: 4px solid #8b5cf6;
+}
+
+.classes-stat .icon {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+.classes-stat h2 {
+  color: #6d28d9;
+}
+
+.classes-stat .stat-decoration {
+  background: #8b5cf6;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.dashboard-content {
+  display: grid;
+
+  grid-template-columns: 1.7fr 1fr;
+
+  gap: 20px;
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.cardfaculty {
+  width: 100%;
+  min-width: 0;
+
+  padding: 23px;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 8px 25px rgba(15, 23, 42, 0.07);
+
+  overflow: hidden;
+
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+
+.section-title {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  margin-bottom: 20px;
+}
+
+
+.title-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #dbeafe;
+  color: #2563eb;
+
+  font-size: 18px;
+}
+
+
+.notification-title {
+  background: #f3e8ff;
+  color: #9333ea;
+}
+
+
+.section-title h2 {
+  margin: 0;
+
+  color: #172554;
+
+  font-size: 20px;
+  font-weight: 700;
+}
+
+
+.section-title p {
+  margin: 3px 0 0;
+
+  color: #94a3b8;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-containerfaculty {
+  width: 100%;
+
+  overflow-x: auto;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+
+.table-containerfaculty table {
+  width: 100%;
+  min-width: 650px;
+
+  border-collapse: collapse;
+}
+
+
+/* Table header */
+
+.table-containerfaculty th {
+  padding: 14px 16px;
+
+  background: #eff6ff;
+
+  color: #1e40af;
+
+  text-align: left;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+/* Table body */
+
+.table-containerfaculty td {
+  padding: 15px 16px;
+
+  color: #475569;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  white-space: nowrap;
+}
+
+
+.table-containerfaculty tbody tr {
+  transition: background 0.2s ease;
+}
+
+
+.table-containerfaculty tbody tr:hover {
+  background: #f8fbff;
+}
+
+
+.table-containerfaculty tbody tr:last-child td {
+  border-bottom: none;
+}
+
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+.notice-list {
+  list-style: none;
+
+  padding: 0;
+  margin: 0;
+}
+
+
+.notice-list li {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 15px;
+
+  margin-bottom: 11px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+
+  border-left: 4px solid #6366f1;
+
+  border-radius: 10px;
+
+  color: #475569;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  line-height: 1.5;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.notice-list li:hover {
+  background: #eef4ff;
+
+  transform: translateX(4px);
+}
+
+
+.notice-dot {
+  width: 8px;
+  height: 8px;
+
+  min-width: 8px;
+
+  border-radius: 50%;
+
+  background: #6366f1;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.table-containerfaculty::-webkit-scrollbar {
+  height: 7px;
+}
+
+.table-containerfaculty::-webkit-scrollbar-track {
+  background: #eef2f7;
+  border-radius: 10px;
+}
+
+.table-containerfaculty::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 10px;
+}
+
+
+/* =========================================================
+   DARK THEME
+========================================================= */
+
+.dark-theme .faculty-dashboard {
+  background:
+    radial-gradient(
+      circle at 10% 5%,
+      rgba(37, 99, 235, 0.14),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 15%,
+      rgba(124, 58, 237, 0.10),
+      transparent 30%
+    ),
+    #070d19;
+
+  color: #f8fafc;
+}
+
+
+/* =========================================================
+   DARK HEADER
+========================================================= */
+
+.dark-theme .dashboard-header h1 {
+  color: #f8fafc;
+}
+
+.dark-theme .dashboard-header h1 svg {
+  color: #60a5fa;
+}
+
+.dark-theme .dashboard-header p {
+  color: #94a3b8;
+}
+
+
+/* =========================================================
+   DARK STAT CARDS
+========================================================= */
+
+.dark-theme .stat-card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(30, 41, 59, 0.75),
+      rgba(15, 23, 42, 0.88)
+    );
+
+  border-color:
+    rgba(148, 163, 184, 0.14);
+
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+
+  backdrop-filter: blur(18px);
+}
+
+
+.dark-theme .stat-card:hover {
+  border-color:
+    rgba(96, 165, 250, 0.25);
+
+  box-shadow:
+    0 22px 48px rgba(0, 0, 0, 0.38);
+}
+
+
+.dark-theme .stat-card p {
+  color: #94a3b8;
+}
+
+
+/* =========================================================
+   DARK STUDENTS
+========================================================= */
+
+.dark-theme .students-stat .icon {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+
+.dark-theme .students-stat h2 {
+  color: #34d399;
+}
+
+
+/* =========================================================
+   DARK SUBJECTS
+========================================================= */
+
+.dark-theme .subjects-stat .icon {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+}
+
+.dark-theme .subjects-stat h2 {
+  color: #60a5fa;
+}
+
+
+/* =========================================================
+   DARK ATTENDANCE
+========================================================= */
+
+.dark-theme .attendance-stat .icon {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+}
+
+.dark-theme .attendance-stat h2 {
+  color: #fbbf24;
+}
+
+
+/* =========================================================
+   DARK CLASSES
+========================================================= */
+
+.dark-theme .classes-stat .icon {
+  background: rgba(139, 92, 246, 0.15);
+  color: #a78bfa;
+}
+
+.dark-theme .classes-stat h2 {
+  color: #a78bfa;
+}
+
+
+/* =========================================================
+   DARK MAIN CARDS
+========================================================= */
+
+.dark-theme .cardfaculty {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(30, 41, 59, 0.70),
+      rgba(15, 23, 42, 0.86)
+    );
+
+  border-color:
+    rgba(148, 163, 184, 0.14);
+
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+
+  backdrop-filter: blur(20px);
+}
+
+
+/* =========================================================
+   DARK SECTION TITLE
+========================================================= */
+
+.dark-theme .section-title h2 {
+  color: #f8fafc;
+}
+
+.dark-theme .section-title p {
+  color: #94a3b8;
+}
+
+
+.dark-theme .title-icon {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+}
+
+
+.dark-theme .notification-title {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+}
+
+
+/* =========================================================
+   DARK TABLE
+========================================================= */
+
+.dark-theme .table-containerfaculty th {
+  background:
+    linear-gradient(
+      135deg,
+      #1d4ed8,
+      #2563eb
+    );
+
+  color: #ffffff;
+}
+
+
+.dark-theme .table-containerfaculty td {
+  color: #cbd5e1;
+
+  border-bottom-color:
+    rgba(148, 163, 184, 0.10);
+}
+
+
+.dark-theme .table-containerfaculty tbody tr {
+  background: rgba(15, 23, 42, 0.30);
+}
+
+
+.dark-theme .table-containerfaculty tbody tr:hover {
+  background:
+    rgba(37, 99, 235, 0.10);
+}
+
+
+/* =========================================================
+   DARK NOTIFICATIONS
+========================================================= */
+
+.dark-theme .notice-list li {
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  border-color:
+    rgba(148, 163, 184, 0.10);
+
+  border-left-color: #6366f1;
+
+  color: #cbd5e1;
+}
+
+
+.dark-theme .notice-list li:hover {
+  background:
+    rgba(99, 102, 241, 0.10);
+
+  color: #f1f5f9;
+}
+
+
+.dark-theme .notice-dot {
+  background: #818cf8;
+}
+
+
+/* =========================================================
+   DARK SCROLLBAR
+========================================================= */
+
+.dark-theme .table-containerfaculty::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+.dark-theme .table-containerfaculty::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+@media (max-width: 768px) {
+
+  .faculty-dashboard {
+    padding: 18px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 27px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .stat-card {
+    min-height: 120px;
+  }
+
+  .cardfaculty {
+    padding: 18px;
+  }
+}
+
+
+@media (max-width: 480px) {
+
+  .faculty-dashboard {
+    padding: 12px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 23px;
+  }
+
+  .dashboard-header h1 svg {
+    font-size: 22px;
+  }
+
+  .stat-card {
+    padding: 18px;
+  }
+
+  .stat-card .icon {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+
+    font-size: 21px;
+  }
+
+  .stat-card h2 {
+    font-size: 25px;
+  }
+
+  .stat-card p {
+    font-size: 13px;
+  }
+
+  .cardfaculty {
+    padding: 15px;
+    border-radius: 15px;
+  }
+
+  .section-title h2 {
+    font-size: 18px;
+  }
+
+  .section-title p {
+    font-size: 11px;
+  }
 }

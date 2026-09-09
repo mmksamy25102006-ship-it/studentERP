@@ -1,103 +1,295 @@
-/* src/components/AttendanceChart.css */
+
+/* =========================================================
+   ATTENDANCE CHART
+   Fully scoped to .attendance-chart-card
+   No global selectors
+   ========================================================= */
 
 .attendance-chart-card {
-  background: #ffffff;
-  border-radius: 15px;
-  padding: 20px;
-  margin: 20px 0;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+    --attendance-primary: #4f46e5;
+    --attendance-primary-light: #eef2ff;
+    --attendance-secondary: #06b6d4;
+
+    --attendance-bg: #ffffff;
+    --attendance-surface: #f8fafc;
+    --attendance-border: #e5e7eb;
+
+    --attendance-text: #172033;
+    --attendance-muted: #64748b;
+
+    width: 100%;
+    padding: 24px;
+    margin: 20px 0;
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(79, 70, 229, 0.06),
+            transparent 28%
+        ),
+        var(--attendance-bg);
+
+    border: 1px solid var(--attendance-border);
+    border-radius: 20px;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 8px 30px rgba(15, 23, 42, 0.06),
+        0 2px 8px rgba(15, 23, 42, 0.025);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
 }
 
 .attendance-chart-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px);
+
+    border-color: rgba(79, 70, 229, 0.18);
+
+    box-shadow:
+        0 14px 35px rgba(15, 23, 42, 0.09),
+        0 4px 12px rgba(15, 23, 42, 0.04);
 }
 
-/* Header */
 
-.chart-header {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.attendance-chart-card .chart-header {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+
+    border-bottom: 1px solid var(--attendance-border);
 }
 
-.chart-header h2 {
-  margin: 0;
-  font-size: 24px;
-  color: #1e293b;
-  font-weight: 700;
+.attendance-chart-card .chart-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin: 0;
+
+    color: var(--attendance-text);
+
+    font-size: 22px;
+    font-weight: 750;
+    line-height: 1.3;
+    letter-spacing: -0.3px;
 }
 
-.chart-header p {
-  margin-top: 6px;
-  color: #64748b;
-  font-size: 15px;
+.attendance-chart-card .chart-header h2::before {
+    content: "";
+
+    width: 4px;
+    height: 24px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        180deg,
+        var(--attendance-primary),
+        var(--attendance-secondary)
+    );
 }
 
-/* Chart */
+.attendance-chart-card .chart-header p {
+    margin: 6px 0 0 14px;
 
-.chart-container {
-  position: relative;
-  width: 100%;
-  height: 380px;
-}
+    color: var(--attendance-muted);
 
-/* Responsive */
-
-@media (max-width: 1024px) {
-  .chart-container {
-    height: 330px;
-  }
-}
-
-@media (max-width: 768px) {
-  .attendance-chart-card {
-    padding: 18px;
-  }
-
-  .chart-header h2 {
-    font-size: 20px;
-  }
-
-  .chart-header p {
-    font-size: 14px;
-  }
-
-  .chart-container {
-    height: 300px;
-  }
-}
-
-@media (max-width: 480px) {
-  .attendance-chart-card {
-    padding: 15px;
-    border-radius: 12px;
-  }
-
-  .chart-header h2 {
-    font-size: 18px;
-  }
-
-  .chart-header p {
     font-size: 13px;
-  }
-
-  .chart-container {
-    height: 250px;
-  }
+    font-weight: 500;
 }
 
-/* Dark Theme */
+
+/* =========================================================
+   CHART AREA
+   ========================================================= */
+
+.attendance-chart-card .chart-container {
+    position: relative;
+
+    width: 100%;
+    height: 380px;
+
+    padding: 8px 4px 2px;
+
+    box-sizing: border-box;
+
+    background: linear-gradient(
+        180deg,
+        rgba(248, 250, 252, 0.65),
+        rgba(255, 255, 255, 0)
+    );
+
+    border-radius: 14px;
+}
+
+
+/* =========================================================
+   DARK THEME
+   Uses existing .dark-theme from the application
+   ========================================================= */
 
 .dark-theme .attendance-chart-card {
-  background: #1e293b;
+    --attendance-primary: #818cf8;
+    --attendance-primary-light: rgba(99, 102, 241, 0.12);
+    --attendance-secondary: #22d3ee;
+
+    --attendance-bg: #111827;
+    --attendance-surface: #182235;
+    --attendance-border: #273449;
+
+    --attendance-text: #f8fafc;
+    --attendance-muted: #94a3b8;
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(99, 102, 241, 0.12),
+            transparent 30%
+        ),
+        var(--attendance-bg);
+
+    border-color: var(--attendance-border);
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.2),
+        0 3px 10px rgba(0, 0, 0, 0.12);
 }
 
-.dark-theme .chart-header h2 {
-  color: #f8fafc;
+.dark-theme .attendance-chart-card:hover {
+    border-color: rgba(129, 140, 248, 0.3);
+
+    box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.28),
+        0 4px 14px rgba(0, 0, 0, 0.16);
 }
 
-.dark-theme .chart-header p {
-  color: #cbd5e1;
+.dark-theme .attendance-chart-card .chart-header {
+    border-bottom-color: #273449;
 }
+
+.dark-theme .attendance-chart-card .chart-header h2 {
+    color: #f8fafc;
+}
+
+.dark-theme .attendance-chart-card .chart-header p {
+    color: #94a3b8;
+}
+
+.dark-theme .attendance-chart-card .chart-container {
+    background: linear-gradient(
+        180deg,
+        rgba(24, 34, 53, 0.65),
+        rgba(17, 24, 39, 0)
+    );
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1024px) {
+    .attendance-chart-card {
+        padding: 22px;
+    }
+
+    .attendance-chart-card .chart-container {
+        height: 330px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .attendance-chart-card {
+        padding: 18px;
+        margin: 16px 0;
+
+        border-radius: 16px;
+    }
+
+    .attendance-chart-card .chart-header {
+        margin-bottom: 16px;
+        padding-bottom: 13px;
+    }
+
+    .attendance-chart-card .chart-header h2 {
+        font-size: 19px;
+    }
+
+    .attendance-chart-card .chart-header h2::before {
+        width: 3px;
+        height: 21px;
+    }
+
+    .attendance-chart-card .chart-header p {
+        margin-left: 13px;
+        font-size: 12px;
+    }
+
+    .attendance-chart-card .chart-container {
+        height: 300px;
+        padding: 5px 0 0;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+    .attendance-chart-card {
+        padding: 15px;
+        margin: 12px 0;
+
+        border-radius: 14px;
+    }
+
+    .attendance-chart-card .chart-header h2 {
+        font-size: 17px;
+    }
+
+    .attendance-chart-card .chart-header p {
+        font-size: 11px;
+    }
+
+    .attendance-chart-card .chart-container {
+        height: 250px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+   ========================================================= */
+
+@media (max-width: 360px) {
+    .attendance-chart-card {
+        padding: 12px;
+    }
+
+    .attendance-chart-card .chart-header h2 {
+        font-size: 16px;
+    }
+
+    .attendance-chart-card .chart-container {
+        height: 225px;
+    }
+}
+

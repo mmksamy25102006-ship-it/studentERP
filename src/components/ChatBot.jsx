@@ -81,7 +81,7 @@ const ChatBot = () => {
         className="chat-toggle"
         onClick={() => setOpen(!open)}
       >
-        {open ? <FaTimes /> : <FaComments />}
+        {open ? <FaTimes /> : <FaRobot />}
       </button>
 
       {/* Chat Window */}

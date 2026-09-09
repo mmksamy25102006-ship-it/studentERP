@@ -11,6 +11,7 @@ import WeatherCard from "../components/WeatherCard";
 import Calendar from "../components/Calendar";
 import QRCodeCard from "../components/QRCodeCard";
 import ChatBot from "../components/ChatBot";
+import calculator from "../components/Calculator";
 
 import "./Dashboard.css";
 
@@ -88,7 +89,7 @@ const Dashboard = () => {
     </div>
 
   </div>
-
+{/* <calculator/> */}
   {/* AI */}
 
   <ChatBot />

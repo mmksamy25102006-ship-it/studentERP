@@ -1,48 +1,61 @@
-/* src/index.css */
+/* =========================================
+   GLOBAL RESET
+========================================= */
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
 }
 
 html,
 body,
 #root {
-  width: 100%;
-  min-height: 100vh;
+    width: 100%;
+    min-height: 100vh;
 }
 
 body {
-  background: #f4f7fc;
-  color: #222;
-  transition: all 0.3s ease;
+    background: #f4f7fc;
+    color: #222;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Scrollbar */
+
+/* html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none;
+} */
+/* =========================================
+   SCROLLBAR
+========================================= */
 
 ::-webkit-scrollbar {
-  width: 8px;
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #ececec;
+    background: #ececec;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3f51b5;
-  border-radius: 20px;
+    background: #3f51b5;
+    /* display: none; */
+    border-radius: 20px;
 }
 
-/* =========================
-        LIGHT THEME
-========================= */
+/* =========================================
+   LIGHT THEME
+========================================= */
 
 .light-theme {
-  background: #f4f7fc;
-  color: #222;
+    background: #f4f7fc;
+    color: #222;
 }
+
+/* Main common cards */
 
 .light-theme .sidebar,
 .light-theme .topbar,
@@ -57,32 +70,34 @@ body {
 .light-theme .courses-table,
 .light-theme .fees-table,
 .light-theme .library-table,
-.light-theme .settings-card,
-.light-theme .search-box,
-.light-theme table,
-.light-theme input,
-.light-theme textarea,
-.light-theme select {
-  background: #ffffff;
-  color: #222;
+.light-theme .settings-card {
+    background: #ffffff;
+    color: #222;
+}
+
+/* Tables */
+
+.light-theme table {
+    background: #ffffff;
+    color: #222;
 }
 
 .light-theme table th {
-  background: #3f51b5;
-  color: white;
+    background: #3f51b5;
+    color: #ffffff;
 }
 
 .light-theme table td {
-  color: #333;
+    color: #333;
 }
 
-/* =========================
-        DARK THEME
-========================= */
+/* =========================================
+   DARK THEME
+========================================= */
 
 .dark-theme {
-  background: #111827;
-  color: #f5f5f5;
+    background: #111827;
+    color: #f5f5f5;
 }
 
 .dark-theme .sidebar,
@@ -98,148 +113,253 @@ body {
 .dark-theme .courses-table,
 .dark-theme .fees-table,
 .dark-theme .library-table,
-.dark-theme .settings-card,
-.dark-theme .search-box,
-.dark-theme table,
-.dark-theme input,
-.dark-theme textarea,
-.dark-theme select {
-  background: #1f2937;
-  color: white;
+.dark-theme .settings-card {
+    background: #1f2937;
+    color: #ffffff;
+}
+
+.dark-theme table {
+    background: #1f2937;
+    color: #ffffff;
 }
 
 .dark-theme table th {
-  background: #3949ab;
+    background: #3949ab;
+    color: #ffffff;
 }
 
 .dark-theme table td {
-  border-bottom: 1px solid #374151;
+    color: #e5e7eb;
+    border-bottom: 1px solid #374151;
 }
 
-.dark-theme input,
+.dark-theme table tr:hover {
+    background-color: #273449;
+}
+
+/* =========================================
+   DARK THEME FORM ELEMENTS
+========================================= */
+
 .dark-theme textarea,
 .dark-theme select {
-  border: 1px solid #555;
+    border: 1px solid #555;
 }
 
 .dark-theme input::placeholder,
 .dark-theme textarea::placeholder {
-  color: #bdbdbd;
+    color: #bdbdbd;
 }
 
-.dark-theme .search-box svg,
+/* =========================================
+   DARK THEME ICONS
+========================================= */
+
 .dark-theme svg {
-  color: #90caf9;
+    color: #90caf9;
 }
 
-/* Links */
+/* =========================================
+   SEARCH INPUTS
+   IMPORTANT:
+   Search input backgrounds are transparent.
+   The parent search box controls the background.
+========================================= */
+
+/* ---------- LIGHT ---------- */
+
+.light-theme .search-container,
+.light-theme .search-box,
+.light-theme .resultsearch-box,
+.light-theme .search-report {
+    background: #ffffff;
+    color: #1f2937;
+}
+
+.light-theme .search-container input,
+.light-theme .search-box input,
+.light-theme .resultsearch-box input,
+.light-theme .search-report input {
+    background: transparent;
+    color: #1f2937;
+    border: none;
+    outline: none;
+}
+
+.light-theme .search-container input::placeholder,
+.light-theme .search-box input::placeholder,
+.light-theme .resultsearch-box input::placeholder,
+.light-theme .search-report input::placeholder {
+    color: #9ca3af;
+}
+
+.light-theme .search-container svg,
+.light-theme .search-box svg,
+.light-theme .resultsearch-box svg,
+.light-theme .search-report svg {
+    color: #2563eb;
+}
+
+/* ---------- DARK ---------- */
+
+.dark-theme .search-container,
+.dark-theme .search-box,
+.dark-theme .resultsearch-box,
+.dark-theme .search-report {
+    background: #374151;
+    color: #f9fafb;
+}
+
+.dark-theme .search-container input,
+.dark-theme .search-box input,
+.dark-theme .resultsearch-box input,
+.dark-theme .search-report input {
+    background: transparent;
+    color: #f9fafb;
+    border: none;
+    outline: none;
+}
+
+.dark-theme .search-container input::placeholder,
+.dark-theme .search-box input::placeholder,
+.dark-theme .resultsearch-box input::placeholder,
+.dark-theme .search-report input::placeholder {
+    color: #cbd5e1;
+}
+
+.dark-theme .search-container svg,
+.dark-theme .search-box svg,
+.dark-theme .resultsearch-box svg,
+.dark-theme .search-report svg {
+    color: #90caf9;
+}
+
+/* =========================================
+   LINKS
+========================================= */
 
 a {
-  text-decoration: none;
-  color: inherit;
+    text-decoration: none;
+    color: inherit;
 }
 
-/* Buttons */
+/* =========================================
+   BUTTONS
+========================================= */
 
 button {
-  transition: 0.3s;
-  cursor: pointer;
+    transition: 0.3s ease;
+    cursor: pointer;
 }
 
-button:hover {
-  transform: translateY(-2px);
-}
-
-/* Card Animation */
+/* =========================================
+   CARD ANIMATION
+========================================= */
 
 .dashboard-card,
 .card,
 .report-card,
 .summary-card {
-  transition: 0.3s ease;
+    transition: 0.3s ease;
 }
 
 .dashboard-card:hover,
 .card:hover,
 .report-card:hover,
 .summary-card:hover {
-  transform: translateY(-5px);
+    transform: translateY(-5px);
 }
-
-
-
-/* ===============================
+/* =========================================
    APP LAYOUT
-==================================*/
+========================================= */
 
-.app-container{
-    display:flex;
-    min-height:100vh;
-    background:#f4f7fc;
+.app-container {
+    display: flex;
+
+    min-height: 100vh;
+
+    background: #f4f7fc;
 }
 
-/* Main Area */
-
-.main-container{
-
-    flex:1;
-
-    display:flex;
-
-    flex-direction:column;
-min-width:0;
-    margin-left:0px;
-
-    transition:all .3s ease;
-
-    min-height:100vh;
-
+.dark-theme .app-container {
+    background: #111827;
 }
 
-/* Sidebar collapsed */
 
+/* =========================================
+   MAIN AREA
+========================================= */
 
+.main-container {
+    flex: 1;
 
-.main-container.collapsed{
-    margin-left:80px;
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+    min-height: 100vh;
+
+    /* Space for expanded sidebar */
+    margin-left: 250px;
+
+    transition:
+        margin-left 0.3s ease,
+        width 0.3s ease;
 }
-/* Page */
 
-.page-container{
-    margin-top:72px;
-    padding:25px;
-    width:100%;
-    max-width:100%;
-    overflow-x:hidden;
-    box-sizing:border-box;
+
+/* =========================================
+   COLLAPSED SIDEBAR
+========================================= */
+
+.main-container.collapsed {
+    margin-left: 75px;
 }
 
-/* Responsive */
+
+/* =========================================
+   PAGE
+========================================= */
+
+.page-container {
+    margin-top: 72px;
+
+    width: 100%;
+    max-width: 100%;
+
+    overflow-x: hidden;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 992px) {
+
+    .main-container {
+        margin-left: 0;
+    }
+
+    .main-container.collapsed {
+        margin-left: 0;
+    }
+
+    .topbar {
+        left: 0;
+    }
+
+    .page-container {
+        padding: 15px;
+    }
+}
+
 
 @media (max-width: 768px) {
-  body {
-    font-size: 14px;
-  }
-}
 
-@media(max-width:992px){
-
-.main-container{
-
-margin-left:0;
-
-}
-
-.topbar{
-
-left:0;
-
-}
-
-.page-container{
-
-padding:15px;
-
-}
-
+    body {
+        font-size: 14px;
+    }
 }

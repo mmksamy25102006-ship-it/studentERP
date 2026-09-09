@@ -1,0 +1,543 @@
+/* =========================================
+   FEES MANAGEMENT
+   Light + Dark Glass ERP Theme
+========================================= */
+
+.fees-page {
+    padding: 30px;
+    min-height: 100vh;
+    background: #f4f7fc;
+    color: #1f2937;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.fees-page h2 {
+    color: #1e3a8a;
+    margin-bottom: 10px;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.fee-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 20px;
+    padding: 10px 18px;
+
+    background: #dbeafe;
+    color: #2563eb;
+
+    border-radius: 12px;
+
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.fee-count strong {
+    font-size: 18px;
+}
+
+/* =========================================
+   FORM CARD
+========================================= */
+
+.fee-form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+
+    margin-bottom: 25px;
+    padding: 24px;
+
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+
+    transition: 0.3s ease;
+}
+
+/* Inputs */
+
+.fee-form input {
+    width: 100%;
+    height: 48px;
+
+    padding: 0 15px;
+
+    background: #ffffff;
+    color: #1f2937;
+
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+
+    outline: none;
+    font-size: 15px;
+
+    transition: 0.3s ease;
+}
+
+.fee-form input::placeholder {
+    color: #9ca3af;
+}
+
+.fee-form input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* Save Button */
+
+.fee-form button {
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
+
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+}
+
+.fee-form button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(37, 99, 235, 0.25);
+}
+
+/* =========================================
+   SEARCH
+========================================= */
+
+.search-box {
+    width: 360px;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 20px;
+    padding: 0 16px;
+
+    background: #ffffff;
+    color: #2563eb;
+
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+
+    transition: 0.3s ease;
+}
+
+.search-box svg {
+    color: #2563eb;
+    flex-shrink: 0;
+}
+
+.search-box input {
+    flex: 1;
+
+    background: transparent;
+    color: #1f2937;
+
+    border: none;
+    outline: none;
+
+    font-size: 15px;
+}
+
+.search-box input::placeholder {
+    color: #9ca3af;
+}
+
+.search-box:focus-within {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* =========================================
+   TABLE WRAPPER
+========================================= */
+
+.fees-page table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+    overflow: hidden;
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.07);
+
+    transition: 0.3s ease;
+}
+
+/* Header */
+
+.fees-page thead {
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
+}
+
+.fees-page th {
+    padding: 16px 14px;
+
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    text-align: center;
+
+    white-space: nowrap;
+}
+
+/* Body */
+
+.fees-page td {
+    padding: 15px 14px;
+
+    color: #374151;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    font-size: 14px;
+
+    text-align: center;
+
+    white-space: nowrap;
+}
+
+.fees-page tbody tr {
+    transition: 0.25s ease;
+}
+
+.fees-page tbody tr:hover td {
+    background: #f8fbff;
+}
+
+/* =========================================
+   FEE STATUS
+========================================= */
+
+.paid,
+.partial,
+.unpaid {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 75px;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Paid */
+
+.paid {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+/* Partial */
+
+.partial {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+/* Unpaid */
+
+.unpaid {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* =========================================
+   ACTION BUTTONS
+========================================= */
+
+.edit-btn,
+.delete-btn {
+    width: 36px;
+    height: 36px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 9px;
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.edit-btn {
+    background: #f59e0b;
+    margin-right: 6px;
+}
+
+.edit-btn:hover {
+    background: #d97706;
+    transform: translateY(-2px);
+}
+
+.delete-btn {
+    background: #ef4444;
+}
+
+.delete-btn:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   DARK THEME
+   Glassmorphism
+========================================= */
+
+.dark-theme .fees-page {
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(37, 99, 235, 0.12),
+            transparent 35%
+        ),
+        #0f172a;
+
+    color: #f8fafc;
+}
+
+/* Heading */
+
+.dark-theme .fees-page h2 {
+    color: #93c5fd;
+}
+
+/* Count */
+
+.dark-theme .fees-page .fee-count {
+    background: rgba(37, 99, 235, 0.15);
+    color: #60a5fa;
+
+    border: 1px solid rgba(96, 165, 250, 0.2);
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Form Glass */
+
+.dark-theme .fees-page .fee-form {
+    background: rgba(31, 41, 55, 0.72);
+
+    border: 1px solid rgba(148, 163, 184, 0.16);
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.3);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+/* Inputs */
+
+.dark-theme .fees-page .fee-form input {
+    background: rgba(17, 24, 39, 0.72);
+
+    color: #f8fafc;
+
+    border: 1px solid #475569;
+}
+
+.dark-theme .fees-page .fee-form input::placeholder {
+    color: #94a3b8;
+}
+
+.dark-theme .fees-page .fee-form input:focus {
+    border-color: #60a5fa;
+
+    background: rgba(15, 23, 42, 0.85);
+
+    box-shadow:
+        0 0 0 3px rgba(96, 165, 250, 0.15);
+}
+
+/* Search */
+
+.dark-theme .fees-page .search-box {
+    background: rgba(31, 41, 55, 0.72);
+
+    color: #60a5fa;
+
+    border: 1px solid rgba(148, 163, 184, 0.18);
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.25);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.dark-theme .fees-page .search-box svg {
+    color: #60a5fa;
+}
+
+.dark-theme .fees-page .search-box input {
+    background: transparent;
+    color: #f8fafc;
+}
+
+.dark-theme .fees-page .search-box input::placeholder {
+    color: #94a3b8;
+}
+
+/* Table */
+
+.dark-theme .fees-page table {
+    background: rgba(31, 41, 55, 0.72);
+
+    border: 1px solid rgba(148, 163, 184, 0.14);
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.3);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+/* Table Header */
+
+.dark-theme .fees-page thead {
+    background: linear-gradient(
+        135deg,
+        #1d4ed8,
+        #1e40af
+    );
+}
+
+/* Table Cells */
+
+.dark-theme .fees-page td {
+    background: rgba(31, 41, 55, 0.55);
+
+    color: #e5e7eb;
+
+    border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.dark-theme .fees-page tbody tr:hover td {
+    background: rgba(59, 130, 246, 0.09);
+}
+
+/* Dark Status */
+
+.dark-theme .fees-page .paid {
+    background: rgba(34, 197, 94, 0.15);
+    color: #86efac;
+
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.dark-theme .fees-page .partial {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fcd34d;
+
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.dark-theme .fees-page .unpaid {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1024px) {
+
+    .fees-page {
+        padding: 25px;
+    }
+
+    .fee-form {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .fees-page {
+        padding: 15px;
+    }
+
+    .fees-page h2 {
+        font-size: 24px;
+    }
+
+    .fee-form {
+        grid-template-columns: 1fr;
+        padding: 18px;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .fees-page table {
+        min-width: 1100px;
+    }
+
+    .fees-page {
+        overflow-x: auto;
+    }
+
+}

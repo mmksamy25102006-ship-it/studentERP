@@ -1,0 +1,605 @@
+/* =========================================================
+   NEXUS ERP - STUDENT ASSIGNMENTS
+   Premium Light + Dark Glass Theme
+========================================================= */
+
+.student-assignment-page {
+    min-height: 100vh;
+    padding: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eef4ff 0%,
+            #f8fbff 50%,
+            #eef6ff 100%
+        );
+
+    color: #172033;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.assignment-header {
+    margin-bottom: 30px;
+}
+
+.assignment-header h1 {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    margin: 0;
+
+    font-size: 34px;
+    line-height: 1.2;
+    font-weight: 700;
+
+    color: #1e3a8a;
+
+    letter-spacing: -0.4px;
+}
+
+.assignment-header h1 svg {
+    font-size: 31px;
+    color: #2563eb;
+}
+
+.assignment-header p {
+    margin: 10px 0 0 46px;
+
+    color: #64748b;
+
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   ASSIGNMENT GRID
+========================================================= */
+
+.assignment-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(340px, 1fr)
+        );
+
+    gap: 26px;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   ASSIGNMENT CARD
+========================================================= */
+
+.assignment-card {
+    position: relative;
+
+    min-height: 250px;
+
+    padding: 27px 28px 25px 30px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255, 255, 255, 0.92);
+
+    border:
+        1px solid rgba(226, 232, 240, 0.9);
+
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.08);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+}
+
+
+/* Left accent */
+
+.assignment-card::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 6px;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            180deg,
+            #2563eb,
+            #38bdf8
+        );
+}
+
+
+/* Top glass glow */
+
+.assignment-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 150px;
+    height: 150px;
+
+    top: -90px;
+    right: -70px;
+
+    background:
+        rgba(56, 189, 248, 0.10);
+
+    border-radius: 50%;
+
+    filter: blur(25px);
+
+    pointer-events: none;
+}
+
+
+/* Hover */
+
+.assignment-card:hover {
+    transform: translateY(-7px);
+
+    border-color:
+        rgba(37, 99, 235, 0.25);
+
+    box-shadow:
+        0 18px 38px rgba(15, 23, 42, 0.12);
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.assignment-card h2 {
+    position: relative;
+    z-index: 1;
+
+    margin: 0 0 15px;
+
+    font-size: 24px;
+    line-height: 1.35;
+
+    font-weight: 700;
+
+    color: #1d4ed8;
+}
+
+
+/* =========================================================
+   SUBJECT
+========================================================= */
+
+.assignment-card h4 {
+    position: relative;
+    z-index: 1;
+
+    margin: 0 0 15px;
+
+    font-size: 17px;
+    line-height: 1.5;
+
+    font-weight: 600;
+
+    color: #334155;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.assignment-card p {
+    position: relative;
+    z-index: 1;
+
+    margin: 0 0 20px;
+
+    font-size: 16px;
+    line-height: 1.75;
+
+    color: #475569;
+}
+
+
+/* =========================================================
+   DUE DATE
+========================================================= */
+
+.assignment-card span {
+    position: relative;
+    z-index: 1;
+
+    display: inline-flex;
+    align-items: center;
+
+    padding: 9px 16px;
+
+    border-radius: 30px;
+
+    background:
+        #dbeafe;
+
+    color:
+        #1d4ed8;
+
+    border:
+        1px solid rgba(37, 99, 235, 0.12);
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    box-shadow:
+        0 4px 12px rgba(37, 99, 235, 0.08);
+}
+
+
+/* =========================================================
+   LIGHT THEME
+========================================================= */
+
+.light-theme .student-assignment-page,
+[data-theme="light"] .student-assignment-page {
+    background:
+        linear-gradient(
+            135deg,
+            #eef4ff,
+            #f8fbff,
+            #eef6ff
+        );
+
+    color: #172033;
+}
+
+.light-theme .assignment-header h1,
+[data-theme="light"] .assignment-header h1 {
+    color: #1e3a8a;
+}
+
+.light-theme .assignment-header p,
+[data-theme="light"] .assignment-header p {
+    color: #64748b;
+}
+
+.light-theme .assignment-card,
+[data-theme="light"] .assignment-card {
+    background:
+        rgba(255, 255, 255, 0.94);
+
+    border-color:
+        rgba(226, 232, 240, 0.9);
+
+    color: #172033;
+
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.light-theme .assignment-card h2,
+[data-theme="light"] .assignment-card h2 {
+    color: #1d4ed8;
+}
+
+.light-theme .assignment-card h4,
+[data-theme="light"] .assignment-card h4 {
+    color: #334155;
+}
+
+.light-theme .assignment-card p,
+[data-theme="light"] .assignment-card p {
+    color: #475569;
+}
+
+.light-theme .assignment-card span,
+[data-theme="light"] .assignment-card span {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+
+/* =========================================================
+   DARK THEME
+   Premium Glassmorphism
+========================================================= */
+
+.dark-theme .student-assignment-page,
+[data-theme="dark"] .student-assignment-page {
+    background:
+        radial-gradient(
+            circle at 10% 0%,
+            rgba(37, 99, 235, 0.13),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(56, 189, 248, 0.08),
+            transparent 28%
+        ),
+        linear-gradient(
+            135deg,
+            #080f1d,
+            #0f172a 50%,
+            #111827
+        );
+
+    color: #f8fafc;
+}
+
+
+/* Dark header */
+
+.dark-theme .assignment-header h1,
+[data-theme="dark"] .assignment-header h1 {
+    color: #f8fafc;
+}
+
+.dark-theme .assignment-header h1 svg,
+[data-theme="dark"] .assignment-header h1 svg {
+    color: #38bdf8;
+}
+
+.dark-theme .assignment-header p,
+[data-theme="dark"] .assignment-header p {
+    color: #94a3b8;
+}
+
+
+/* Dark glass card */
+
+.dark-theme .assignment-card,
+[data-theme="dark"] .assignment-card {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30, 41, 59, 0.78),
+            rgba(15, 23, 42, 0.72)
+        );
+
+    border:
+        1px solid rgba(148, 163, 184, 0.13);
+
+    color: #f8fafc;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.32),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+
+/* Dark card glow */
+
+.dark-theme .assignment-card::after,
+[data-theme="dark"] .assignment-card::after {
+    background:
+        rgba(56, 189, 248, 0.08);
+
+    filter: blur(30px);
+}
+
+
+/* Dark hover */
+
+.dark-theme .assignment-card:hover,
+[data-theme="dark"] .assignment-card:hover {
+    transform: translateY(-7px);
+
+    border-color:
+        rgba(56, 189, 248, 0.25);
+
+    box-shadow:
+        0 20px 45px rgba(0, 0, 0, 0.42),
+        0 0 25px rgba(37, 99, 235, 0.07);
+}
+
+
+/* Dark title */
+
+.dark-theme .assignment-card h2,
+[data-theme="dark"] .assignment-card h2 {
+    color: #60a5fa;
+}
+
+
+/* Dark subject */
+
+.dark-theme .assignment-card h4,
+[data-theme="dark"] .assignment-card h4 {
+    color: #e2e8f0;
+}
+
+
+/* Dark description */
+
+.dark-theme .assignment-card p,
+[data-theme="dark"] .assignment-card p {
+    color: #cbd5e1;
+}
+
+
+/* Dark due date */
+
+.dark-theme .assignment-card span,
+[data-theme="dark"] .assignment-card span {
+    background:
+        rgba(37, 99, 235, 0.16);
+
+    color:
+        #7dd3fc;
+
+    border:
+        1px solid rgba(56, 189, 248, 0.18);
+
+    box-shadow:
+        0 5px 15px rgba(37, 99, 235, 0.08);
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.no-assignment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 220px;
+
+    margin-top: 20px;
+
+    padding: 30px;
+
+    border-radius: 18px;
+
+    background:
+        rgba(255, 255, 255, 0.7);
+
+    color: #64748b;
+
+    font-size: 18px;
+
+    border: 1px solid #e2e8f0;
+}
+
+.dark-theme .no-assignment,
+[data-theme="dark"] .no-assignment {
+    background:
+        rgba(30, 41, 59, 0.55);
+
+    color: #94a3b8;
+
+    border-color:
+        rgba(148, 163, 184, 0.12);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .student-assignment-page {
+        padding: 25px;
+    }
+
+    .assignment-grid {
+        grid-template-columns:
+            repeat(
+                auto-fit,
+                minmax(300px, 1fr)
+            );
+
+        gap: 20px;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .student-assignment-page {
+        padding: 20px 15px;
+    }
+
+    .assignment-header {
+        margin-bottom: 25px;
+    }
+
+    .assignment-header h1 {
+        font-size: 28px;
+    }
+
+    .assignment-header h1 svg {
+        font-size: 26px;
+    }
+
+    .assignment-header p {
+        margin-left: 0;
+        font-size: 15px;
+    }
+
+    .assignment-grid {
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+    }
+
+    .assignment-card {
+        min-height: auto;
+
+        padding:
+            24px 22px 22px 27px;
+    }
+
+    .assignment-card h2 {
+        font-size: 22px;
+    }
+
+    .assignment-card h4 {
+        font-size: 16px;
+    }
+
+    .assignment-card p {
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .assignment-card span {
+        font-size: 14px;
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    .student-assignment-page {
+        padding: 16px 12px;
+    }
+
+    .assignment-header h1 {
+        font-size: 25px;
+    }
+
+    .assignment-card {
+        padding:
+            22px 18px 20px 24px;
+
+        border-radius: 16px;
+    }
+
+    .assignment-card h2 {
+        font-size: 21px;
+    }
+
+    .assignment-card h4 {
+        font-size: 15px;
+    }
+
+    .assignment-card p {
+        font-size: 15px;
+    }
+}

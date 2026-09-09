@@ -1,61 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaBullhorn,
   FaCalendarAlt,
   FaSearch,
 } from "react-icons/fa";
+import axios from "axios";
 import "./Notices.css";
 
 const Notices = () => {
   const [search, setSearch] = useState("");
+  const [notices, setNotices] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const [notices] = useState([
-    {
-      id: 1,
-      title: "Semester Examination Schedule",
-      date: "20 July 2026",
-      category: "Examination",
-      description:
-        "The End Semester Examination timetable has been published. Students are advised to check the exam portal regularly.",
-    },
-    {
-      id: 2,
-      title: "Placement Training Program",
-      date: "18 July 2026",
-      category: "Placement",
-      description:
-        "Mandatory placement training begins next Monday in Seminar Hall 2.",
-    },
-    {
-      id: 3,
-      title: "Library Book Return",
-      date: "15 July 2026",
-      category: "Library",
-      description:
-        "Students must return borrowed books before 30 July to avoid fines.",
-    },
-    {
-      id: 4,
-      title: "Holiday Notice",
-      date: "12 July 2026",
-      category: "General",
-      description:
-        "The college will remain closed on Friday due to a public holiday.",
-    },
-    {
-      id: 5,
-      title: "Internal Assessment",
-      date: "10 July 2026",
-      category: "Academic",
-      description:
-        "Internal Assessment II will commence from next week as per the department schedule.",
-    },
-  ]);
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  const fetchNotifications = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/api/notifications"
+      );
+
+      setNotices(res.data);
+    } catch (err) {
+      console.error("Error loading notifications:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredNotices = notices.filter(
     (notice) =>
       notice.title.toLowerCase().includes(search.toLowerCase()) ||
-      notice.category.toLowerCase().includes(search.toLowerCase())
+      (notice.department || "")
+        .toLowerCase()
+        .includes(search.toLowerCase())
   );
 
   return (
@@ -80,22 +60,30 @@ const Notices = () => {
       </div>
 
       <div className="notice-list">
-        {filteredNotices.length > 0 ? (
+
+        {loading ? (
+          <div className="no-notice">Loading...</div>
+        ) : filteredNotices.length > 0 ? (
           filteredNotices.map((notice) => (
-            <div className="notice-card" key={notice.id}>
+            <div className="notice-card" key={notice._id}>
 
               <div className="notice-top">
                 <h2>{notice.title}</h2>
 
-                <span>{notice.category}</span>
+                <span>
+                  {notice.department || "General"}
+                </span>
               </div>
 
               <p className="notice-date">
-                <FaCalendarAlt /> {notice.date}
+                <FaCalendarAlt />{" "}
+                {new Date(
+                  notice.createdAt
+                ).toLocaleDateString()}
               </p>
 
               <p className="notice-description">
-                {notice.description}
+                {notice.message}
               </p>
 
             </div>
@@ -105,6 +93,7 @@ const Notices = () => {
             No notices found.
           </div>
         )}
+
       </div>
 
     </div>

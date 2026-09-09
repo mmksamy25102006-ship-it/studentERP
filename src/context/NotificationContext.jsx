@@ -1,244 +1,264 @@
-import React, { createContext, useContext, useState } from "react";
+import React, {
+  createContext,
+  useEffect,
+  useState,
+} from "react";
+
+import axios from "axios";
 
 
-// Create Context
+// ========================================
+// CREATE CONTEXT
+// ========================================
 
 const NotificationContext = createContext();
 
 
+// ========================================
+// API URL
+// ========================================
+
+const API_URL = "http://localhost:5000/api/notifications";
 
 
-// Provider Component
+// ========================================
+// PROVIDER
+// ========================================
 
 export const NotificationProvider = ({ children }) => {
 
+  const [notifications, setNotifications] = useState([]);
 
-  const [notifications, setNotifications] = useState([
-
-    {
-      id: 1,
-      title: "Exam Notification",
-      message: "Semester exam starts tomorrow.",
-      type: "warning",
-      read: false,
-      date: "24 July 2026",
-    },
+  const [loading, setLoading] = useState(true);
 
 
-    {
-      id: 2,
-      title: "Fee Reminder",
-      message: "Please pay your pending fees.",
-      type: "danger",
-      read: false,
-      date: "24 July 2026",
-    },
+  // ========================================
+  // FETCH NOTIFICATIONS FROM MONGODB
+  // ========================================
 
+  const fetchNotifications = async () => {
 
-    {
-      id: 3,
-      title: "Attendance Updated",
-      message: "Your attendance record has been updated.",
-      type: "success",
-      read: true,
-      date: "23 July 2026",
-    },
+    try {
 
+      const response = await axios.get(API_URL);
 
-  ]);
+      setNotifications(response.data);
 
+    } catch (error) {
 
+      console.error(
+        "Failed to fetch notifications:",
+        error
+      );
 
+    } finally {
 
+      setLoading(false);
 
-
-
-
-  // Add Notification
-
-  const addNotification = (notification) => {
-
-
-    const newNotification = {
-
-      id: Date.now(),
-
-      read: false,
-
-      date: new Date().toLocaleDateString(),
-
-      ...notification,
-
-    };
-
-
-    setNotifications((prev)=>[
-
-      newNotification,
-
-      ...prev
-
-    ]);
-
+    }
 
   };
 
 
+  // ========================================
+  // INITIAL LOAD + AUTOMATIC REFRESH
+  // ========================================
+
+  useEffect(() => {
+
+    // Fetch immediately
+    fetchNotifications();
 
 
+    // Check for new notifications every 30 seconds
+    const interval = setInterval(() => {
+
+      fetchNotifications();
+
+    }, 30000);
 
 
+    // Cleanup interval
+    return () => clearInterval(interval);
+
+  }, []);
 
 
+  // ========================================
+  // ADD NOTIFICATION
+  // ========================================
 
-  // Mark Single Notification Read
+  const addNotification = async (notification) => {
 
-  const markAsRead = (id) => {
+    try {
 
-
-    setNotifications((prev)=>
-
-      prev.map((item)=>
-
-        item.id === id
-
-        ?
-
+      const response = await axios.post(
+        API_URL,
         {
-          ...item,
-          read:true
+          ...notification,
+          read: false,
         }
+      );
 
-        :
 
-        item
+      // Add new notification to the top
+      setNotifications((prev) => [
+        response.data,
+        ...prev,
+      ]);
 
-      )
 
-    );
+    } catch (error) {
 
+      console.error(
+        "Failed to add notification:",
+        error
+      );
+
+    }
 
   };
 
 
+  // ========================================
+  // MARK ONE NOTIFICATION AS READ
+  // ========================================
+
+  const markAsRead = async (id) => {
+
+    try {
+
+      const response = await axios.put(
+        `${API_URL}/${id}/read`
+      );
 
 
+      setNotifications((prev) =>
+        prev.map((item) =>
+          item._id === id
+            ? response.data
+            : item
+        )
+      );
 
 
+    } catch (error) {
+
+      console.error(
+        "Failed to mark notification as read:",
+        error
+      );
+
+    }
+
+  };
 
 
+  // ========================================
+  // MARK ALL NOTIFICATIONS AS READ
+  // ========================================
 
-  // Delete Notification
+  const markAllAsRead = async () => {
 
-  const removeNotification = (id)=>{
+    try {
+
+      await axios.put(
+        `${API_URL}/read-all`
+      );
 
 
-    setNotifications((prev)=>
+      setNotifications((prev) =>
+        prev.map((item) => ({
+          ...item,
+          read: true,
+        }))
+      );
 
+
+    } catch (error) {
+
+      console.error(
+        "Failed to mark all notifications as read:",
+        error
+      );
+
+    }
+
+  };
+
+
+  // ========================================
+  // REMOVE NOTIFICATION
+  // ========================================
+
+  const removeNotification = (id) => {
+
+    setNotifications((prev) =>
       prev.filter(
-
-        (item)=>item.id !== id
-
+        (item) => item._id !== id
       )
-
     );
-
 
   };
 
 
+  // ========================================
+  // CLEAR ALL NOTIFICATIONS
+  // ========================================
 
-
-
-
-
-
-
-  // Clear All Notifications
-
-  const clearNotifications = ()=>{
-
+  const clearNotifications = () => {
 
     setNotifications([]);
 
-
   };
 
 
-
-
-
-
-
-
-
-  // Unread Count
+  // ========================================
+  // UNREAD COUNT
+  // ========================================
 
   const unreadCount = notifications.filter(
-
-    (item)=>!item.read
-
+    (item) => item.read === false
   ).length;
 
 
+  // ========================================
+  // PROVIDER
+  // ========================================
 
+  return (
 
+    <NotificationContext.Provider
+      value={{
 
+        notifications,
 
+        loading,
 
+        addNotification,
 
+        markAsRead,
 
-return (
+        markAllAsRead,
 
-<NotificationContext.Provider
+        removeNotification,
 
-value={{
+        clearNotifications,
 
-notifications,
+        unreadCount,
 
-addNotification,
+        fetchNotifications,
 
-markAsRead,
+      }}
+    >
 
-removeNotification,
+      {children}
 
-clearNotifications,
+    </NotificationContext.Provider>
 
-unreadCount,
-
-}}
-
->
-
-
-{children}
-
-
-</NotificationContext.Provider>
-
-
-);
-
+  );
 
 };
-
-
-
-
-
-
-
-
-// Custom Hook
-
-export const useNotification = ()=>{
-
-
-return useContext(NotificationContext);
-
-
-};
-
 
 
 export default NotificationContext;

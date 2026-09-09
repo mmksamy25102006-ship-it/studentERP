@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaUserGraduate,
   FaChalkboardTeacher,
@@ -7,62 +7,102 @@ import {
   FaUniversity,
   FaBell,
 } from "react-icons/fa";
+
 import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
+  const [students, setStudents] = useState([]);
+  const [faculty, setFaculty] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [fees, setFees] = useState([]);
+
+  /* =========================
+        LOAD DATA
+  ========================= */
+
+  useEffect(() => {
+    const loadData = () => {
+      const studentData =
+        JSON.parse(localStorage.getItem("students")) || [];
+
+      const facultyData =
+        JSON.parse(localStorage.getItem("faculty")) || [];
+
+      const courseData =
+        JSON.parse(localStorage.getItem("courses")) || [];
+
+      const feeData =
+        JSON.parse(localStorage.getItem("fees")) || [];
+
+      setStudents(studentData);
+      setFaculty(facultyData);
+      setCourses(courseData);
+      setFees(feeData);
+    };
+
+    loadData();
+
+    window.addEventListener("storage", loadData);
+
+    return () => {
+      window.removeEventListener("storage", loadData);
+    };
+  }, []);
+
+
+  /* =========================
+        FEE CALCULATION
+  ========================= */
+
+  const totalFees = fees.reduce(
+    (sum, item) => sum + Number(item.paidFee || 0),
+    0
+  );
+
+
+  /* =========================
+        DASHBOARD CARDS
+  ========================= */
+
   const cards = [
     {
       title: "Students",
-      value: "1,250",
+      value: students.length,
       icon: <FaUserGraduate />,
-      color: "#4CAF50",
+      className: "students-card",
     },
     {
       title: "Faculty",
-      value: "85",
+      value: faculty.length,
       icon: <FaChalkboardTeacher />,
-      color: "#2196F3",
+      className: "faculty-card",
     },
     {
       title: "Courses",
-      value: "42",
+      value: courses.length,
       icon: <FaBook />,
-      color: "#FF9800",
+      className: "courses-card",
     },
     {
       title: "Fee Collection",
-      value: "₹18.5 L",
+      value: `₹${totalFees.toLocaleString("en-IN")}`,
       icon: <FaMoneyBillWave />,
-      color: "#9C27B0",
+      className: "fees-card",
     },
   ];
 
-  const recentStudents = [
-    {
-      id: "CSE001",
-      name: "John Doe",
-      department: "CSE",
-      year: "III",
-    },
-    {
-      id: "CSE002",
-      name: "Arun Kumar",
-      department: "IT",
-      year: "II",
-    },
-    {
-      id: "CSE003",
-      name: "Priya",
-      department: "ECE",
-      year: "IV",
-    },
-    {
-      id: "CSE004",
-      name: "Rahul",
-      department: "EEE",
-      year: "I",
-    },
-  ];
+
+  /* =========================
+        RECENT STUDENTS
+  ========================= */
+
+  const recentStudents =
+    students.slice(-5).reverse();
+
+
+  /* =========================
+        ANNOUNCEMENTS
+  ========================= */
 
   const notices = [
     "Admissions open for 2026-2027.",
@@ -71,83 +111,224 @@ const AdminDashboard = () => {
     "Semester Examination starts next month.",
   ];
 
+
   return (
     <div className="admin-dashboard">
 
-      <div className="admin-header">
-        <h1>
-          <FaUniversity />
-          Admin Dashboard
-        </h1>
+      {/* =========================
+            HEADER
+      ========================= */}
 
-        <p>College ERP Management System</p>
+      <div className="admin-header">
+
+        <div className="admin-header-content">
+
+          <div className="admin-header-icon">
+            <FaUniversity />
+          </div>
+
+          <div>
+            <h1>Admin Dashboard</h1>
+
+            <p>
+              College ERP Management System
+            </p>
+          </div>
+
+        </div>
+
+        <div className="admin-header-badge">
+          Administrator
+        </div>
+
       </div>
+
+
+      {/* =========================
+            STAT CARDS
+      ========================= */}
 
       <div className="dashboard-cards">
 
         {cards.map((card, index) => (
-          <div className="card" key={index}>
 
-            <div
-              className="icon"
-              style={{ background: card.color }}
-            >
+          <div
+            className={`card ${card.className}`}
+            key={index}
+          >
+
+            <div className="card-decoration"></div>
+
+            <div className="icon">
               {card.icon}
             </div>
 
-            <div>
-              <h2>{card.value}</h2>
-              <p>{card.title}</p>
+            <div className="card-content">
+
+              <h2>
+                {card.value}
+              </h2>
+
+              <p>
+                {card.title}
+              </p>
+
             </div>
 
           </div>
+
         ))}
 
       </div>
 
+
+      {/* =========================
+            MAIN GRID
+      ========================= */}
+
       <div className="dashboard-grid">
+
+        {/* =========================
+              RECENT STUDENTS
+        ========================= */}
 
         <div className="table-card">
 
-          <h2>Recent Students</h2>
+          <div className="section-heading">
 
-          <table>
+            <div className="section-icon students-heading">
+              <FaUserGraduate />
+            </div>
 
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Department</th>
-                <th>Year</th>
-              </tr>
-            </thead>
+            <div>
+              <h2>Recent Students</h2>
 
-            <tbody>
-              {recentStudents.map((student) => (
-                <tr key={student.id}>
-                  <td>{student.id}</td>
-                  <td>{student.name}</td>
-                  <td>{student.department}</td>
-                  <td>{student.year}</td>
+              <p>
+                Recently added students
+              </p>
+            </div>
+
+          </div>
+
+
+          <div className="table-wrapper">
+
+            <table>
+
+              <thead>
+                <tr>
+                  <th>Register No</th>
+                  <th>Name</th>
+                  <th>Department</th>
+                  <th>Semester</th>
                 </tr>
-              ))}
-            </tbody>
+              </thead>
 
-          </table>
+              <tbody>
+
+                {recentStudents.length > 0 ? (
+
+                  recentStudents.map(
+                    (student, index) => (
+
+                      <tr
+                        key={
+                          student.id ||
+                          student.regNo ||
+                          index
+                        }
+                      >
+
+                        <td className="student-id">
+                          {student.regNo ||
+                            student.id ||
+                            "-"}
+                        </td>
+
+                        <td>
+                          {student.name || "-"}
+                        </td>
+
+                        <td>
+                          {student.department || "-"}
+                        </td>
+
+                        <td>
+                          {student.semester ||
+                            student.year ||
+                            "-"}
+                        </td>
+
+                      </tr>
+
+                    )
+                  )
+
+                ) : (
+
+                  <tr>
+
+                    <td
+                      colSpan="4"
+                      className="empty-state"
+                    >
+                      No students available
+                    </td>
+
+                  </tr>
+
+                )}
+
+              </tbody>
+
+            </table>
+
+          </div>
 
         </div>
 
+
+        {/* =========================
+              ANNOUNCEMENTS
+        ========================= */}
+
         <div className="notice-card">
 
-          <h2>
-            <FaBell />
-            Announcements
-          </h2>
+          <div className="section-heading">
+
+            <div className="section-icon notification-heading">
+              <FaBell />
+            </div>
+
+            <div>
+              <h2>Announcements</h2>
+
+              <p>
+                Latest college updates
+              </p>
+            </div>
+
+          </div>
+
 
           <ul>
-            {notices.map((notice, index) => (
-              <li key={index}>{notice}</li>
-            ))}
+
+            {notices.map(
+              (notice, index) => (
+
+                <li key={index}>
+
+                  <span className="notice-dot"></span>
+
+                  <span>
+                    {notice}
+                  </span>
+
+                </li>
+
+              )
+            )}
+
           </ul>
 
         </div>

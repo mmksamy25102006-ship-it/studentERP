@@ -1,104 +1,91 @@
-import React, { useState } from "react";
-import {
-  FaBell,
-  FaCheckCircle,
-  FaExclamationCircle,
-  FaInfoCircle,
-  FaTimes,
-} from "react-icons/fa";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import "./Notification.css";
 
-const Notification = () => {
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      type: "success",
-      title: "Attendance Updated",
-      message: "Your attendance has been updated successfully.",
-      time: "10 mins ago",
-    },
-    {
-      id: 2,
-      type: "info",
-      title: "Exam Schedule",
-      message: "Semester exam timetable has been published.",
-      time: "1 hour ago",
-    },
-    {
-      id: 3,
-      type: "warning",
-      title: "Fee Reminder",
-      message: "Your semester fee payment is due this week.",
-      time: "Yesterday",
-    },
-  ]);
+function StudentNotification() {
+  const [notifications, setNotifications] = useState([]);
 
-  const removeNotification = (id) => {
-    setNotifications(
-      notifications.filter((item) => item.id !== id)
-    );
-  };
+  useEffect(() => {
+    loadNotifications();
+  }, []);
 
-  const getIcon = (type) => {
-    switch (type) {
-      case "success":
-        return <FaCheckCircle className="success" />;
+  const loadNotifications = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/api/notifications"
+      );
 
-      case "warning":
-        return <FaExclamationCircle className="warning" />;
-
-      default:
-        return <FaInfoCircle className="info" />;
+      setNotifications(res.data);
+    } catch (error) {
+      console.error("Failed to load notifications:", error);
     }
   };
 
   return (
-    <div className="notification-card">
+    <div className="student-notification">
 
+      {/* =========================
+          HEADER
+      ========================= */}
       <div className="notification-header">
-        <h2>
-          <FaBell /> Notifications
-        </h2>
+        <h2>Notice Board</h2>
+
+        <p>
+          Latest announcements, events, circulars & updates
+        </p>
       </div>
 
+      {/* =========================
+          NOTIFICATION LIST
+      ========================= */}
       <div className="notification-list">
 
-        {notifications.length === 0 ? (
-          <div className="empty">
-            No Notifications
-          </div>
-        ) : (
-          notifications.map((item) => (
-            <div
-              className="notification-item"
-              key={item.id}
-            >
-              <div className="notification-icon">
-                {getIcon(item.type)}
-              </div>
+        {notifications.map((item) => (
+          <div
+            className="notice-card"
+            key={item._id}
+          >
 
-              <div className="notification-content">
-                <h4>{item.title}</h4>
-                <p>{item.message}</p>
-                <span>{item.time}</span>
-              </div>
-
-              <button
-                className="close-btn"
-                onClick={() =>
-                  removeNotification(item.id)
-                }
-              >
-                <FaTimes />
-              </button>
+            {/* =========================
+                ICON
+            ========================= */}
+            <div className="notice-icon">
+              <span>🔔</span>
             </div>
-          ))
-        )}
+
+            {/* =========================
+                CONTENT
+            ========================= */}
+            <div className="notice-content">
+
+              <h3>
+                {item.title}
+              </h3>
+
+              <small>
+                {new Date(item.createdAt).toLocaleString()}
+              </small>
+
+              <p>
+                {item.message}
+              </p>
+
+            </div>
+
+            {/* =========================
+                BADGE
+            ========================= */}
+            <div className="notice-badge">
+              <span>Notice</span>
+            </div>
+
+          </div>
+        ))}
 
       </div>
 
     </div>
   );
-};
+}
 
-export default Notification;
+export default StudentNotification;

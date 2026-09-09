@@ -1,0 +1,1015 @@
+/* =====================================================
+   DEPARTMENT MANAGEMENT
+   Light + Dark Glass Theme
+===================================================== */
+
+/* =========================
+        PAGE
+========================= */
+
+.department-page {
+  min-height: 100vh;
+  padding: 30px;
+  background: #f4f7fc;
+  color: #222;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+/* =========================
+        HEADER
+========================= */
+
+.department-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 25px 30px;
+  margin-bottom: 25px;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+
+  transition:
+    background 0.3s ease,
+    border 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.department-title-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.department-title-icon {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: #dbeafe;
+  color: #2563eb;
+
+  font-size: 23px;
+}
+
+.department-title-section h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+.department-title-section p {
+  margin-top: 5px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* =========================
+       COUNT
+========================= */
+
+.department-count {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 10px 12px 10px 18px;
+
+  border-radius: 12px;
+
+  background: #eef4ff;
+  border: 1px solid #dbeafe;
+
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.department-count strong {
+  min-width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #3f51b5
+  );
+
+  color: #ffffff;
+  font-size: 17px;
+}
+
+/* =========================
+       ADD FORM CARD
+========================= */
+
+.department-form-card {
+  padding: 25px;
+  margin-bottom: 22px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+
+  transition:
+    background 0.3s ease,
+    border 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.form-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  margin-bottom: 18px;
+}
+
+.form-heading-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #eef4ff;
+  color: #2563eb;
+}
+
+.form-heading h3 {
+  font-size: 17px;
+  color: #1f2937;
+}
+
+.form-heading p {
+  margin-top: 3px;
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* =========================
+       FORM
+========================= */
+
+.department-form {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  gap: 14px;
+}
+
+.department-input-wrapper {
+  position: relative;
+
+  flex: 1;
+
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+
+  border: 1px solid #dbe1ea;
+  border-radius: 12px;
+
+  background: #f8fafc;
+
+  transition:
+    border 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.department-input-wrapper > svg {
+  margin-left: 16px;
+
+  color: #2563eb;
+  font-size: 17px;
+}
+
+.department-input-wrapper input {
+  width: 100%;
+  height: 100%;
+
+  padding: 0 45px 0 12px;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #222;
+  font-size: 15px;
+}
+
+.department-input-wrapper input::placeholder {
+  color: #94a3b8;
+}
+
+.department-input-wrapper:focus-within {
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.clear-input-btn {
+  position: absolute;
+  right: 12px;
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+  color: #94a3b8;
+
+  cursor: pointer;
+}
+
+.clear-input-btn:hover {
+  background: #e5e7eb;
+  color: #ef4444;
+}
+
+/* =========================
+       ADD BUTTON
+========================= */
+
+.department-add-btn {
+  height: 52px;
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  padding: 0 24px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #3f51b5
+  );
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  box-shadow:
+    0 6px 15px rgba(37, 99, 235, 0.22);
+
+  cursor: pointer;
+
+  transition: 0.3s ease;
+}
+
+.department-add-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 22px rgba(37, 99, 235, 0.30);
+}
+
+/* =========================
+       SEARCH
+========================= */
+
+.department-search {
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 18px;
+  margin-bottom: 22px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 15px;
+
+  box-shadow:
+    0 7px 18px rgba(0, 0, 0, 0.06);
+
+  transition:
+    background 0.3s ease,
+    border 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.department-search-icon {
+  color: #2563eb;
+  font-size: 18px;
+}
+
+.department-search input {
+  flex: 1;
+
+  height: 100%;
+
+  padding: 0 14px;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #222;
+
+  font-size: 15px;
+}
+
+.department-search input::placeholder {
+  color: #94a3b8;
+}
+
+.department-clear-search {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+  color: #94a3b8;
+
+  cursor: pointer;
+}
+
+.department-clear-search:hover {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+/* =========================
+       TABLE CARD
+========================= */
+
+.department-table-card {
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.07);
+
+  transition:
+    background 0.3s ease,
+    border 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 20px 25px;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table-header h3 {
+  color: #1f2937;
+  font-size: 18px;
+}
+
+.table-header p {
+  margin-top: 4px;
+
+  color: #64748b;
+  font-size: 13px;
+}
+
+/* =========================
+       TABLE
+========================= */
+
+.department-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.department-table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  background: transparent;
+}
+
+.department-table thead {
+  background: #3f51b5;
+}
+
+.department-table th {
+  padding: 16px 20px;
+
+  color: #ffffff;
+
+  text-align: left;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  letter-spacing: 0.3px;
+}
+
+.department-table th:first-child {
+  width: 100px;
+}
+
+.department-table th:last-child {
+  width: 160px;
+  text-align: center;
+}
+
+.department-table td {
+  padding: 17px 20px;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  color: #374151;
+
+  font-size: 14px;
+}
+
+.department-table tbody tr {
+  transition: 0.25s ease;
+}
+
+.department-table tbody tr:hover {
+  background: #f8fbff;
+}
+
+.department-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* =========================
+       SERIAL NUMBER
+========================= */
+
+.serial-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 42px;
+  height: 30px;
+
+  padding: 0 8px;
+
+  border-radius: 8px;
+
+  background: #eef2f7;
+  color: #64748b;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* =========================
+       DEPARTMENT NAME
+========================= */
+
+.department-name {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  font-weight: 500;
+}
+
+.department-row-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  background: #eef4ff;
+  color: #2563eb;
+
+  font-size: 15px;
+}
+
+.department-name span {
+  color: #334155;
+}
+
+/* =========================
+       DELETE BUTTON
+========================= */
+
+.departmentdelete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  min-width: 95px;
+  height: 38px;
+
+  margin: auto;
+
+  border: none;
+  border-radius: 9px;
+
+  background: #ef4444;
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.3s ease;
+}
+
+.departmentdelete-btn:hover {
+  background: #dc2626;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 7px 15px rgba(239, 68, 68, 0.22);
+}
+
+/* =========================
+       NO DATA
+========================= */
+
+.department-no-data {
+  padding: 55px 20px !important;
+
+  text-align: center !important;
+}
+
+.no-data-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.no-data-icon {
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 12px;
+
+  border-radius: 50%;
+
+  background: #eef4ff;
+  color: #2563eb;
+
+  font-size: 20px;
+}
+
+.no-data-content h3 {
+  color: #374151;
+  font-size: 17px;
+}
+
+.no-data-content p {
+  margin-top: 5px;
+
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.reset-search-btn {
+  margin-top: 15px;
+
+  padding: 9px 17px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+/* =====================================================
+              DARK THEME
+        GLASS EFFECT ONLY
+===================================================== */
+
+.dark-theme .department-page {
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(59, 130, 246, 0.10),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 80%,
+      rgba(99, 102, 241, 0.08),
+      transparent 30%
+    ),
+    #111827;
+
+  color: #f8fafc;
+}
+
+/* =========================
+       DARK HEADER
+========================= */
+
+.dark-theme .department-header {
+  background: rgba(31, 41, 55, 0.78);
+
+  border: 1px solid rgba(148, 163, 184, 0.20);
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.28);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.dark-theme .department-title-icon {
+  background: rgba(37, 99, 235, 0.16);
+
+  border: 1px solid rgba(96, 165, 250, 0.25);
+
+  color: #60a5fa;
+}
+
+.dark-theme .department-title-section h2 {
+  color: #f8fafc;
+}
+
+.dark-theme .department-title-section p {
+  color: #94a3b8;
+}
+
+.dark-theme .department-count {
+  background: rgba(37, 99, 235, 0.10);
+
+  border: 1px solid rgba(96, 165, 250, 0.22);
+
+  color: #94a3b8;
+}
+
+.dark-theme .department-count strong {
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #4f46e5
+  );
+
+  color: #ffffff;
+}
+
+/* =========================
+       DARK FORM CARD
+========================= */
+
+.dark-theme .department-form-card {
+  background: rgba(31, 41, 55, 0.72);
+
+  border: 1px solid rgba(148, 163, 184, 0.18);
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.25);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.dark-theme .form-heading-icon {
+  background: rgba(37, 99, 235, 0.14);
+
+  border: 1px solid rgba(96, 165, 250, 0.20);
+
+  color: #60a5fa;
+}
+
+.dark-theme .form-heading h3 {
+  color: #f1f5f9;
+}
+
+.dark-theme .form-heading p {
+  color: #94a3b8;
+}
+
+/* =========================
+       DARK INPUT
+========================= */
+
+.dark-theme .department-input-wrapper {
+  background: rgba(17, 24, 39, 0.55);
+
+  border: 1px solid rgba(148, 163, 184, 0.20);
+}
+
+.dark-theme .department-input-wrapper > svg {
+  color: #60a5fa;
+}
+
+.dark-theme .department-input-wrapper input {
+  color: #f8fafc;
+}
+
+.dark-theme .department-input-wrapper input::placeholder {
+  color: #64748b;
+}
+
+.dark-theme .department-input-wrapper:focus-within {
+  border-color: #3b82f6;
+
+  background: rgba(15, 23, 42, 0.70);
+
+  box-shadow:
+    0 0 0 3px rgba(59, 130, 246, 0.13);
+}
+
+.dark-theme .clear-input-btn {
+  color: #64748b;
+}
+
+.dark-theme .clear-input-btn:hover {
+  background: rgba(148, 163, 184, 0.12);
+
+  color: #f87171;
+}
+
+/* =========================
+       DARK SEARCH
+========================= */
+
+.dark-theme .department-search {
+  background: rgba(31, 41, 55, 0.72);
+
+  border: 1px solid rgba(148, 163, 184, 0.18);
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.22);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.dark-theme .department-search-icon {
+  color: #60a5fa;
+}
+
+.dark-theme .department-search input {
+  color: #f8fafc;
+}
+
+.dark-theme .department-search input::placeholder {
+  color: #64748b;
+}
+
+.dark-theme .department-clear-search {
+  color: #64748b;
+}
+
+.dark-theme .department-clear-search:hover {
+  background: rgba(239, 68, 68, 0.12);
+
+  color: #f87171;
+}
+
+/* =========================
+       DARK TABLE CARD
+========================= */
+
+.dark-theme .department-table-card {
+  background: rgba(31, 41, 55, 0.74);
+
+  border: 1px solid rgba(148, 163, 184, 0.18);
+
+  box-shadow:
+    0 14px 40px rgba(0, 0, 0, 0.28);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.dark-theme .table-header {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.dark-theme .table-header h3 {
+  color: #f1f5f9;
+}
+
+.dark-theme .table-header p {
+  color: #64748b;
+}
+
+/* =========================
+       DARK TABLE
+========================= */
+
+.dark-theme .department-table {
+  background: transparent;
+}
+
+.dark-theme .department-table thead {
+  background: #3949ab;
+}
+
+.dark-theme .department-table td {
+  color: #cbd5e1;
+
+  border-bottom:
+    1px solid rgba(148, 163, 184, 0.16);
+}
+
+.dark-theme .department-table tbody tr:hover {
+  background: rgba(59, 130, 246, 0.07);
+}
+
+.dark-theme .department-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* =========================
+       DARK SERIAL
+========================= */
+
+.dark-theme .serial-number {
+  background: rgba(71, 85, 105, 0.25);
+
+  border: 1px solid rgba(148, 163, 184, 0.12);
+
+  color: #94a3b8;
+}
+
+/* =========================
+       DARK DEPARTMENT
+========================= */
+
+.dark-theme .department-row-icon {
+  background: rgba(37, 99, 235, 0.12);
+
+  border: 1px solid rgba(96, 165, 250, 0.20);
+
+  color: #60a5fa;
+}
+
+.dark-theme .department-name span {
+  color: #cbd5e1;
+}
+
+/* =========================
+       DARK NO DATA
+========================= */
+
+.dark-theme .no-data-icon {
+  background: rgba(37, 99, 235, 0.12);
+
+  border: 1px solid rgba(96, 165, 250, 0.18);
+
+  color: #60a5fa;
+}
+
+.dark-theme .no-data-content h3 {
+  color: #e2e8f0;
+}
+
+.dark-theme .no-data-content p {
+  color: #64748b;
+}
+
+/* =====================================================
+        RESPONSIVE
+===================================================== */
+
+@media (max-width: 900px) {
+
+  .department-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .department-count {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .department-page {
+    padding: 15px;
+  }
+
+  .department-header {
+    padding: 20px;
+  }
+
+  .department-title-section h2 {
+    font-size: 23px;
+  }
+
+  .department-title-section {
+    align-items: flex-start;
+  }
+
+  .department-form {
+    flex-direction: column;
+  }
+
+  .department-input-wrapper {
+    width: 100%;
+  }
+
+  .department-add-btn {
+    width: 100%;
+  }
+
+  .department-form-card {
+    padding: 20px;
+  }
+
+  .department-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .department-table {
+    min-width: 700px;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .department-page {
+    padding: 10px;
+  }
+
+  .department-title-section h2 {
+    font-size: 20px;
+  }
+
+  .department-title-icon {
+    width: 45px;
+    height: 45px;
+  }
+
+  .department-search {
+    height: 52px;
+  }
+
+}

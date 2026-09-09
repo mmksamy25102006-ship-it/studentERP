@@ -9,6 +9,7 @@ import {
   FaExpand,
   FaCompress,
   FaUserCircle,
+  FaUserGraduate,
   FaSignOutAlt,
   FaCog,
 } from "react-icons/fa";
@@ -173,16 +174,11 @@ onClick={() => setSidebarOpen(!sidebarOpen)}
 
 
 
-
-<img
-
-src="/logo.png"
-
-alt="Nexus ERP"
-
-className="top-logo"
-
-/>
+{/* 
+<div className="navbar-logo">
+  <FaUserGraduate />
+  <span>NEXUS ERP</span>
+</div> */}
 
 
 
@@ -336,12 +332,11 @@ onClick={()=>navigate("/notices")}
 
 <FaBell/>
 
-
-<span className="badge1">
-
-{unreadCount}
-
-</span>
+{unreadCount > 0 && (
+  <span className="badge1">
+    {unreadCount}
+  </span>
+)}
 
 
 </button>
@@ -411,22 +406,25 @@ showProfile && (
 
 
 
-
-
 <div
+  className="dropdown-item"
+  onClick={() => {
+    const role = (user?.role || "").toLowerCase();
 
-className="dropdown-item"
+    if (role === "admin") {
+      navigate("/admin-dashboard");
+    } else if (role === "faculty") {
+      navigate("/faculty-dashboard");
+    } else {
+      navigate("/dashboard");
+    }
 
-onClick={()=>navigate("/profile")}
-
+    setShowProfile(false);
+  }}
 >
-
-<FaUserCircle/>
-
-Profile
-
+  <FaUserCircle />
+  Profile
 </div>
-
 
 
 

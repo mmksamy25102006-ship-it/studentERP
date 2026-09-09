@@ -1,0 +1,1684 @@
+/* =========================================================
+   STUDENTERP
+   FACULTY ATTENDANCE
+   LIGHT + DARK THEME
+   ========================================================= */
+
+/* =========================================================
+   LIGHT THEME
+   ========================================================= */
+
+.faculty-attendance-page {
+  --fa-bg: #f4f6fa;
+  --fa-surface: #ffffff;
+  --fa-surface-2: #f8f9fc;
+  --fa-surface-3: #f1f3f8;
+
+  --fa-text: #172033;
+  --fa-text-2: #4e5d75;
+  --fa-muted: #8792a7;
+  --fa-muted-2: #a0a9b8;
+
+  --fa-border: #e1e6ee;
+  --fa-border-2: #edf0f4;
+
+  --fa-primary: #4f46e5;
+  --fa-primary-hover: #4338ca;
+  --fa-primary-soft: #eef2ff;
+
+  --fa-green: #16834b;
+  --fa-green-soft: #eaf8f0;
+  --fa-green-border: #c8e8d5;
+
+  --fa-red: #d13d4c;
+  --fa-red-soft: #fff0f2;
+  --fa-red-border: #efc9ce;
+
+  --fa-cyan: #16899a;
+  --fa-cyan-soft: #edf9fb;
+
+  --fa-shadow:
+    0 10px 35px rgba(26, 39, 69, 0.06);
+
+  width: 100%;
+  min-height: 100vh;
+
+  padding: 30px 34px 55px;
+
+  background: var(--fa-bg);
+  color: var(--fa-text);
+
+  font-family:
+    "Poppins",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.faculty-attendance-page *,
+.faculty-attendance-page *::before,
+.faculty-attendance-page *::after {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.fa-page-header {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  margin-bottom: 25px;
+}
+
+.fa-header-left {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+}
+
+.fa-header-icon {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--fa-border);
+
+  border-radius: 15px;
+
+  background: var(--fa-primary-soft);
+
+  color: var(--fa-primary);
+
+  font-size: 22px;
+}
+
+.fa-eyebrow {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: var(--fa-muted);
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+.fa-page-header h1 {
+  margin: 0;
+
+  color: var(--fa-text);
+
+  font-size: 29px;
+
+  line-height: 1.2;
+
+  font-weight: 800;
+
+  letter-spacing: -0.6px;
+}
+
+.fa-page-header p {
+  margin: 5px 0 0;
+
+  color: var(--fa-muted);
+
+  font-size: 13px;
+}
+
+/* =========================================================
+   TERM CARD
+   ========================================================= */
+
+.fa-term-card {
+  min-width: 185px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 12px 15px;
+
+  border: 1px solid var(--fa-border);
+
+  border-radius: 13px;
+
+  background: var(--fa-surface);
+
+  box-shadow: var(--fa-shadow);
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.fa-term-card > svg {
+  color: var(--fa-primary);
+
+  font-size: 18px;
+}
+
+.fa-term-card span {
+  display: block;
+
+  color: var(--fa-muted);
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.fa-term-card strong {
+  display: block;
+
+  margin-top: 2px;
+
+  color: var(--fa-text);
+
+  font-size: 12px;
+}
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.fa-error {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 18px;
+
+  padding: 13px 16px;
+
+  border: 1px solid var(--fa-red-border);
+
+  border-radius: 12px;
+
+  background: var(--fa-red-soft);
+
+  color: var(--fa-red);
+
+  font-size: 12px;
+}
+
+.fa-error strong {
+  font-weight: 800;
+}
+
+.fa-error span {
+  color: var(--fa-text-2);
+}
+
+/* =========================================================
+   MAIN CARD
+   ========================================================= */
+
+.fa-main-card {
+  width: 100%;
+
+  overflow: hidden;
+
+  border: 1px solid var(--fa-border);
+
+  border-radius: 18px;
+
+  background: var(--fa-surface);
+
+  box-shadow: var(--fa-shadow);
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+/* =========================================================
+   CARD HEADER
+   ========================================================= */
+
+.fa-card-header {
+  min-height: 88px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 25px;
+
+  padding: 20px 25px;
+
+  border-bottom: 1px solid var(--fa-border);
+}
+
+.fa-section-label {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: var(--fa-muted);
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+}
+
+.fa-card-header h2 {
+  margin: 0;
+
+  color: var(--fa-text);
+
+  font-size: 19px;
+
+  font-weight: 800;
+}
+
+.fa-card-header p {
+  margin: 4px 0 0;
+
+  color: var(--fa-muted);
+
+  font-size: 11px;
+}
+
+.fa-class-badge {
+  padding: 10px 14px;
+
+  border: 1px solid var(--fa-border);
+
+  border-radius: 11px;
+
+  background: var(--fa-surface-2);
+
+  text-align: right;
+}
+
+.fa-class-badge span {
+  display: block;
+
+  color: var(--fa-muted);
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.fa-class-badge strong {
+  display: block;
+
+  margin-top: 2px;
+
+  color: var(--fa-text-2);
+
+  font-size: 11px;
+}
+
+/* =========================================================
+   CONTROLS
+   ========================================================= */
+
+.fa-controls {
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr
+    1.2fr;
+
+  gap: 16px;
+
+  padding: 20px 25px;
+
+  background: var(--fa-surface-2);
+
+  border-bottom: 1px solid var(--fa-border);
+
+  transition:
+    background 0.25s ease;
+}
+
+.fa-field label {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  margin-bottom: 7px;
+
+  color: var(--fa-text-2);
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.7px;
+}
+
+.fa-field label svg {
+  color: var(--fa-primary);
+
+  font-size: 11px;
+}
+
+.fa-field input,
+.fa-field select {
+  width: 100%;
+
+  height: 44px;
+
+  padding: 0 13px;
+
+  border: 1px solid var(--fa-border);
+
+  border-radius: 10px;
+
+  outline: none;
+
+  background: var(--fa-surface);
+
+  color: var(--fa-text);
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.2s ease;
+}
+
+.fa-field input:focus,
+.fa-field select:focus {
+  border-color: var(--fa-primary);
+
+  box-shadow:
+    0 0 0 3px
+      rgba(79, 70, 229, 0.11);
+}
+
+.fa-field select {
+  appearance: none;
+
+  cursor: pointer;
+}
+
+.fa-select-wrapper {
+  position: relative;
+}
+
+.fa-select-wrapper select {
+  padding-right: 35px;
+}
+
+.fa-select-wrapper > svg {
+  position: absolute;
+
+  top: 50%;
+  right: 13px;
+
+  transform: translateY(-50%);
+
+  pointer-events: none;
+
+  color: var(--fa-muted);
+
+  font-size: 10px;
+}
+
+.fa-subject-box {
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  padding: 0 13px;
+
+  border: 1px solid var(--fa-border);
+
+  border-radius: 10px;
+
+  background: var(--fa-surface);
+}
+
+.fa-subject-box strong {
+  overflow: hidden;
+
+  color: var(--fa-text);
+
+  font-size: 12px;
+
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+}
+
+.fa-subject-box span {
+  flex-shrink: 0;
+
+  color: var(--fa-muted);
+
+  font-size: 10px;
+}
+
+/* =========================================================
+   SELECTED CLASS
+   ========================================================= */
+
+.fa-selected-class {
+  min-height: 72px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 22px;
+
+  padding: 13px 25px;
+
+  background: var(--fa-surface-3);
+
+  border-bottom: 1px solid var(--fa-border);
+
+  transition:
+    background 0.25s ease;
+}
+
+.fa-selected-info {
+  min-width: 190px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  flex: 1;
+}
+
+.fa-live-indicator {
+  width: 8px;
+  height: 8px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: var(--fa-primary);
+
+  box-shadow:
+    0 0 0 5px
+      rgba(79, 70, 229, 0.1);
+}
+
+.fa-selected-info span {
+  display: block;
+
+  color: var(--fa-muted);
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.9px;
+}
+
+.fa-selected-info strong {
+  display: block;
+
+  margin-top: 2px;
+
+  color: var(--fa-text);
+
+  font-size: 14px;
+}
+
+.fa-selected-meta {
+  display: flex;
+  align-items: center;
+
+  gap: 25px;
+}
+
+.fa-selected-meta div {
+  min-width: 70px;
+}
+
+.fa-selected-meta span {
+  display: block;
+
+  color: var(--fa-muted);
+
+  font-size: 8px;
+
+  font-weight: 700;
+}
+
+.fa-selected-meta strong {
+  display: block;
+
+  margin-top: 2px;
+
+  color: var(--fa-text-2);
+
+  font-size: 10px;
+}
+
+.fa-reload-btn {
+  height: 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  padding: 0 12px;
+
+  border: 1px solid var(--fa-border);
+
+  border-radius: 9px;
+
+  background: var(--fa-surface);
+
+  color: var(--fa-text-2);
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.fa-reload-btn:hover:not(:disabled) {
+  border-color: var(--fa-primary);
+
+  color: var(--fa-primary);
+
+  background: var(--fa-primary-soft);
+}
+
+.fa-reload-btn:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   QUICK ACTIONS
+   ========================================================= */
+
+.fa-quick-actions {
+  min-height: 67px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 12px 25px;
+
+  border-bottom: 1px solid var(--fa-border);
+}
+
+.fa-quick-actions > div:first-child span {
+  display: block;
+
+  color: var(--fa-muted);
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.fa-quick-actions > div:first-child p {
+  margin: 3px 0 0;
+
+  color: var(--fa-muted);
+
+  font-size: 10px;
+}
+
+.fa-quick-buttons {
+  display: flex;
+
+  gap: 8px;
+}
+
+.fa-quick-buttons button {
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  padding: 0 12px;
+
+  border-radius: 8px;
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.fa-quick-buttons button:hover {
+  transform: translateY(-1px);
+}
+
+.fa-quick-present {
+  border: 1px solid var(--fa-green-border);
+
+  background: var(--fa-green-soft);
+
+  color: var(--fa-green);
+}
+
+.fa-quick-absent {
+  border: 1px solid var(--fa-red-border);
+
+  background: var(--fa-red-soft);
+
+  color: var(--fa-red);
+}
+
+/* =========================================================
+   STATISTICS
+   ========================================================= */
+
+.fa-stat-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 12px;
+
+  padding: 18px 25px;
+
+  border-bottom: 1px solid var(--fa-border);
+}
+
+.fa-stat-card {
+  min-height: 76px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 12px 13px;
+
+  border: 1px solid var(--fa-border);
+
+  border-radius: 12px;
+
+  background: var(--fa-surface);
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.2s ease;
+}
+
+.fa-stat-card:hover {
+  transform: translateY(-1px);
+
+  border-color: #cdd4e1;
+}
+
+.fa-stat-icon {
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  font-size: 15px;
+}
+
+.fa-stat-icon.students {
+  background: var(--fa-primary-soft);
+
+  color: var(--fa-primary);
+}
+
+.fa-stat-icon.present {
+  background: var(--fa-green-soft);
+
+  color: var(--fa-green);
+}
+
+.fa-stat-icon.absent {
+  background: var(--fa-red-soft);
+
+  color: var(--fa-red);
+}
+
+.fa-stat-icon.rate {
+  background: var(--fa-cyan-soft);
+
+  color: var(--fa-cyan);
+}
+
+.fa-stat-card span {
+  display: block;
+
+  color: var(--fa-muted);
+
+  font-size: 9px;
+
+  font-weight: 600;
+}
+
+.fa-stat-card strong {
+  display: block;
+
+  margin-top: 1px;
+
+  color: var(--fa-text);
+
+  font-size: 19px;
+
+  font-weight: 800;
+}
+
+.fa-stat-card small {
+  display: block;
+
+  margin-top: 1px;
+
+  color: var(--fa-muted-2);
+
+  font-size: 8px;
+}
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
+
+.fa-progress-section {
+  padding: 17px 25px;
+
+  border-bottom: 1px solid var(--fa-border);
+}
+
+.fa-progress-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  margin-bottom: 9px;
+}
+
+.fa-progress-top span {
+  display: block;
+
+  color: var(--fa-muted);
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.8px;
+}
+
+.fa-progress-top strong {
+  display: block;
+
+  margin-top: 2px;
+
+  color: var(--fa-text-2);
+
+  font-size: 10px;
+}
+
+.fa-progress-top b {
+  color: var(--fa-primary);
+
+  font-size: 15px;
+
+  font-weight: 800;
+}
+
+.fa-progress-track {
+  width: 100%;
+
+  height: 7px;
+
+  overflow: hidden;
+
+  border-radius: 20px;
+
+  background: var(--fa-surface-3);
+}
+
+.fa-progress-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: var(--fa-primary);
+
+  transition: width 0.35s ease;
+}
+
+/* =========================================================
+   MARK HEADER
+   ========================================================= */
+
+.fa-mark-header {
+  min-height: 82px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 18px 25px;
+
+  border-bottom: 1px solid var(--fa-border);
+}
+
+.fa-mark-header > div:first-child span {
+  display: block;
+
+  color: var(--fa-muted);
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.fa-mark-header h2 {
+  margin: 3px 0 0;
+
+  color: var(--fa-text);
+
+  font-size: 18px;
+
+  font-weight: 800;
+}
+
+.fa-mark-header p {
+  margin: 3px 0 0;
+
+  color: var(--fa-muted);
+
+  font-size: 10px;
+}
+
+.fa-mark-summary {
+  display: flex;
+
+  gap: 25px;
+}
+
+.fa-mark-summary div {
+  min-width: 55px;
+
+  text-align: right;
+}
+
+.fa-mark-summary span {
+  display: block;
+
+  color: var(--fa-muted);
+
+  font-size: 8px;
+
+  font-weight: 700;
+}
+
+.fa-mark-summary strong {
+  display: block;
+
+  margin-top: 1px;
+
+  font-size: 18px;
+
+  font-weight: 800;
+}
+
+.fa-mark-summary strong.green {
+  color: var(--fa-green);
+}
+
+.fa-mark-summary strong.red {
+  color: var(--fa-red);
+}
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.fa-table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+.fa-table {
+  width: 100%;
+
+  min-width: 780px;
+
+  border-collapse: collapse;
+
+  table-layout: fixed;
+}
+
+.fa-table th {
+  height: 43px;
+
+  padding: 0 18px;
+
+  background: var(--fa-surface-2);
+
+  border-bottom: 1px solid var(--fa-border);
+
+  color: var(--fa-muted);
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  text-align: left;
+
+  letter-spacing: 0.7px;
+}
+
+.fa-table th:nth-child(1) {
+  width: 65px;
+}
+
+.fa-table th:nth-child(2) {
+  width: 150px;
+}
+
+.fa-table th:nth-child(3) {
+  width: 280px;
+}
+
+.fa-table th:nth-child(4) {
+  width: 260px;
+}
+
+.fa-table td {
+  height: 67px;
+
+  padding: 8px 18px;
+
+  border-bottom: 1px solid var(--fa-border-2);
+
+  color: var(--fa-text);
+
+  background: var(--fa-surface);
+
+  vertical-align: middle;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.fa-table tbody tr:hover td {
+  background: var(--fa-surface-2);
+}
+
+.fa-row-number {
+  color: var(--fa-muted);
+
+  font-size: 10px;
+
+  font-weight: 800;
+}
+
+.fa-student-id {
+  color: var(--fa-primary);
+
+  font-size: 11px;
+
+  font-weight: 800;
+}
+
+.fa-student {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.fa-avatar {
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: var(--fa-primary-soft);
+
+  color: var(--fa-primary);
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+.fa-student strong {
+  display: block;
+
+  color: var(--fa-text);
+
+  font-size: 12px;
+
+  font-weight: 750;
+}
+
+.fa-student span {
+  display: block;
+
+  margin-top: 2px;
+
+  color: var(--fa-muted);
+
+  font-size: 9px;
+}
+
+/* =========================================================
+   ATTENDANCE BUTTONS
+   ========================================================= */
+
+.fa-attendance-actions {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(110px, 1fr)
+    minmax(110px, 1fr);
+
+  gap: 8px;
+
+  max-width: 280px;
+}
+
+.fa-status-btn {
+  height: 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  padding: 0 10px;
+
+  border: 1px solid var(--fa-border);
+
+  border-radius: 8px;
+
+  background: var(--fa-surface);
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.fa-status-btn:hover {
+  transform: translateY(-1px);
+}
+
+.fa-status-btn.present {
+  color: var(--fa-green);
+}
+
+.fa-status-btn.present.active {
+  border-color: var(--fa-green-border);
+
+  background: var(--fa-green-soft);
+
+  color: var(--fa-green);
+}
+
+.fa-status-btn.absent {
+  color: var(--fa-red);
+}
+
+.fa-status-btn.absent.active {
+  border-color: var(--fa-red-border);
+
+  background: var(--fa-red-soft);
+
+  color: var(--fa-red);
+}
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
+.fa-empty-cell {
+  height: 150px !important;
+
+  color: var(--fa-muted) !important;
+
+  text-align: center;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.fa-footer {
+  min-height: 78px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 14px 25px;
+
+  background: var(--fa-surface-2);
+
+  border-top: 1px solid var(--fa-border);
+}
+
+.fa-footer-info {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.fa-footer-icon {
+  width: 35px;
+  height: 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: var(--fa-primary-soft);
+
+  color: var(--fa-primary);
+
+  font-size: 14px;
+}
+
+.fa-footer-info strong {
+  display: block;
+
+  color: var(--fa-text-2);
+
+  font-size: 11px;
+}
+
+.fa-footer-info span {
+  display: block;
+
+  margin-top: 2px;
+
+  color: var(--fa-muted);
+
+  font-size: 9px;
+}
+
+.fa-footer-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+}
+
+.fa-reset-btn {
+  height: 39px;
+
+  padding: 0 16px;
+
+  border: 1px solid var(--fa-border);
+
+  border-radius: 9px;
+
+  background: var(--fa-surface);
+
+  color: var(--fa-text-2);
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.fa-reset-btn:hover:not(:disabled) {
+  border-color: var(--fa-primary);
+
+  color: var(--fa-primary);
+
+  background: var(--fa-primary-soft);
+}
+
+.fa-save-btn {
+  height: 40px;
+
+  min-width: 155px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 0 18px;
+
+  border: 1px solid var(--fa-primary);
+
+  border-radius: 9px;
+
+  background: var(--fa-primary);
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 16px
+      rgba(79, 70, 229, 0.2);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.fa-save-btn:hover:not(:disabled) {
+  background: var(--fa-primary-hover);
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 20px
+      rgba(79, 70, 229, 0.25);
+}
+
+.fa-save-btn:disabled,
+.fa-reset-btn:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.faculty-loading-card {
+  min-height: 50vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--fa-border);
+
+  border-radius: 18px;
+
+  background: var(--fa-surface);
+
+  box-shadow: var(--fa-shadow);
+}
+
+.faculty-spinner {
+  width: 34px;
+  height: 34px;
+
+  margin-bottom: 14px;
+
+  border: 3px solid var(--fa-border);
+
+  border-top-color: var(--fa-primary);
+
+  border-radius: 50%;
+
+  animation:
+    fa-spin 0.8s linear infinite;
+}
+
+.faculty-loading-card h2 {
+  margin: 0;
+
+  color: var(--fa-text);
+
+  font-size: 16px;
+}
+
+.faculty-loading-card p {
+  margin: 5px 0 0;
+
+  color: var(--fa-muted);
+
+  font-size: 11px;
+}
+
+@keyframes fa-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   DARK THEME
+   Works when your StudentERP adds .dark-theme to the page
+   or to a parent element.
+   ========================================================= */
+
+.dark-theme .faculty-attendance-page,
+[data-theme="dark"] .faculty-attendance-page,
+.dark .faculty-attendance-page {
+  --fa-bg: #0b1020;
+  --fa-surface: #111827;
+  --fa-surface-2: #151e2f;
+  --fa-surface-3: #182235;
+
+  --fa-text: #f1f5ff;
+  --fa-text-2: #aeb9cc;
+  --fa-muted: #78859d;
+  --fa-muted-2: #68758c;
+
+  --fa-border: #263247;
+  --fa-border-2: #202b3d;
+
+  --fa-primary: #7c83ff;
+  --fa-primary-hover: #6d73ee;
+  --fa-primary-soft: #1c2446;
+
+  --fa-green: #4fd18a;
+  --fa-green-soft: #122d25;
+  --fa-green-border: #24533e;
+
+  --fa-red: #ff7180;
+  --fa-red-soft: #351b24;
+  --fa-red-border: #60303a;
+
+  --fa-cyan: #50c8d7;
+  --fa-cyan-soft: #122d34;
+
+  --fa-shadow:
+    0 14px 40px
+      rgba(0, 0, 0, 0.22);
+}
+
+/* =========================================================
+   DARK THEME EXTRA OVERRIDES
+   ========================================================= */
+
+.dark-theme .fa-page-header h1,
+[data-theme="dark"] .fa-page-header h1,
+.dark .fa-page-header h1 {
+  text-shadow:
+    0 1px 12px
+      rgba(124, 131, 255, 0.08);
+}
+
+.dark-theme .fa-field input::-webkit-calendar-picker-indicator,
+[data-theme="dark"] .fa-field input::-webkit-calendar-picker-indicator,
+.dark .fa-field input::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+}
+
+.dark-theme .fa-table tbody tr:hover td,
+[data-theme="dark"] .fa-table tbody tr:hover td,
+.dark .fa-table tbody tr:hover td {
+  background: #182235;
+}
+
+.dark-theme .fa-stat-card:hover,
+[data-theme="dark"] .fa-stat-card:hover,
+.dark .fa-stat-card:hover {
+  border-color: #35415a;
+}
+
+.dark-theme .fa-save-btn,
+[data-theme="dark"] .fa-save-btn,
+.dark .fa-save-btn {
+  box-shadow:
+    0 7px 22px
+      rgba(124, 131, 255, 0.18);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .faculty-attendance-page {
+    padding: 25px 22px 45px;
+  }
+
+  .fa-controls {
+    grid-template-columns:
+      1fr
+      1fr;
+  }
+
+  .fa-controls
+    .fa-field:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .fa-stat-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .fa-page-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .fa-term-card {
+    width: 100%;
+  }
+
+  .fa-selected-class {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .fa-selected-info {
+    width: 100%;
+  }
+
+  .fa-selected-meta {
+    width: 100%;
+
+    justify-content: space-between;
+  }
+
+  .fa-reload-btn {
+    width: 100%;
+  }
+
+  .fa-quick-actions {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .fa-quick-buttons {
+    width: 100%;
+  }
+
+  .fa-quick-buttons button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .faculty-attendance-page {
+    padding: 18px 13px 35px;
+  }
+
+  .fa-page-header h1 {
+    font-size: 24px;
+  }
+
+  .fa-controls {
+    grid-template-columns: 1fr;
+
+    padding: 16px;
+  }
+
+  .fa-controls
+    .fa-field:last-child {
+    grid-column: auto;
+  }
+
+  .fa-card-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    padding: 17px;
+  }
+
+  .fa-class-badge {
+    width: 100%;
+
+    text-align: left;
+  }
+
+  .fa-stat-grid {
+    grid-template-columns: 1fr;
+
+    padding: 16px;
+  }
+
+  .fa-selected-class,
+  .fa-quick-actions,
+  .fa-progress-section,
+  .fa-mark-header,
+  .fa-footer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .fa-mark-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .fa-mark-summary {
+    width: 100%;
+
+    justify-content: space-between;
+  }
+
+  .fa-footer {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .fa-footer-actions {
+    width: 100%;
+  }
+
+  .fa-reset-btn,
+  .fa-save-btn {
+    flex: 1;
+  }
+}

@@ -15,25 +15,25 @@ const FacultyDashboard = () => {
       title: "Total Students",
       value: "320",
       icon: <FaUsers />,
-      color: "#4CAF50",
+      className: "students-stat",
     },
     {
       title: "Subjects",
       value: "5",
       icon: <FaBookOpen />,
-      color: "#2196F3",
+      className: "subjects-stat",
     },
     {
       title: "Attendance",
       value: "94%",
       icon: <FaClipboardCheck />,
-      color: "#FF9800",
+      className: "attendance-stat",
     },
     {
       title: "Classes Today",
       value: "4",
       icon: <FaChalkboardTeacher />,
-      color: "#9C27B0",
+      className: "classes-stat",
     },
   ];
 
@@ -67,69 +67,122 @@ const FacultyDashboard = () => {
   return (
     <div className="faculty-dashboard">
 
+      {/* Header */}
       <div className="dashboard-header">
         <h1>
-          <FaUserTie /> Faculty Dashboard
+          <FaUserTie />
+          Faculty Dashboard
         </h1>
+
         <p>Welcome back, Professor</p>
       </div>
 
+
+      {/* Statistics */}
       <div className="stats-grid">
+
         {stats.map((item, index) => (
-          <div className="stat-card" key={index}>
-            <div
-              className="icon"
-              style={{ background: item.color }}
-            >
+          <div
+            className={`stat-card ${item.className}`}
+            key={index}
+          >
+
+            <div className="icon">
               {item.icon}
             </div>
 
-            <div>
+            <div className="stat-info">
               <h2>{item.value}</h2>
               <p>{item.title}</p>
             </div>
+
+            <div className="stat-decoration"></div>
+
           </div>
         ))}
+
       </div>
 
+
+      {/* Dashboard Content */}
       <div className="dashboard-content">
 
-        <div className="card">
-          <h2>Today's Classes</h2>
+        {/* Today's Classes */}
+        <div className="cardfaculty">
 
-          <table>
-            <thead>
-              <tr>
-                <th>Subject</th>
-                <th>Section</th>
-                <th>Time</th>
-                <th>Room</th>
-              </tr>
-            </thead>
+          <div className="section-title">
+            <div className="title-icon">
+              <FaChalkboardTeacher />
+            </div>
 
-            <tbody>
-              {classes.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.subject}</td>
-                  <td>{item.section}</td>
-                  <td>{item.time}</td>
-                  <td>{item.room}</td>
+            <div>
+              <h2>Today's Classes</h2>
+              <p>Your scheduled classes for today</p>
+            </div>
+          </div>
+
+
+          <div className="table-containerfaculty">
+
+            <table>
+
+              <thead>
+                <tr>
+                  <th>Subject</th>
+                  <th>Section</th>
+                  <th>Time</th>
+                  <th>Room</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+
+                {classes.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.subject}</td>
+                    <td>{item.section}</td>
+                    <td>{item.time}</td>
+                    <td>{item.room}</td>
+                  </tr>
+                ))}
+
+              </tbody>
+
+            </table>
+
+          </div>
+
         </div>
 
-        <div className="card">
-          <h2>
-            <FaBell /> Notifications
-          </h2>
+
+        {/* Notifications */}
+        <div className="cardfaculty">
+
+          <div className="section-title">
+
+            <div className="title-icon notification-title">
+              <FaBell />
+            </div>
+
+            <div>
+              <h2>Notifications</h2>
+              <p>Latest faculty updates</p>
+            </div>
+
+          </div>
+
 
           <ul className="notice-list">
+
             {notices.map((notice, index) => (
-              <li key={index}>{notice}</li>
+              <li key={index}>
+                <span className="notice-dot"></span>
+                {notice}
+              </li>
             ))}
+
           </ul>
+
         </div>
 
       </div>

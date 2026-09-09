@@ -1,122 +1,626 @@
-.notices-page{
-    padding:25px;
-    background:#f4f7fc;
-    min-height:100vh;
+/* =========================================================
+   NEXUS ERP - NOTICES PAGE
+   Modern Light + Glass Dark Theme
+========================================================= */
+
+.notices-page {
+    min-height: 100vh;
+    padding: 30px;
+    background: linear-gradient(135deg, #eef4ff 0%, #f8fbff 100%);
+    color: #1e293b;
+    transition:
+        background 0.3s ease,
+        color 0.3s ease;
 }
 
-.notice-header{
-    margin-bottom:25px;
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.notice-header {
+    margin-bottom: 28px;
 }
 
-.notice-header h1{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    color:#222;
+.notice-header h1 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    color: #1e3a8a;
+    font-size: 30px;
+    font-weight: 700;
 }
 
-.notice-header p{
-    color:#666;
+.notice-header h1 svg {
+    color: #2563eb;
 }
 
-.search-box{
-    display:flex;
-    align-items:center;
-    background:#fff;
-    padding:15px;
-    border-radius:10px;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
-    margin-bottom:25px;
+.notice-header p {
+    margin: 8px 0 0;
+    color: #64748b;
+    font-size: 14px;
 }
 
-.search-icon{
-    color:#3f51b5;
-    margin-right:10px;
+
+/* =========================================================
+   SEARCH BOX
+========================================================= */
+
+.search-box {
+    width: 100%;
+    min-height: 58px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 20px;
+    margin-bottom: 28px;
+
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    border-radius: 16px;
+
+    box-shadow:
+        0 8px 25px rgba(15, 23, 42, 0.07);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.3s ease;
 }
 
-.search-box input{
-    width:100%;
-    border:none;
-    outline:none;
-    font-size:16px;
+.search-box:focus-within {
+    border-color: rgba(37, 99, 235, 0.45);
+
+    box-shadow:
+        0 0 0 4px rgba(37, 99, 235, 0.10),
+        0 10px 28px rgba(37, 99, 235, 0.10);
 }
 
-.notice-list{
-    display:grid;
-    gap:20px;
+.search-icon {
+    flex-shrink: 0;
+    color: #2563eb;
+    font-size: 18px;
+    margin-right: 12px;
 }
 
-.notice-card{
-    background:#fff;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0 8px 18px rgba(0,0,0,.08);
-    transition:.3s;
+.search-box input {
+    width: 100%;
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: #1e293b;
+    font-size: 15px;
+    font-family: inherit;
 }
 
-.notice-card:hover{
-    transform:translateY(-3px);
+.search-box input::placeholder {
+    color: #94a3b8;
 }
 
-.notice-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:12px;
+
+/* =========================================================
+   NOTICE LIST
+========================================================= */
+
+.notice-list {
+    display: grid;
+    gap: 20px;
 }
 
-.notice-top h2{
-    color:#222;
-    font-size:22px;
+
+/* =========================================================
+   NOTICE CARD
+========================================================= */
+
+.notice-card {
+    position: relative;
+
+    padding: 24px 25px;
+
+    background: rgba(255, 255, 255, 0.92);
+
+    border: 1px solid rgba(226, 232, 240, 0.85);
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 25px rgba(15, 23, 42, 0.07);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
-.notice-top span{
-    background:#3f51b5;
-    color:white;
-    padding:6px 12px;
-    border-radius:20px;
-    font-size:13px;
+
+/* Left accent */
+
+.notice-card::before {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 5px;
+    height: 100%;
+
+    background: linear-gradient(
+        180deg,
+        #2563eb,
+        #38bdf8
+    );
 }
 
-.notice-date{
-    color:#777;
-    margin-bottom:10px;
-    display:flex;
-    align-items:center;
-    gap:8px;
+
+/* Subtle top glow */
+
+.notice-card::after {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    width: 150px;
+    height: 150px;
+
+    background: radial-gradient(
+        circle,
+        rgba(56, 189, 248, 0.08),
+        transparent 70%
+    );
+
+    pointer-events: none;
 }
 
-.notice-description{
-    color:#555;
-    line-height:1.6;
+
+.notice-card:hover {
+    transform: translateY(-5px);
+
+    border-color: rgba(56, 189, 248, 0.35);
+
+    box-shadow:
+        0 15px 35px rgba(15, 23, 42, 0.11),
+        0 0 20px rgba(56, 189, 248, 0.05);
 }
 
-.no-notice{
-    background:#fff;
-    padding:30px;
-    text-align:center;
-    border-radius:15px;
-    color:#777;
+
+/* =========================================================
+   NOTICE TOP
+========================================================= */
+
+.notice-top {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+    margin-bottom: 13px;
 }
 
-@media(max-width:768px){
+.notice-top h2 {
+    margin: 0;
 
-.notices-page{
-    padding:15px;
+    color: #172554;
+
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.4;
 }
 
-.notice-top{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:10px;
+
+/* =========================================================
+   DEPARTMENT BADGE
+========================================================= */
+
+.notice-top span {
+    flex-shrink: 0;
+
+    padding: 7px 14px;
+
+    background: rgba(37, 99, 235, 0.09);
+    border: 1px solid rgba(37, 99, 235, 0.14);
+
+    color: #2563eb;
+
+    border-radius: 30px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    white-space: nowrap;
 }
 
-.notice-top h2{
-    font-size:18px;
+
+/* =========================================================
+   DATE
+========================================================= */
+
+.notice-date {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin: 0 0 13px;
+
+    color: #64748b;
+
+    font-size: 13px;
 }
 
-.search-box{
-    padding:12px;
+.notice-date svg {
+    color: #2563eb;
 }
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.notice-description {
+    position: relative;
+    z-index: 1;
+
+    margin: 0;
+
+    color: #475569;
+
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   EMPTY / LOADING STATE
+========================================================= */
+
+.no-notice {
+    padding: 40px 25px;
+
+    background: rgba(255, 255, 255, 0.9);
+
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+
+    text-align: center;
+
+    color: #64748b;
+
+    font-size: 15px;
+
+    box-shadow:
+        0 8px 25px rgba(15, 23, 42, 0.06);
+}
+
+
+/* =========================================================
+   DARK GLASS THEME
+========================================================= */
+
+.dark-theme .notices-page {
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(37, 99, 235, 0.13),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 90% 80%,
+            rgba(56, 189, 248, 0.08),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #070d1a 0%,
+            #0b1220 48%,
+            #0f172a 100%
+        );
+
+    color: #e2e8f0;
+}
+
+
+/* Header */
+
+.dark-theme .notice-header h1 {
+    color: #f1f5f9;
+}
+
+.dark-theme .notice-header h1 svg {
+    color: #38bdf8;
+}
+
+.dark-theme .notice-header p {
+    color: #94a3b8;
+}
+
+
+/* Search */
+
+.dark-theme .search-box {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(30, 41, 59, 0.72),
+            rgba(15, 23, 42, 0.68)
+        );
+
+    border: 1px solid rgba(148, 163, 184, 0.14);
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.30),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.dark-theme .search-box:focus-within {
+    border-color: rgba(56, 189, 248, 0.45);
+
+    box-shadow:
+        0 0 0 4px rgba(56, 189, 248, 0.08),
+        0 15px 40px rgba(0, 0, 0, 0.35);
+}
+
+.dark-theme .search-icon {
+    color: #38bdf8;
+}
+
+.dark-theme .search-box input {
+    color: #f1f5f9;
+}
+
+.dark-theme .search-box input::placeholder {
+    color: #64748b;
+}
+
+
+/* =========================================================
+   DARK NOTICE CARD - GLASS EFFECT
+========================================================= */
+
+.dark-theme .notice-card {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(30, 41, 59, 0.78),
+            rgba(15, 23, 42, 0.72)
+        );
+
+    border: 1px solid rgba(148, 163, 184, 0.13);
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.32),
+        inset 0 1px 0 rgba(255, 255, 255, 0.045);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+
+/* Dark card glow */
+
+.dark-theme .notice-card::after {
+    background: radial-gradient(
+        circle,
+        rgba(56, 189, 248, 0.12),
+        transparent 70%
+    );
+}
+
+
+.dark-theme .notice-card:hover {
+    border-color: rgba(56, 189, 248, 0.30);
+
+    box-shadow:
+        0 20px 45px rgba(0, 0, 0, 0.42),
+        0 0 25px rgba(56, 189, 248, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+
+/* Title */
+
+.dark-theme .notice-top h2 {
+    color: #f8fafc;
+}
+
+
+/* Department */
+
+.dark-theme .notice-top span {
+    background:
+        rgba(56, 189, 248, 0.10);
+
+    border-color:
+        rgba(56, 189, 248, 0.20);
+
+    color: #7dd3fc;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+
+/* Date */
+
+.dark-theme .notice-date {
+    color: #94a3b8;
+}
+
+.dark-theme .notice-date svg {
+    color: #38bdf8;
+}
+
+
+/* Description */
+
+.dark-theme .notice-description {
+    color: #cbd5e1;
+}
+
+
+/* Empty */
+
+.dark-theme .no-notice {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(30, 41, 59, 0.75),
+            rgba(15, 23, 42, 0.70)
+        );
+
+    border-color:
+        rgba(148, 163, 184, 0.13);
+
+    color: #94a3b8;
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.30),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 992px) {
+
+    .notices-page {
+        padding: 25px;
+    }
+
+    .notice-card {
+        padding: 22px;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .notices-page {
+        padding: 18px;
+    }
+
+    .notice-header {
+        margin-bottom: 22px;
+    }
+
+    .notice-header h1 {
+        font-size: 25px;
+    }
+
+    .notice-header p {
+        font-size: 13px;
+    }
+
+    .search-box {
+        min-height: 54px;
+        padding: 0 16px;
+        margin-bottom: 22px;
+    }
+
+    .search-box input {
+        font-size: 14px;
+    }
+
+    .notice-card {
+        padding: 20px;
+    }
+
+    .notice-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .notice-top h2 {
+        font-size: 18px;
+    }
+
+    .notice-top span {
+        font-size: 11px;
+    }
+
+    .notice-description {
+        font-size: 13px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .notices-page {
+        padding: 14px;
+    }
+
+    .notice-header h1 {
+        font-size: 22px;
+    }
+
+    .notice-header p {
+        font-size: 12px;
+    }
+
+    .search-box {
+        min-height: 50px;
+        padding: 0 14px;
+        border-radius: 13px;
+    }
+
+    .notice-card {
+        padding: 18px;
+        border-radius: 15px;
+    }
+
+    .notice-top h2 {
+        font-size: 17px;
+    }
+
+    .notice-date {
+        font-size: 12px;
+    }
+
+    .notice-description {
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .no-notice {
+        padding: 30px 18px;
+    }
 
 }

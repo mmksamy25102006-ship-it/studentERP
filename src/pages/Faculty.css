@@ -1,147 +1,1677 @@
-.faculty-page{
-    padding:25px;
-    background:#f4f7fc;
-    min-height:100vh;
+/* =========================================================
+   FACULTY MANAGEMENT
+   Theme compatible with:
+   .light-theme
+   .dark-theme
+========================================================= */
+
+.faculty-page {
+
+    /* ===============================
+       DEFAULT / LIGHT VARIABLES
+    =============================== */
+
+    --faculty-bg: #f4f7fc;
+
+    --faculty-card: rgba(255, 255, 255, 0.72);
+    --faculty-card-solid: #ffffff;
+
+    --faculty-border: rgba(63, 81, 181, 0.12);
+
+    --faculty-heading: #172554;
+    --faculty-text: #334155;
+    --faculty-muted: #64748b;
+
+    --faculty-input: rgba(255, 255, 255, 0.78);
+    --faculty-input-border: #dbe3ef;
+
+    --faculty-row-hover: rgba(63, 81, 181, 0.045);
+
+    --faculty-blue: #3f51b5;
+    --faculty-blue-light: #6366f1;
+    --faculty-cyan: #06b6d4;
+
+    --faculty-shadow:
+        0 15px 40px rgba(15, 23, 42, 0.08);
+
+    min-height: calc(100vh - 72px);
+
+    padding: 28px;
+
+    position: relative;
+
+    overflow-x: hidden;
+
+    background:
+        radial-gradient(
+            circle at 5% 5%,
+            rgba(63, 81, 181, 0.09),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 95% 90%,
+            rgba(6, 182, 212, 0.07),
+            transparent 25%
+        ),
+        linear-gradient(
+            135deg,
+            #eef3ff,
+            #f8fafc
+        );
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease;
 }
 
-.faculty-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:25px;
+
+/* =========================================================
+   LIGHT THEME
+========================================================= */
+
+.light-theme .faculty-page {
+
+    --faculty-card:
+        rgba(255, 255, 255, 0.72);
+
+    --faculty-card-solid:
+        rgba(255, 255, 255, 0.96);
+
+    --faculty-heading:
+        #172554;
+
+    --faculty-text:
+        #334155;
+
+    --faculty-muted:
+        #64748b;
+
+    --faculty-border:
+        rgba(63, 81, 181, 0.12);
+
+    --faculty-row-hover:
+        rgba(63, 81, 181, 0.045);
+
+    --faculty-input:
+        rgba(255, 255, 255, 0.80);
+
+    --faculty-input-border:
+        #dbe3ef;
+
+    background:
+        radial-gradient(
+            circle at 5% 5%,
+            rgba(63, 81, 181, 0.09),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 95% 90%,
+            rgba(6, 182, 212, 0.07),
+            transparent 25%
+        ),
+        linear-gradient(
+            135deg,
+            #eef3ff,
+            #f8fafc
+        );
 }
 
-.faculty-header h1{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    color:#222;
+
+/* =========================================================
+   DARK THEME
+========================================================= */
+
+.dark-theme .faculty-page {
+
+    --faculty-card:
+        rgba(31, 41, 55, 0.64);
+
+    --faculty-card-solid:
+        rgba(17, 24, 39, 0.96);
+
+    --faculty-heading:
+        #f8fafc;
+
+    --faculty-text:
+        #d1d5db;
+
+    --faculty-muted:
+        #94a3b8;
+
+    --faculty-border:
+        rgba(148, 163, 184, 0.14);
+
+    --faculty-row-hover:
+        rgba(96, 165, 250, 0.07);
+
+    --faculty-input:
+        rgba(31, 41, 55, 0.72);
+
+    --faculty-input-border:
+        rgba(148, 163, 184, 0.16);
+
+    --faculty-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.30);
+
+    background:
+        radial-gradient(
+            circle at 8% 5%,
+            rgba(63, 81, 181, 0.18),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 92% 90%,
+            rgba(6, 182, 212, 0.10),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #111827,
+            #172033 50%,
+            #111827
+        );
 }
 
-.faculty-header p{
-    color:#666;
-    margin-top:5px;
+
+/* =========================================================
+   GLASS CARDS
+========================================================= */
+
+.faculty-page .top-toolbar,
+.faculty-page .search-container,
+.faculty-page .faculty-table {
+
+    background:
+        var(--faculty-card) !important;
+
+    border:
+        1px solid var(--faculty-border);
+
+    backdrop-filter:
+        blur(22px);
+
+    -webkit-backdrop-filter:
+        blur(22px);
+
+    box-shadow:
+        var(--faculty-shadow);
+
+    transition:
+        background 0.3s ease,
+        border 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
-.add-btn{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    padding:12px 20px;
-    border:none;
-    border-radius:8px;
-    background:#3f51b5;
-    color:white;
-    cursor:pointer;
-    font-size:15px;
+
+/* =========================================================
+   TOP TOOLBAR
+========================================================= */
+
+.faculty-page .top-toolbar {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 24px 28px;
+
+    border-radius: 18px;
+
+    margin-bottom: 22px;
 }
 
-.add-btn:hover{
-    background:#283593;
+.toolbar-left h1 {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    color:
+        var(--faculty-heading);
+
+    font-size: 28px;
+
+    font-weight: 700;
+
+    letter-spacing: -0.5px;
 }
 
-.search-box{
-    display:flex;
-    align-items:center;
-    background:white;
-    padding:15px;
-    border-radius:10px;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
-    margin-bottom:25px;
+.toolbar-left h1 svg {
+
+    color: #38bdf8;
+
+    filter:
+        drop-shadow(
+            0 0 7px
+            rgba(56, 189, 248, 0.30)
+        );
 }
 
-.search-icon{
-    color:#3f51b5;
-    margin-right:10px;
+.toolbar-left p {
+
+    margin-top: 7px;
+
+    color:
+        var(--faculty-muted);
+
+    font-size: 13px;
 }
 
-.search-box input{
-    width:100%;
-    border:none;
-    outline:none;
-    font-size:16px;
+
+/* =========================================================
+   TOOLBAR RIGHT
+========================================================= */
+
+.toolbar-right {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
 }
 
-.faculty-table{
-    background:white;
-    padding:20px;
-    border-radius:15px;
-    overflow-x:auto;
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+/* =========================================================
+   FACULTY COUNT
+========================================================= */
+
+.faculty-count {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 7px 9px 7px 15px;
+
+    border-radius: 11px;
+
+    background:
+        rgba(63, 81, 181, 0.08);
+
+    border:
+        1px solid
+        rgba(99, 102, 241, 0.15);
+
+    color:
+        var(--faculty-muted);
+
+    font-size: 12px;
+
+    font-weight: 600;
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
+.faculty-count strong {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 34px;
+
+    height: 34px;
+
+    padding: 0 9px;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #3f51b5,
+            #2563eb
+        );
+
+    color: white;
+
+    font-size: 14px;
+
+    box-shadow:
+        0 5px 15px
+        rgba(63, 81, 181, 0.25);
 }
 
-table th{
-    background:#3f51b5;
-    color:white;
-    padding:15px;
-    text-align:left;
+
+/* =========================================================
+   ADD BUTTON
+========================================================= */
+
+.add-btn {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 13px 20px;
+
+    border:
+        1px solid
+        rgba(96, 165, 250, 0.25);
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #3f51b5,
+            #4f46e5
+        );
+
+    color: white;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 7px 20px
+        rgba(63, 81, 181, 0.24);
+
+    transition: 0.25s;
 }
 
-table td{
-    padding:15px;
-    border-bottom:1px solid #eee;
+.add-btn:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 28px
+        rgba(63, 81, 181, 0.34);
 }
 
-table tbody tr:hover{
-    background:#eef3ff;
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.faculty-page .search-container {
+
+    display: flex;
+
+    align-items: center;
+
+    height: 58px;
+
+    padding: 0 18px;
+
+    border-radius: 14px;
+
+    margin-bottom: 22px;
+}
+
+.search-icon {
+
+    color:
+        #60a5fa !important;
+
+    font-size: 18px;
+}
+
+.faculty-page .search-container input {
+
+    flex: 1;
+
+    width: 100%;
+
+    height: 100%;
+
+    margin-left: 13px;
+
+    padding: 0;
+
+    border: none !important;
+
+    outline: none;
+
+    background:
+        transparent !important;
+
+    color:
+        var(--faculty-heading) !important;
+
+    font-size: 13px;
+}
+
+.faculty-page .search-container input::placeholder {
+
+    color:
+        var(--faculty-muted) !important;
+}
+
+
+/* =========================================================
+   CLEAR SEARCH
+========================================================= */
+
+.clear-search {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 32px;
+
+    height: 32px;
+
+    border:
+        1px solid
+        var(--faculty-border);
+
+    border-radius: 8px;
+
+    background:
+        rgba(100, 116, 139, 0.08);
+
+    color:
+        var(--faculty-muted);
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.clear-search:hover {
+
+    background:
+        rgba(239, 68, 68, 0.10);
+
+    color: #ef4444;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.faculty-page .faculty-table {
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    overflow-x: auto;
+}
+
+.faculty-page table {
+
+    width: 100%;
+
+    min-width: 1050px;
+
+    border-collapse: collapse;
+
+    background:
+        transparent !important;
+}
+
+
+/* =========================================================
+   TABLE HEADER
+========================================================= */
+
+.faculty-page table thead {
+
+    background:
+        linear-gradient(
+            135deg,
+            #3f51b5,
+            #3949ab
+        ) !important;
+}
+
+.faculty-page table th {
+
+    padding: 16px;
+
+    text-align: left;
+
+    color: #ffffff !important;
+
+    background:
+        transparent !important;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.4px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   TABLE BODY
+========================================================= */
+
+.faculty-page table td {
+
+    padding: 15px 16px;
+
+    color:
+        var(--faculty-text) !important;
+
+    background:
+        transparent !important;
+
+    border-bottom:
+        1px solid
+        var(--faculty-border) !important;
+
+    font-size: 13px;
+}
+
+.faculty-page table tbody tr {
+
+    background:
+        transparent !important;
+
+    transition:
+        background 0.2s ease;
+}
+
+.faculty-page table tbody tr:hover {
+
+    background:
+        var(--faculty-row-hover) !important;
+}
+
+.faculty-page table tbody tr:last-child td {
+
+    border-bottom: none !important;
+}
+
+
+/* =========================================================
+   FACULTY ID
+========================================================= */
+
+.faculty-id {
+
+    display: inline-flex;
+
+    padding: 6px 9px;
+
+    border-radius: 7px;
+
+    background:
+        rgba(100, 116, 139, 0.09);
+
+    border:
+        1px solid
+        var(--faculty-border);
+
+    color:
+        var(--faculty-muted);
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   FACULTY NAME
+========================================================= */
+
+.faculty-name {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color:
+        var(--faculty-heading);
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.faculty-avatar {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 37px;
+
+    height: 37px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(37, 99, 235, 0.15),
+            rgba(6, 182, 212, 0.12)
+        );
+
+    border:
+        1px solid
+        rgba(56, 189, 248, 0.22);
+
+    color:
+        #2563eb;
+
+    font-size: 12px;
+
+    font-weight: 800;
+}
+
+.dark-theme .faculty-page .faculty-avatar {
+
+    color:
+        #60a5fa;
+}
+
+
+/* =========================================================
+   DEPARTMENT BADGE
+========================================================= */
+
+.dept-badge {
+
+    display: inline-block;
+
+    padding: 6px 11px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(37, 99, 235, 0.08);
+
+    border:
+        1px solid
+        rgba(59, 130, 246, 0.22);
+
+    color:
+        #2563eb;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.dark-theme .faculty-page .dept-badge {
+
+    color:
+        #93c5fd;
+
+    background:
+        rgba(37, 99, 235, 0.12);
+}
+
+
+/* =========================================================
+   DESIGNATION BADGE
+========================================================= */
+
+.designation-badge {
+
+    display: inline-block;
+
+    padding: 6px 11px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(16, 185, 129, 0.08);
+
+    border:
+        1px solid
+        rgba(16, 185, 129, 0.20);
+
+    color:
+        #15803d;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.dark-theme .faculty-page .designation-badge {
+
+    color:
+        #6ee7b7;
+
+    background:
+        rgba(16, 185, 129, 0.10);
+}
+
+
+/* =========================================================
+   EXPERIENCE / EMAIL
+========================================================= */
+
+.experience-text {
+
+    color:
+        var(--faculty-muted);
+
+    font-weight: 500;
+}
+
+.email-text {
+
+    color:
+        var(--faculty-muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.action-buttons {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
 }
 
 .edit-btn,
-.delete-btn{
-    border:none;
-    color:white;
-    padding:8px 12px;
-    border-radius:6px;
-    cursor:pointer;
-    margin-right:8px;
+.delete-btn {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 36px;
+
+    height: 36px;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+
+    transform: none;
 }
 
-.edit-btn{
-    background:#2196F3;
+
+/* EDIT */
+
+.edit-btn {
+
+    border:
+        1px solid
+        rgba(245, 158, 11, 0.20);
+
+    background:
+        rgba(245, 158, 11, 0.10);
+
+    color:
+        #d97706;
 }
 
-.edit-btn:hover{
-    background:#1976D2;
+.dark-theme .faculty-page .edit-btn {
+
+    color:
+        #fbbf24;
 }
 
-.delete-btn{
-    background:#F44336;
+.edit-btn:hover {
+
+    background:
+        rgba(245, 158, 11, 0.20);
+
+    transform: translateY(-2px);
 }
 
-.delete-btn:hover{
-    background:#D32F2F;
+
+/* DELETE */
+
+.delete-btn {
+
+    border:
+        1px solid
+        rgba(239, 68, 68, 0.20);
+
+    background:
+        rgba(239, 68, 68, 0.09);
+
+    color:
+        #dc2626;
 }
 
-.no-data{
-    text-align:center;
-    color:#777;
-    padding:20px;
+.dark-theme .faculty-page .delete-btn {
+
+    color:
+        #f87171;
 }
 
-@media(max-width:768px){
+.delete-btn:hover {
 
-.faculty-page{
-    padding:15px;
+    background:
+        rgba(239, 68, 68, 0.18);
+
+    transform: translateY(-2px);
 }
 
-.faculty-header{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:15px;
+
+/* =========================================================
+   NO DATA
+========================================================= */
+
+.no-data {
+
+    padding: 55px 20px !important;
+
+    text-align: center;
 }
 
-.add-btn{
-    width:100%;
-    justify-content:center;
+.no-data-content {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
 }
 
-table{
-    min-width:1000px;
+.no-data-content > svg {
+
+    width: 45px;
+
+    height: 45px;
+
+    padding: 12px;
+
+    margin-bottom: 12px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(63, 81, 181, 0.08);
+
+    color:
+        #3f51b5;
 }
 
+.no-data-content h3 {
+
+    color:
+        var(--faculty-heading);
+
+    font-size: 16px;
+
+    margin-bottom: 5px;
+}
+
+.no-data-content p {
+
+    color:
+        var(--faculty-muted);
+
+    font-size: 12px;
+}
+
+.reset-search {
+
+    margin-top: 14px;
+
+    padding: 8px 14px;
+
+    border:
+        1px solid
+        rgba(63, 81, 181, 0.18);
+
+    border-radius: 8px;
+
+    background:
+        rgba(63, 81, 181, 0.08);
+
+    color:
+        #3f51b5;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   MODAL OVERLAY
+========================================================= */
+
+.modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(15, 23, 42, 0.48);
+
+    backdrop-filter:
+        blur(8px);
+
+    -webkit-backdrop-filter:
+        blur(8px);
+
+    animation:
+        fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.faculty-modal {
+
+    width: 100%;
+
+    max-width: 760px;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    border-radius: 20px;
+
+    background:
+        var(--faculty-card-solid) !important;
+
+    border:
+        1px solid
+        var(--faculty-border);
+
+    backdrop-filter:
+        blur(25px);
+
+    -webkit-backdrop-filter:
+        blur(25px);
+
+    box-shadow:
+        0 30px 80px
+        rgba(15, 23, 42, 0.25);
+
+    animation:
+        modalSlide 0.25s ease;
+}
+
+.dark-theme .faculty-page .faculty-modal {
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(31, 41, 55, 0.96),
+            rgba(17, 24, 39, 0.97)
+        ) !important;
+
+    box-shadow:
+        0 30px 80px
+        rgba(0, 0, 0, 0.55);
+}
+
+@keyframes modalSlide {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(20px)
+            scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+/* =========================================================
+   MODAL HEADER
+========================================================= */
+
+.modal-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 20px 24px;
+
+    border-bottom:
+        1px solid
+        var(--faculty-border);
+
+    background:
+        rgba(100, 116, 139, 0.025);
+}
+
+.modal-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+}
+
+.modal-icon {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 46px;
+
+    height: 46px;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #3f51b5,
+            #06b6d4
+        );
+
+    color: white;
+
+    box-shadow:
+        0 8px 20px
+        rgba(63, 81, 181, 0.25);
+}
+
+.modal-title h2 {
+
+    color:
+        var(--faculty-heading);
+
+    font-size: 19px;
+
+    font-weight: 700;
+}
+
+.modal-title p {
+
+    margin-top: 3px;
+
+    color:
+        var(--faculty-muted);
+
+    font-size: 11px;
+}
+
+.close-btn {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 35px;
+
+    height: 35px;
+
+    border:
+        1px solid
+        var(--faculty-border);
+
+    border-radius: 9px;
+
+    background:
+        rgba(100, 116, 139, 0.07);
+
+    color:
+        var(--faculty-muted);
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.close-btn:hover {
+
+    background:
+        rgba(239, 68, 68, 0.10);
+
+    color:
+        #ef4444;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.faculty-form {
+
+    padding: 24px;
+}
+
+.form-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 19px;
+}
+
+.form-group {
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.form-group label {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-bottom: 8px;
+
+    color:
+        var(--faculty-text);
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+.form-group label svg {
+
+    color:
+        #3f51b5;
+
+    font-size: 11px;
+}
+
+.dark-theme .faculty-page .form-group label svg {
+
+    color:
+        #60a5fa;
+}
+
+.form-group label span {
+
+    color:
+        #ef4444;
+}
+
+
+/* =========================================================
+   INPUT / SELECT
+========================================================= */
+
+.faculty-page .form-group input,
+.faculty-page .form-group select {
+
+    width: 100%;
+
+    height: 45px;
+
+    padding: 0 13px;
+
+    border:
+        1px solid
+        var(--faculty-input-border) !important;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background:
+        var(--faculty-input) !important;
+
+    color:
+        var(--faculty-heading) !important;
+
+    font-size: 12px;
+
+    transition: 0.25s;
+}
+
+.faculty-page .form-group input::placeholder {
+
+    color:
+        var(--faculty-muted) !important;
+}
+
+.faculty-page .form-group input:focus,
+.faculty-page .form-group select:focus {
+
+    border-color:
+        rgba(63, 81, 181, 0.50) !important;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(63, 81, 181, 0.08);
+}
+
+.faculty-page .form-group select {
+
+    cursor: pointer;
+}
+
+.faculty-page .form-group select option {
+
+    background:
+        #ffffff;
+
+    color:
+        #172033;
+}
+
+.dark-theme .faculty-page .form-group select option {
+
+    background:
+        #1f2937;
+
+    color:
+        #f8fafc;
+}
+
+
+/* =========================================================
+   DISABLED ID
+========================================================= */
+
+.faculty-page .disabled-input {
+
+    background:
+        rgba(100, 116, 139, 0.07) !important;
+
+    color:
+        var(--faculty-muted) !important;
+
+    cursor:
+        not-allowed;
+}
+
+
+/* =========================================================
+   FORM HELP / ERRORS
+========================================================= */
+
+.form-group small {
+
+    margin-top: 5px;
+
+    color:
+        var(--faculty-muted);
+
+    font-size: 9px;
+}
+
+.form-group .error-message {
+
+    color:
+        #ef4444;
+
+    font-size: 9px;
+}
+
+.faculty-page .input-error {
+
+    border-color:
+        rgba(239, 68, 68, 0.60) !important;
+}
+
+
+/* =========================================================
+   MODAL FOOTER
+========================================================= */
+
+.modal-footer {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 24px;
+
+    padding-top: 19px;
+
+    border-top:
+        1px solid
+        var(--faculty-border);
+}
+
+.cancel-btn,
+.save-btn {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    height: 43px;
+
+    padding: 0 18px;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+}
+
+
+/* CANCEL */
+
+.cancel-btn {
+
+    border:
+        1px solid
+        var(--faculty-border);
+
+    background:
+        rgba(100, 116, 139, 0.07);
+
+    color:
+        var(--faculty-muted);
+}
+
+.cancel-btn:hover {
+
+    background:
+        rgba(100, 116, 139, 0.13);
+
+    color:
+        var(--faculty-heading);
+}
+
+
+/* SAVE */
+
+.save-btn {
+
+    border:
+        1px solid
+        rgba(56, 189, 248, 0.20);
+
+    background:
+        linear-gradient(
+            135deg,
+            #3f51b5,
+            #06b6d4
+        );
+
+    color:
+        #ffffff;
+
+    box-shadow:
+        0 7px 18px
+        rgba(63, 81, 181, 0.22);
+}
+
+.save-btn:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 10px 25px
+        rgba(63, 81, 181, 0.32);
+}
+
+
+/* =========================================================
+   SCROLLBARS
+========================================================= */
+
+.faculty-page .faculty-table::-webkit-scrollbar {
+
+    height: 6px;
+}
+
+.faculty-page .faculty-table::-webkit-scrollbar-track {
+
+    background:
+        transparent;
+}
+
+.faculty-page .faculty-table::-webkit-scrollbar-thumb {
+
+    background:
+        linear-gradient(
+            90deg,
+            #3f51b5,
+            #06b6d4
+        );
+
+    border-radius: 10px;
+}
+
+.faculty-modal::-webkit-scrollbar {
+
+    width: 5px;
+}
+
+.faculty-modal::-webkit-scrollbar-track {
+
+    background:
+        transparent;
+}
+
+.faculty-modal::-webkit-scrollbar-thumb {
+
+    background:
+        #64748b;
+
+    border-radius: 10px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 992px) {
+
+    .faculty-page .top-toolbar {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 18px;
+    }
+
+    .toolbar-right {
+
+        width: 100%;
+
+        justify-content: space-between;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .faculty-page {
+
+        padding: 15px;
+    }
+
+    .faculty-page .top-toolbar {
+
+        padding: 20px;
+    }
+
+    .toolbar-left h1 {
+
+        font-size: 23px;
+    }
+
+    .toolbar-right {
+
+        flex-direction: column;
+
+        width: 100%;
+    }
+
+    .faculty-count,
+    .add-btn {
+
+        width: 100%;
+
+        justify-content: center;
+    }
+
+    .faculty-page .search-container {
+
+        height: 54px;
+    }
+
+    .form-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .faculty-modal {
+
+        max-height: 95vh;
+
+        border-radius: 16px;
+    }
+
+    .modal-header {
+
+        padding: 18px;
+    }
+
+    .faculty-form {
+
+        padding: 18px;
+    }
+
+    .modal-footer {
+
+        flex-direction: column-reverse;
+    }
+
+    .cancel-btn,
+    .save-btn {
+
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    .faculty-page {
+
+        padding: 10px;
+    }
+
+    .toolbar-left h1 {
+
+        font-size: 20px;
+    }
+
+    .toolbar-left p {
+
+        font-size: 12px;
+    }
+
+    .faculty-modal {
+
+        border-radius: 14px;
+    }
+
+    .modal-icon {
+
+        width: 42px;
+
+        height: 42px;
+    }
+
+    .modal-title h2 {
+
+        font-size: 17px;
+    }
+
+    .modal-title p {
+
+        display: none;
+    }
 }

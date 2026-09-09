@@ -1,221 +1,872 @@
-/* src/components/Notification.css */
+/* =========================================================
+   STUDENT NOTIFICATION PAGE
+   FULL RESPONSIVE + LIGHT/DARK THEME
+========================================================= */
 
-.notification-card {
-  width: 100%;
-  max-width: 700px;
-  margin: 20px auto;
-  background: #ffffff;
-  border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  transition: all 0.3s ease;
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.student-notification {
+    width: 100%;
+    min-height: 100vh;
+    border-radius: 15px;
+    margin: 0;
+    padding: 24px;
+
+    position: relative;
+
+    display: block;
+
+    box-sizing: border-box;
+
+    overflow-x: hidden;
+
+    color: #17233d;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f5f8ff 0%,
+            #eef4fb 50%,
+            #f5f1ff 100%
+        );
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease;
 }
 
-.notification-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+
+/* =========================================================
+   LIGHT THEME
+   Supports:
+   .light-theme
+   .light
+========================================================= */
+
+.light-theme .student-notification,
+.light .student-notification,
+.student-notification.light-theme,
+.student-notification.light {
+
+    color: #17233d;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f5f8ff 0%,
+            #eef4fb 50%,
+            #f5f1ff 100%
+        );
 }
 
-/* Header */
 
-.notification-header {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  color: #ffffff;
-  padding: 18px 25px;
+/* =========================================================
+   DARK THEME
+   Supports:
+   .dark-theme
+   .dark
+========================================================= */
+
+.dark-theme .student-notification,
+.dark .student-notification,
+.student-notification.dark-theme,
+.student-notification.dark {
+
+    color: #eef3ff;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(25, 100, 170, 0.12),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(100, 50, 170, 0.12),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #071326 0%,
+            #0b172b 50%,
+            #17132f 100%
+        );
 }
 
-.notification-header h2 {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0;
-  font-size: 22px;
-  font-weight: 700;
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.student-notification .notification-header {
+    width: 100%;
+
+    display: block;
+
+    margin: 0 0 20px 0;
+    padding: 0;
+
+    box-sizing: border-box;
 }
 
-/* Notification List */
 
-.notification-list {
-  padding: 20px;
-}
+/* =========================================================
+   HEADER TITLE
+========================================================= */
 
-/* Notification Item */
+.student-notification .notification-header h2 {
+    display: block;
 
-.notification-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 15px;
-  background: #f8fafc;
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 15px;
-  transition: all 0.3s ease;
-}
+    width: 100%;
 
-.notification-item:hover {
-  background: #eef4ff;
-  transform: translateX(5px);
-}
+    margin: 0;
+    padding: 0;
 
-/* Icon */
+    color: #17233d;
 
-.notification-icon {
-  font-size: 28px;
-  margin-top: 2px;
-}
-
-.success {
-  color: #16a34a;
-}
-
-.warning {
-  color: #f59e0b;
-}
-
-.info {
-  color: #2563eb;
-}
-
-/* Content */
-
-.notification-content {
-  flex: 1;
-}
-
-.notification-content h4 {
-  margin: 0;
-  color: #1e293b;
-  font-size: 17px;
-  font-weight: 600;
-}
-
-.notification-content p {
-  margin: 8px 0;
-  color: #475569;
-  line-height: 1.5;
-  font-size: 15px;
-}
-
-.notification-content span {
-  font-size: 13px;
-  color: #94a3b8;
-}
-
-/* Close Button */
-
-.close-btn {
-  width: 36px;
-  height: 36px;
-  border: none;
-  border-radius: 50%;
-  background: #e2e8f0;
-  color: #64748b;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.close-btn:hover {
-  background: #ef4444;
-  color: #ffffff;
-  transform: rotate(90deg);
-}
-
-/* Empty */
-
-.empty {
-  text-align: center;
-  color: #64748b;
-  padding: 40px 20px;
-  font-size: 16px;
-}
-
-/* Dark Theme */
-
-.dark-theme .notification-card {
-  background: #1e293b;
-}
-
-.dark-theme .notification-item {
-  background: #334155;
-}
-
-.dark-theme .notification-item:hover {
-  background: #475569;
-}
-
-.dark-theme .notification-content h4 {
-  color: #ffffff;
-}
-
-.dark-theme .notification-content p {
-  color: #cbd5e1;
-}
-
-.dark-theme .notification-content span {
-  color: #94a3b8;
-}
-
-.dark-theme .close-btn {
-  background: #475569;
-  color: #ffffff;
-}
-
-.dark-theme .close-btn:hover {
-  background: #ef4444;
-}
-
-.dark-theme .empty {
-  color: #cbd5e1;
-}
-
-/* Responsive */
-
-@media (max-width: 768px) {
-  .notification-card {
-    max-width: 100%;
-  }
-
-  .notification-header {
-    padding: 16px;
-  }
-
-  .notification-header h2 {
-    font-size: 20px;
-  }
-
-  .notification-list {
-    padding: 15px;
-  }
-
-  .notification-item {
-    padding: 14px;
-  }
-
-  .notification-icon {
     font-size: 24px;
-  }
+    font-weight: 700;
+
+    line-height: 1.3;
+
+    transition: color 0.3s ease;
 }
 
-@media (max-width: 480px) {
-  .notification-item {
+
+/* DARK TITLE */
+
+.dark-theme .student-notification .notification-header h2,
+.dark .student-notification .notification-header h2,
+.student-notification.dark-theme .notification-header h2,
+.student-notification.dark .notification-header h2 {
+
+    color: #eef3ff;
+}
+
+
+/* =========================================================
+   HEADER SUBTITLE
+========================================================= */
+
+.student-notification .notification-header p {
+    display: block;
+
+    width: 100%;
+
+    margin: 5px 0 0 0;
+    padding: 0;
+
+    color: #65728c;
+
+    font-size: 13px;
+    font-weight: 400;
+
+    line-height: 1.5;
+
+    transition: color 0.3s ease;
+}
+
+
+/* DARK SUBTITLE */
+
+.dark-theme .student-notification .notification-header p,
+.dark .student-notification .notification-header p,
+.student-notification.dark-theme .notification-header p,
+.student-notification.dark .notification-header p {
+
+    color: #98a8c9;
+}
+
+
+/* =========================================================
+   NOTIFICATION LIST
+========================================================= */
+
+.student-notification .notification-list {
+    width: 100%;
+
+    display: flex;
+
     flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 12px;
+
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   NOTICE CARD
+========================================================= */
+
+.student-notification .notice-card {
+
+    width: 100%;
+
+    min-height: 105px;
+
+    margin: 0;
+    padding: 18px 22px;
+
+    position: relative;
+
+    display: flex;
+
+    flex-direction: row;
+
     align-items: flex-start;
-    gap: 10px;
-  }
 
-  .close-btn {
-    align-self: flex-end;
-  }
+    justify-content: flex-start;
 
-  .notification-content h4 {
-    font-size: 16px;
-  }
+    gap: 0;
 
-  .notification-content p {
+    box-sizing: border-box;
+
+    border-radius: 17px;
+
+    border: 1px solid #d4deec;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 8px 25px rgba(35, 65, 100, 0.10);
+
+    overflow: hidden;
+
+    transform: translateY(0);
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.2s ease;
+}
+
+
+/* =========================================================
+   DARK NOTICE CARD
+========================================================= */
+
+.dark-theme .student-notification .notice-card,
+.dark .student-notification .notice-card,
+.student-notification.dark-theme .notice-card,
+.student-notification.dark .notice-card {
+
+    background:
+        linear-gradient(
+            105deg,
+            rgba(13, 31, 56, 0.96),
+            rgba(23, 20, 52, 0.94)
+        );
+
+    border-color:
+        rgba(117, 145, 196, 0.30);
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.16);
+}
+
+
+/* =========================================================
+   NOTICE CARD HOVER
+========================================================= */
+
+.student-notification .notice-card:hover {
+
+    transform: translateY(-2px);
+
+    border-color: #8ab8e8;
+
+    box-shadow:
+        0 12px 30px rgba(40, 90, 140, 0.16);
+}
+
+
+/* DARK HOVER */
+
+.dark-theme .student-notification .notice-card:hover,
+.dark .student-notification .notice-card:hover,
+.student-notification.dark-theme .notice-card:hover,
+.student-notification.dark .notice-card:hover {
+
+    border-color:
+        rgba(65, 181, 232, 0.45);
+
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.22);
+}
+
+
+/* =========================================================
+   NOTICE ICON
+========================================================= */
+
+.student-notification .notice-icon {
+
+    width: 44px;
+    min-width: 44px;
+    max-width: 44px;
+
+    height: 44px;
+    min-height: 44px;
+    max-height: 44px;
+
+    flex: 0 0 44px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin: 2px 14px 0 0;
+    padding: 0;
+
+    position: relative;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e1f4ff,
+            #e9e8ff
+        );
+
+    border: 1px solid #d4deec;
+
+    color: #167dcc;
+
+    font-size: 17px;
+
+    line-height: 1;
+
+    box-sizing: border-box;
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease,
+        color 0.3s ease;
+}
+
+
+/* DARK ICON */
+
+.dark-theme .student-notification .notice-icon,
+.dark .student-notification .notice-icon,
+.student-notification.dark-theme .notice-icon,
+.student-notification.dark .notice-icon {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(20, 126, 204, 0.28),
+            rgba(52, 56, 146, 0.38)
+        );
+
+    border-color:
+        rgba(117, 145, 196, 0.30);
+
+    color: #20d5ff;
+}
+
+
+/* =========================================================
+   NOTICE CONTENT
+========================================================= */
+
+.student-notification .notice-content {
+
+    width: auto;
+
+    min-width: 0;
+
+    max-width: none;
+
+    flex: 1 1 auto;
+
+    display: block;
+
+    position: relative;
+
+    margin: 0;
+    padding: 0;
+
+    text-align: left;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   NOTICE TITLE
+========================================================= */
+
+.student-notification .notice-content h3 {
+
+    display: block;
+
+    width: 100%;
+
+    margin: 0 0 5px 0;
+    padding: 0;
+
+    color: #17233d;
+
     font-size: 14px;
-  }
 
-  .notification-content span {
+    font-weight: 700;
+
+    line-height: 1.4;
+
+    white-space: normal;
+
+    overflow: visible;
+
+    text-overflow: clip;
+
+    word-break: normal;
+
+    transition: color 0.3s ease;
+}
+
+
+/* DARK TITLE */
+
+.dark-theme .student-notification .notice-content h3,
+.dark .student-notification .notice-content h3,
+.student-notification.dark-theme .notice-content h3,
+.student-notification.dark .notice-content h3 {
+
+    color: #eef3ff;
+}
+
+
+/* =========================================================
+   NOTICE DATE
+========================================================= */
+
+.student-notification .notice-content small {
+
+    display: block;
+
+    width: 100%;
+
+    margin: 0 0 6px 0;
+    padding: 0;
+
+    color: #71809a;
+
+    font-size: 11px;
+
+    font-weight: 400;
+
+    line-height: 1.4;
+
+    white-space: normal;
+
+    transition: color 0.3s ease;
+}
+
+
+/* DARK DATE */
+
+.dark-theme .student-notification .notice-content small,
+.dark .student-notification .notice-content small,
+.student-notification.dark-theme .notice-content small,
+.student-notification.dark .notice-content small {
+
+    color: #7789ad;
+}
+
+
+/* =========================================================
+   NOTICE MESSAGE
+========================================================= */
+
+.student-notification .notice-content p {
+
+    display: block;
+
+    width: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    color: #56657e;
+
     font-size: 12px;
-  }
+
+    font-weight: 400;
+
+    line-height: 1.5;
+
+    white-space: normal;
+
+    overflow: visible;
+
+    word-break: normal;
+
+    transition: color 0.3s ease;
+}
+
+
+/* DARK MESSAGE */
+
+.dark-theme .student-notification .notice-content p,
+.dark .student-notification .notice-content p,
+.student-notification.dark-theme .notice-content p,
+.student-notification.dark .notice-content p {
+
+    color: #a3afd0;
+}
+
+
+/* =========================================================
+   NOTICE BADGE
+========================================================= */
+
+.student-notification .notice-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex: 0 0 auto;
+
+    width: auto;
+
+    height: auto;
+
+    min-width: 0;
+
+    margin: 2px 0 0 18px;
+
+    padding: 5px 12px;
+
+    position: relative;
+
+    border-radius: 14px;
+
+    background: #edf3ff;
+
+    border: 1px solid #cbdafa;
+
+    color: #315ac7;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    line-height: 1.2;
+
+    white-space: nowrap;
+
+    box-sizing: border-box;
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease,
+        color 0.3s ease;
+}
+
+
+/* DARK BADGE */
+
+.dark-theme .student-notification .notice-badge,
+.dark .student-notification .notice-badge,
+.student-notification.dark-theme .notice-badge,
+.student-notification.dark .notice-badge {
+
+    background:
+        rgba(50, 90, 180, 0.20);
+
+    border-color:
+        rgba(66, 105, 194, 0.18);
+
+    color: #55aaff;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .student-notification {
+        padding: 20px;
+    }
+
+    .student-notification .notice-card {
+        padding: 17px 18px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE - 650px
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .student-notification {
+        padding: 18px 14px 30px;
+    }
+
+
+    .student-notification .notification-header {
+        margin-bottom: 16px;
+    }
+
+
+    .student-notification .notification-header h2 {
+        font-size: 21px;
+    }
+
+
+    .student-notification .notification-header p {
+        font-size: 11px;
+    }
+
+
+    .student-notification .notice-card {
+
+        min-height: 100px;
+
+        padding: 15px;
+
+        align-items: flex-start;
+
+        border-radius: 15px;
+    }
+
+
+    .student-notification .notice-icon {
+
+        width: 40px;
+        min-width: 40px;
+        max-width: 40px;
+
+        height: 40px;
+        min-height: 40px;
+        max-height: 40px;
+
+        flex: 0 0 40px;
+
+        margin-right: 11px;
+
+        font-size: 15px;
+    }
+
+
+    .student-notification .notice-content {
+
+        min-width: 0;
+
+        padding-right: 70px;
+    }
+
+
+    .student-notification .notice-content h3 {
+
+        font-size: 13px;
+
+        line-height: 1.4;
+    }
+
+
+    .student-notification .notice-content small {
+
+        font-size: 10px;
+    }
+
+
+    .student-notification .notice-content p {
+
+        font-size: 11px;
+
+        line-height: 1.5;
+    }
+
+
+    .student-notification .notice-badge {
+
+        position: absolute;
+
+        top: 14px;
+
+        right: 14px;
+
+        margin: 0;
+
+        padding: 4px 9px;
+
+        font-size: 9px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE - 420px
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .student-notification {
+
+        padding: 15px 11px 25px;
+    }
+
+
+    .student-notification .notice-card {
+
+        padding: 13px;
+
+        border-radius: 14px;
+    }
+
+
+    .student-notification .notice-icon {
+
+        width: 36px;
+        min-width: 36px;
+        max-width: 36px;
+
+        height: 36px;
+        min-height: 36px;
+        max-height: 36px;
+
+        flex: 0 0 36px;
+
+        margin-right: 9px;
+
+        font-size: 14px;
+    }
+
+
+    .student-notification .notice-content {
+
+        padding-right: 60px;
+    }
+
+
+    .student-notification .notice-content h3 {
+
+        font-size: 12px;
+    }
+
+
+    .student-notification .notice-content small {
+
+        font-size: 9px;
+    }
+
+
+    .student-notification .notice-content p {
+
+        font-size: 10px;
+
+        line-height: 1.5;
+    }
+
+
+    .student-notification .notice-badge {
+
+        top: 12px;
+
+        right: 12px;
+
+        padding: 4px 8px;
+
+        font-size: 8px;
+    }
+
+}
+
+
+/* =========================================================
+   EXTRA SMALL - 360px
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .student-notification {
+
+        padding: 12px 9px 20px;
+    }
+
+
+    .student-notification .notice-card {
+
+        padding: 11px;
+
+        border-radius: 12px;
+    }
+
+
+    .student-notification .notice-icon {
+
+        width: 34px;
+        min-width: 34px;
+        max-width: 34px;
+
+        height: 34px;
+        min-height: 34px;
+        max-height: 34px;
+
+        flex: 0 0 34px;
+
+        margin-right: 8px;
+
+        font-size: 13px;
+    }
+
+
+    .student-notification .notice-content {
+
+        padding-right: 55px;
+    }
+
+
+    .student-notification .notice-content h3 {
+
+        font-size: 11px;
+    }
+
+
+    .student-notification .notice-content small {
+
+        font-size: 8px;
+    }
+
+
+    .student-notification .notice-content p {
+
+        font-size: 9px;
+    }
+
+
+    .student-notification .notice-badge {
+
+        top: 10px;
+
+        right: 10px;
+
+        padding: 3px 7px;
+
+        font-size: 8px;
+    }
+
 }

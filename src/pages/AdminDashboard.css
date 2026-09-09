@@ -1,131 +1,1148 @@
-.admin-dashboard{
-    padding:25px;
-    background:#f4f7fc;
-    min-height:100vh;
+/* =========================================================
+   ADMIN DASHBOARD
+   PREMIUM LIGHT + DARK THEME
+========================================================= */
+
+.admin-dashboard {
+    min-height: 100vh;
+    padding: 30px;
+
+    background: #f4f7fc;
+    color: #172033;
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease;
 }
 
-.admin-header{
-    margin-bottom:30px;
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.admin-header {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 27px 30px;
+
+    margin-bottom: 28px;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1e3a8a,
+            #2563eb
+        );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 12px 30px rgba(37, 99, 235, 0.20);
 }
 
-.admin-header h1{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    color:#222;
+
+/* Decorative circles */
+
+.admin-header::before {
+    content: "";
+
+    position: absolute;
+
+    width: 190px;
+    height: 190px;
+
+    right: -70px;
+    top: -100px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.08);
 }
 
-.admin-header p{
-    color:#666;
+
+.admin-header::after {
+    content: "";
+
+    position: absolute;
+
+    width: 100px;
+    height: 100px;
+
+    right: 120px;
+    bottom: -70px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.05);
 }
 
-.dashboard-cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-    gap:20px;
-    margin-bottom:30px;
+
+/* Header content */
+
+.admin-header-content {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
 }
 
-.card{
-    background:#fff;
-    border-radius:15px;
-    padding:20px;
-    display:flex;
-    align-items:center;
-    gap:20px;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+/* Header icon */
+
+.admin-header-icon {
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background:
+        rgba(255, 255, 255, 0.16);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.20);
+
+    font-size: 25px;
+
+    backdrop-filter: blur(10px);
 }
 
-.icon{
-    width:60px;
-    height:60px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:white;
-    font-size:24px;
+
+.admin-header h1 {
+    margin: 0;
+
+    font-size: 30px;
+    font-weight: 750;
 }
 
-.card h2{
-    margin:0;
-    color:#222;
+
+.admin-header p {
+    margin: 6px 0 0;
+
+    font-size: 14px;
+
+    color:
+        rgba(255, 255, 255, 0.78);
 }
 
-.card p{
-    margin-top:5px;
-    color:#666;
+
+/* Badge */
+
+.admin-header-badge {
+    position: relative;
+    z-index: 2;
+
+    padding: 9px 15px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255, 255, 255, 0.14);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.18);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    backdrop-filter: blur(10px);
 }
 
-.dashboard-grid{
-    display:grid;
-    grid-template-columns:2fr 1fr;
-    gap:20px;
+
+/* =========================================================
+   STAT CARDS
+========================================================= */
+
+.dashboard-cards {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 20px;
+
+    margin-bottom: 28px;
 }
+
+
+.card {
+    position: relative;
+
+    min-height: 145px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 23px;
+
+    background: #ffffff;
+
+    border:
+        1px solid
+        #e2e8f0;
+
+    border-radius: 19px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 8px 25px
+        rgba(15, 23, 42, 0.07);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+.card:hover {
+    transform: translateY(-7px);
+
+    box-shadow:
+        0 17px 38px
+        rgba(15, 23, 42, 0.13);
+}
+
+
+/* =========================================================
+   CARD ICON
+========================================================= */
+
+.card .icon {
+    position: relative;
+    z-index: 2;
+
+    width: 60px;
+    height: 60px;
+
+    min-width: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    font-size: 25px;
+
+    transition:
+        transform 0.3s ease;
+}
+
+
+.card:hover .icon {
+    transform:
+        scale(1.1)
+        rotate(-5deg);
+}
+
+
+/* =========================================================
+   CARD CONTENT
+========================================================= */
+
+.card-content {
+    position: relative;
+    z-index: 2;
+}
+
+
+.card h2 {
+    margin: 0;
+
+    font-size: 29px;
+    font-weight: 800;
+
+    line-height: 1.2;
+}
+
+
+.card p {
+    margin: 6px 0 0;
+
+    color: #64748b;
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   DECORATION
+========================================================= */
+
+.card-decoration {
+    position: absolute;
+
+    width: 125px;
+    height: 125px;
+
+    right: -55px;
+    top: -55px;
+
+    border-radius: 50%;
+
+    opacity: 0.08;
+
+    transition:
+        transform 0.4s ease;
+}
+
+
+.card:hover .card-decoration {
+    transform: scale(1.35);
+}
+
+
+/* =========================================================
+   STUDENTS
+========================================================= */
+
+.students-card {
+    border-top: 4px solid #10b981;
+}
+
+
+.students-card .icon {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+
+.students-card h2 {
+    color: #15803d;
+}
+
+
+.students-card .card-decoration {
+    background: #10b981;
+}
+
+
+/* =========================================================
+   FACULTY
+========================================================= */
+
+.faculty-card {
+    border-top: 4px solid #3b82f6;
+}
+
+
+.faculty-card .icon {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+
+.faculty-card h2 {
+    color: #1d4ed8;
+}
+
+
+.faculty-card .card-decoration {
+    background: #3b82f6;
+}
+
+
+/* =========================================================
+   COURSES
+========================================================= */
+
+.courses-card {
+    border-top: 4px solid #f59e0b;
+}
+
+
+.courses-card .icon {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+
+.courses-card h2 {
+    color: #b45309;
+}
+
+
+.courses-card .card-decoration {
+    background: #f59e0b;
+}
+
+
+/* =========================================================
+   FEES
+========================================================= */
+
+.fees-card {
+    border-top: 4px solid #8b5cf6;
+}
+
+
+.fees-card .icon {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+
+.fees-card h2 {
+    color: #6d28d9;
+}
+
+
+.fees-card .card-decoration {
+    background: #8b5cf6;
+}
+
+
+/* =========================================================
+   MAIN GRID
+========================================================= */
+
+.dashboard-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.8fr)
+        minmax(300px, 1fr);
+
+    gap: 22px;
+
+    align-items: start;
+}
+
+
+/* =========================================================
+   CONTENT CARDS
+========================================================= */
 
 .table-card,
-.notice-card{
-    background:white;
-    border-radius:15px;
-    padding:20px;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
+.notice-card {
+    background: #ffffff;
+
+    border:
+        1px solid
+        #e2e8f0;
+
+    border-radius: 19px;
+
+    padding: 23px;
+
+    box-shadow:
+        0 8px 25px
+        rgba(15, 23, 42, 0.07);
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease;
 }
 
-.table-card h2,
-.notice-card h2{
-    margin-bottom:20px;
+
+/* =========================================================
+   SECTION HEADING
+========================================================= */
+
+.section-heading {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    margin-bottom: 20px;
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
+
+.section-icon {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    font-size: 18px;
 }
 
-table th{
-    background:#3f51b5;
-    color:white;
-    padding:12px;
+
+.students-heading {
+    background: #dcfce7;
+    color: #16a34a;
 }
 
-table td{
-    padding:12px;
-    border-bottom:1px solid #eee;
+
+.notification-heading {
+    background: #f3e8ff;
+    color: #9333ea;
 }
 
-.notice-card ul{
-    list-style:none;
-    padding:0;
+
+.section-heading h2 {
+    margin: 0;
+
+    color: #172554;
+
+    font-size: 20px;
+    font-weight: 700;
 }
 
-.notice-card li{
-    background:#f8f9fa;
-    padding:12px;
-    margin-bottom:10px;
-    border-left:5px solid #3f51b5;
-    border-radius:6px;
+
+.section-heading p {
+    margin: 3px 0 0;
+
+    color: #94a3b8;
+
+    font-size: 12px;
 }
 
-@media(max-width:900px){
 
-.dashboard-grid{
-    grid-template-columns:1fr;
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
 }
 
+
+.table-card table {
+    width: 100%;
+
+    min-width: 620px;
+
+    border-collapse: collapse;
 }
 
-@media(max-width:768px){
 
-.admin-dashboard{
-    padding:15px;
+/* Header */
+
+.table-card thead th {
+    padding: 14px 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #3b82f6
+        );
+
+    color: #ffffff;
+
+    text-align: left;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    white-space: nowrap;
 }
 
-.dashboard-cards{
-    grid-template-columns:1fr;
+
+/* Body */
+
+.table-card tbody td {
+    padding: 15px 16px;
+
+    color: #475569;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    border-bottom:
+        1px solid
+        #e5e7eb;
+
+    white-space: nowrap;
 }
 
-table{
-    display:block;
-    overflow-x:auto;
+
+.table-card tbody tr {
+    transition:
+        background 0.2s ease;
 }
 
+
+.table-card tbody tr:hover {
+    background: #f8fbff;
+}
+
+
+.table-card tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* Student ID */
+
+.table-card .student-id {
+    color: #2563eb;
+
+    font-weight: 700;
+}
+
+
+/* Empty */
+
+.empty-state {
+    text-align: center;
+
+    padding: 30px !important;
+
+    color: #94a3b8 !important;
+}
+
+
+/* =========================================================
+   ANNOUNCEMENTS
+========================================================= */
+
+.notice-card ul {
+    list-style: none;
+
+    padding: 0;
+    margin: 0;
+}
+
+
+.notice-card li {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px 15px;
+
+    margin-bottom: 11px;
+
+    background: #f8fafc;
+
+    border:
+        1px solid
+        #e2e8f0;
+
+    border-left:
+        4px solid
+        #8b5cf6;
+
+    border-radius: 10px;
+
+    color: #475569;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.notice-card li:last-child {
+    margin-bottom: 0;
+}
+
+
+.notice-card li:hover {
+    background: #f5f3ff;
+
+    transform: translateX(4px);
+}
+
+
+.notice-dot {
+    width: 8px;
+    height: 8px;
+
+    min-width: 8px;
+
+    border-radius: 50%;
+
+    background: #8b5cf6;
+}
+
+
+/* =========================================================
+   LIGHT SCROLLBAR
+========================================================= */
+
+.table-wrapper::-webkit-scrollbar {
+    height: 7px;
+}
+
+
+.table-wrapper::-webkit-scrollbar-track {
+    background: #eef2f7;
+
+    border-radius: 10px;
+}
+
+
+.table-wrapper::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+
+    border-radius: 10px;
+}
+
+
+/* =========================================================
+   DARK THEME
+========================================================= */
+
+.dark-theme .admin-dashboard {
+    background:
+        radial-gradient(
+            circle at 8% 5%,
+            rgba(37, 99, 235, 0.14),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(124, 58, 237, 0.10),
+            transparent 28%
+        ),
+        #070d19;
+
+    color: #f8fafc;
+}
+
+
+/* =========================================================
+   DARK HEADER
+========================================================= */
+
+.dark-theme .admin-header {
+    box-shadow:
+        0 15px 35px
+        rgba(0, 0, 0, 0.35);
+}
+
+
+/* =========================================================
+   DARK STAT CARDS
+========================================================= */
+
+.dark-theme .card {
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30, 41, 59, 0.75),
+            rgba(15, 23, 42, 0.88)
+        );
+
+    border-color:
+        rgba(148, 163, 184, 0.14);
+
+    box-shadow:
+        0 18px 42px
+        rgba(0, 0, 0, 0.30),
+
+        inset 0 1px 0
+        rgba(255, 255, 255, 0.025);
+
+    backdrop-filter: blur(18px);
+}
+
+
+.dark-theme .card:hover {
+    border-color:
+        rgba(96, 165, 250, 0.22);
+
+    box-shadow:
+        0 22px 48px
+        rgba(0, 0, 0, 0.38);
+}
+
+
+.dark-theme .card p {
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   DARK STUDENTS
+========================================================= */
+
+.dark-theme .students-card .icon {
+    background:
+        rgba(16, 185, 129, 0.15);
+
+    color: #34d399;
+}
+
+
+.dark-theme .students-card h2 {
+    color: #34d399;
+}
+
+
+/* =========================================================
+   DARK FACULTY
+========================================================= */
+
+.dark-theme .faculty-card .icon {
+    background:
+        rgba(59, 130, 246, 0.15);
+
+    color: #60a5fa;
+}
+
+
+.dark-theme .faculty-card h2 {
+    color: #60a5fa;
+}
+
+
+/* =========================================================
+   DARK COURSES
+========================================================= */
+
+.dark-theme .courses-card .icon {
+    background:
+        rgba(245, 158, 11, 0.15);
+
+    color: #fbbf24;
+}
+
+
+.dark-theme .courses-card h2 {
+    color: #fbbf24;
+}
+
+
+/* =========================================================
+   DARK FEES
+========================================================= */
+
+.dark-theme .fees-card .icon {
+    background:
+        rgba(139, 92, 246, 0.15);
+
+    color: #a78bfa;
+}
+
+
+.dark-theme .fees-card h2 {
+    color: #a78bfa;
+}
+
+
+/* =========================================================
+   DARK CONTENT CARDS
+========================================================= */
+
+.dark-theme .table-card,
+.dark-theme .notice-card {
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30, 41, 59, 0.70),
+            rgba(15, 23, 42, 0.86)
+        );
+
+    border-color:
+        rgba(148, 163, 184, 0.14);
+
+    box-shadow:
+        0 20px 48px
+        rgba(0, 0, 0, 0.30),
+
+        inset 0 1px 0
+        rgba(255, 255, 255, 0.025);
+
+    backdrop-filter: blur(20px);
+}
+
+
+/* =========================================================
+   DARK SECTION HEADINGS
+========================================================= */
+
+.dark-theme .section-heading h2 {
+    color: #f8fafc;
+}
+
+
+.dark-theme .section-heading p {
+    color: #94a3b8;
+}
+
+
+.dark-theme .students-heading {
+    background:
+        rgba(16, 185, 129, 0.15);
+
+    color: #34d399;
+}
+
+
+.dark-theme .notification-heading {
+    background:
+        rgba(168, 85, 247, 0.15);
+
+    color: #c084fc;
+}
+
+
+/* =========================================================
+   DARK TABLE
+========================================================= */
+
+.dark-theme .table-card thead th {
+    background:
+        linear-gradient(
+            135deg,
+            #1d4ed8,
+            #2563eb
+        );
+}
+
+
+.dark-theme .table-card tbody td {
+    color: #cbd5e1;
+
+    border-bottom-color:
+        rgba(148, 163, 184, 0.10);
+}
+
+
+.dark-theme .table-card tbody tr {
+    background:
+        rgba(15, 23, 42, 0.30);
+}
+
+
+.dark-theme .table-card tbody tr:hover {
+    background:
+        rgba(37, 99, 235, 0.10);
+}
+
+
+.dark-theme .table-card .student-id {
+    color: #60a5fa;
+}
+
+
+.dark-theme .empty-state {
+    color: #64748b !important;
+}
+
+
+/* =========================================================
+   DARK NOTIFICATIONS
+========================================================= */
+
+.dark-theme .notice-card li {
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    border-color:
+        rgba(148, 163, 184, 0.10);
+
+    border-left-color:
+        #8b5cf6;
+
+    color: #cbd5e1;
+}
+
+
+.dark-theme .notice-card li:hover {
+    background:
+        rgba(139, 92, 246, 0.10);
+
+    color: #f1f5f9;
+}
+
+
+.dark-theme .notice-dot {
+    background: #a78bfa;
+}
+
+
+/* =========================================================
+   DARK SCROLLBAR
+========================================================= */
+
+.dark-theme .table-wrapper::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+
+.dark-theme .table-wrapper::-webkit-scrollbar-thumb {
+    background: #334155;
+}
+
+
+/* =========================================================
+   RESPONSIVE - 1200px
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .dashboard-cards {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 768px
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .admin-dashboard {
+        padding: 18px;
+    }
+
+    .admin-header {
+        padding: 22px;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+    .admin-header h1 {
+        font-size: 25px;
+    }
+
+    .admin-header-badge {
+        align-self: flex-start;
+    }
+
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+
+        gap: 16px;
+    }
+
+    .card {
+        min-height: 125px;
+
+        padding: 20px;
+    }
+
+    .table-card,
+    .notice-card {
+        padding: 20px;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 480px
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .admin-dashboard {
+        padding: 12px;
+    }
+
+    .admin-header {
+        padding: 19px;
+
+        border-radius: 16px;
+    }
+
+    .admin-header-content {
+        gap: 11px;
+    }
+
+    .admin-header-icon {
+        width: 47px;
+        height: 47px;
+
+        font-size: 21px;
+    }
+
+    .admin-header h1 {
+        font-size: 21px;
+    }
+
+    .admin-header p {
+        font-size: 12px;
+    }
+
+    .admin-header-badge {
+        font-size: 12px;
+    }
+
+    .card {
+        gap: 14px;
+
+        padding: 18px;
+
+        border-radius: 16px;
+    }
+
+    .card .icon {
+        width: 52px;
+        height: 52px;
+
+        min-width: 52px;
+
+        font-size: 21px;
+    }
+
+    .card h2 {
+        font-size: 24px;
+    }
+
+    .card p {
+        font-size: 13px;
+    }
+
+    .table-card,
+    .notice-card {
+        padding: 16px;
+
+        border-radius: 16px;
+    }
+
+    .section-heading h2 {
+        font-size: 18px;
+    }
+
+    .section-heading p {
+        font-size: 11px;
+    }
+
+    .section-icon {
+        width: 39px;
+        height: 39px;
+
+        font-size: 16px;
+    }
 }
