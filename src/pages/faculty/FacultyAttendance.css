@@ -1682,3 +1682,203 @@
     flex: 1;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   MOBILE ATTENDANCE TABLE
+   Convert table rows into compact student cards
+========================================================= */
+
+@media (max-width: 600px) {
+
+  /* Remove horizontal scrolling */
+  .fa-table-wrapper {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .fa-table {
+    width: 100%;
+    min-width: 0;
+    table-layout: auto;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+  }
+
+  /* Hide desktop table header */
+  .fa-table thead {
+    display: none;
+  }
+
+  /* Each student becomes a card */
+  .fa-table tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+
+    border: 1px solid var(--fa-border);
+    border-radius: 12px;
+
+    background: var(--fa-surface);
+
+    box-shadow: 0 3px 12px rgba(26, 39, 69, 0.04);
+  }
+
+  /* Remove hover background */
+  .fa-table tbody tr:hover td {
+    background: transparent;
+  }
+
+  /* All cells */
+  .fa-table td {
+    width: auto !important;
+    height: auto;
+    min-width: 0;
+
+    padding: 0;
+
+    border: none;
+    background: transparent;
+  }
+
+  /* Hide row number on mobile */
+  .fa-table td:nth-child(1) {
+    display: none;
+  }
+
+  /* Student ID */
+  .fa-table td:nth-child(2) {
+    display: none;
+  }
+
+  /* Student information */
+  .fa-table td:nth-child(3) {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .fa-student {
+    width: 100%;
+    min-width: 0;
+
+    gap: 9px;
+  }
+
+  .fa-avatar {
+    width: 38px;
+    height: 38px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+    font-size: 12px;
+  }
+
+  .fa-student > div {
+    min-width: 0;
+  }
+
+  .fa-student strong {
+    max-width: 100%;
+
+    overflow: hidden;
+
+    font-size: 12px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .fa-student span {
+    font-size: 8px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Attendance buttons */
+  .fa-table td:nth-child(4) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .fa-attendance-actions {
+    width: auto;
+    max-width: none;
+
+    display: flex;
+    gap: 5px;
+  }
+
+  .fa-status-btn {
+    width: 42px;
+    height: 38px;
+
+    padding: 0;
+
+    border-radius: 9px;
+
+    font-size: 0;
+  }
+
+  /* Keep only icons visible */
+  .fa-status-btn svg {
+    margin: 0;
+    font-size: 15px;
+  }
+
+  /* Make selected state obvious */
+  .fa-status-btn.present.active,
+  .fa-status-btn.absent.active {
+    transform: scale(1.03);
+  }
+
+  /* Mark header */
+  .fa-mark-header {
+    padding: 15px;
+  }
+
+  .fa-mark-header h2 {
+    font-size: 16px;
+  }
+
+  .fa-mark-header p {
+    font-size: 9px;
+  }
+
+  /* Summary */
+  .fa-mark-summary {
+    width: 100%;
+    gap: 10px;
+  }
+
+  .fa-mark-summary div {
+    min-width: 0;
+    flex: 1;
+
+    text-align: center;
+  }
+
+  .fa-mark-summary strong {
+    font-size: 16px;
+  }
+}

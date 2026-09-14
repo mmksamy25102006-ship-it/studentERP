@@ -597,81 +597,61 @@ const Marks = () => {
                   </tr>
 
                 </thead>
+<tbody>
+  {subjects.map((subject, index) => {
+    const total = calculateInternalTotal(subject);
 
-                <tbody>
+    return (
+      <tr
+        key={`${subject.subject}-${index}`}
+        className="mobile-mark-row"
+      >
+        <td className="subject-name">
+          {subject.subject}
+        </td>
 
-                  {subjects.map(
-                    (
-                      subject,
-                      index
-                    ) => {
+        <td data-label="Credits">
+          {subject.credits}
+        </td>
 
-                      const total =
-                        calculateInternalTotal(
-                          subject
-                        );
+        <td data-label="CIA 1 / 20">
+          {subject.internal1}
+        </td>
 
-                      return (
-                        <tr
-                          key={`${subject.subject}-${index}`}
-                        >
+        <td data-label="CIA 2 / 20">
+          {subject.internal2}
+        </td>
 
-                          <td className="subject-name">
-                            {subject.subject}
-                          </td>
+        <td data-label="Assignment / 10">
+          {subject.assignment}
+        </td>
 
-                          <td>
-                            {subject.credits}
-                          </td>
+        <td data-label="Lab / 25">
+          {subject.lab}
+        </td>
 
-                          <td>
-                            {subject.internal1}
-                          </td>
+        <td
+          className="total-cell"
+          data-label="Total"
+        >
+          {total}/75
+        </td>
 
-                          <td>
-                            {subject.internal2}
-                          </td>
-
-                          <td>
-                            {subject.assignment}
-                          </td>
-
-                          <td>
-                            {subject.lab}
-                          </td>
-
-                          <td className="total-cell">
-                            {total}/75
-                          </td>
-
-                          <td>
-
-                            <span
-                              className={`grade grade-${String(
-                                subject.grade ||
-                                  "-"
-                              )
-                                .replace(
-                                  "+",
-                                  "plus"
-                                )
-                                .replace(
-                                  "-",
-                                  "minus"
-                                )}`}
-                            >
-                              {subject.grade ||
-                                "-"}
-                            </span>
-
-                          </td>
-
-                        </tr>
-                      );
-                    }
-                  )}
-
-                </tbody>
+        <td data-label="Grade">
+          <span
+            className={`grade grade-${String(
+              subject.grade || "-"
+            )
+              .replace("+", "plus")
+              .replace("-", "minus")}`}
+          >
+            {subject.grade || "-"}
+          </span>
+        </td>
+      </tr>
+    );
+  })}
+</tbody>
 
               </table>
 
@@ -799,57 +779,41 @@ const Marks = () => {
 
               </thead>
 
-              <tbody>
+             <tbody>
+  {subjects.map((subject, index) => (
+    <tr
+      key={`${subject.subject}-semester-${index}`}
+      className="mobile-mark-row"
+    >
+      <td className="subject-name">
+        {subject.subject}
+      </td>
 
-                {subjects.map(
-                  (
-                    subject,
-                    index
-                  ) => (
-                    <tr
-                      key={`${subject.subject}-semester-${index}`}
-                    >
+      <td data-label="Credits">
+        {subject.credits}
+      </td>
 
-                      <td className="subject-name">
-                        {subject.subject}
-                      </td>
+      <td data-label="Grade">
+        <span
+          className={`grade grade-${String(
+            subject.grade || "-"
+          )
+            .replace("+", "plus")
+            .replace("-", "minus")}`}
+        >
+          {subject.grade || "-"}
+        </span>
+      </td>
 
-                      <td>
-                        {subject.credits}
-                      </td>
-
-                      <td>
-
-                        <span
-                          className={`grade grade-${String(
-                            subject.grade ||
-                              "-"
-                          )
-                            .replace(
-                              "+",
-                              "plus"
-                            )
-                            .replace(
-                              "-",
-                              "minus"
-                            )}`}
-                        >
-                          {subject.grade ||
-                            "-"}
-                        </span>
-
-                      </td>
-
-                      <td className="points-cell">
-                        {subject.gradePoints ||
-                          0}
-                      </td>
-
-                    </tr>
-                  )
-                )}
-
-              </tbody>
+      <td
+        className="points-cell"
+        data-label="Grade Points"
+      >
+        {subject.gradePoints || 0}
+      </td>
+    </tr>
+  ))}
+</tbody>
 
             </table>
 

@@ -1566,3 +1566,957 @@
     align-self: flex-start;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   MOBILE MARKS RESPONSIVE DESIGN
+   No horizontal scrolling
+===================================================== */
+
+@media (max-width: 600px) {
+
+  /* ================================
+     PAGE
+  ================================= */
+
+  .marks-page {
+    width: 100%;
+    min-width: 0;
+    padding: 14px 10px 80px;
+    overflow-x: hidden;
+  }
+
+
+  /* ================================
+     HEADER
+  ================================= */
+
+  .marks-header {
+    margin-bottom: 14px;
+  }
+
+  .marks-title-studentdashboard {
+    gap: 10px;
+  }
+
+  .marks-title-icon {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    font-size: 17px;
+  }
+
+  .marks-title-studentdashboard h1 {
+    font-size: 20px;
+    letter-spacing: -0.3px;
+  }
+
+  .marks-title-studentdashboard p {
+    font-size: 10px;
+  }
+
+
+  /* ================================
+     TABS
+  ================================= */
+
+  .marks-tabs {
+    width: 100%;
+    display: flex;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scrollbar-width: none;
+
+    margin-bottom: 14px;
+
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .marks-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .marks-tabs button {
+    flex: 0 0 auto;
+
+    padding: 10px 12px;
+
+    font-size: 10px;
+  }
+
+  .marks-tabs button svg {
+    margin-right: 4px;
+  }
+
+
+  /* ================================
+     STUDENT INFO
+  ================================= */
+
+  .student-info-bar {
+    width: 100%;
+
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+
+    margin-bottom: 14px;
+
+    padding: 12px 14px;
+
+    border-radius: 12px;
+  }
+
+  .student-info-bar div:first-child {
+    grid-column: auto;
+  }
+
+  .student-info-bar span {
+    font-size: 8px;
+  }
+
+  .student-info-bar strong {
+    font-size: 12px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+
+  /* ================================
+     MAIN CARD
+  ================================= */
+
+  .marks-card {
+    width: 100%;
+    min-width: 0;
+
+    border-radius: 14px;
+  }
+
+
+  /* ================================
+     CARD HEADING
+  ================================= */
+
+  .card-heading {
+    width: 100%;
+
+    padding: 14px;
+
+    gap: 10px;
+  }
+
+  .card-heading h2 {
+    font-size: 15px;
+  }
+
+  .card-heading p {
+    font-size: 10px;
+  }
+
+  .semester-badge {
+    padding: 6px 10px;
+
+    font-size: 9px;
+  }
+
+
+  /* =================================================
+     MARKS TABLE
+     Convert table → subject cards
+  ================================================= */
+
+  .table-wrapper {
+    width: 100%;
+
+    overflow-x: hidden;
+  }
+
+  .marks-table {
+    width: 100%;
+
+    min-width: 0;
+
+    display: block;
+
+    table-layout: auto;
+  }
+
+  .marks-table thead {
+    display: none;
+  }
+
+  .marks-table tbody {
+    width: 100%;
+
+    display: block;
+
+    padding: 8px;
+  }
+
+  .marks-table tbody tr {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 0;
+
+    margin-bottom: 8px;
+
+    padding: 10px;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 11px;
+
+    background: var(--card-bg);
+
+    box-shadow:
+      0 3px 12px rgba(30, 64, 175, 0.05);
+  }
+
+  .marks-table tbody tr:last-child {
+    margin-bottom: 0;
+  }
+
+  .marks-table tbody tr:hover td {
+    background: transparent;
+  }
+
+  .marks-table td {
+    width: auto !important;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    padding: 7px 6px;
+
+    border: none;
+
+    font-size: 11px;
+
+    background: transparent;
+  }
+
+
+  /* ================================
+     SUBJECT NAME
+  ================================= */
+
+  .marks-table td.subject-name {
+    grid-column: 1 / -1;
+
+    padding: 8px 6px 10px !important;
+
+    border-bottom: 1px solid var(--border-color);
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    color: var(--text-primary) !important;
+  }
+
+
+  /* ================================
+     OTHER MARK CELLS
+  ================================= */
+
+  .marks-table td:not(.subject-name)::before {
+    content: attr(data-label);
+
+    margin-right: 6px;
+
+    color: var(--text-muted);
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+  }
+
+  .marks-table td:not(.subject-name) {
+    justify-content: space-between;
+
+    min-height: 32px;
+  }
+
+
+  /* ================================
+     TOTAL
+  ================================= */
+
+  .marks-table .total-cell {
+    font-size: 12px !important;
+    font-weight: 800;
+  }
+
+
+  /* ================================
+     POINTS
+  ================================= */
+
+  .marks-table .points-cell {
+    font-size: 12px !important;
+    font-weight: 800;
+  }
+
+
+  /* ================================
+     GRADE
+  ================================= */
+
+  .grade {
+    min-width: 30px;
+
+    padding: 4px 8px;
+
+    font-size: 9px;
+  }
+
+
+  /* ================================
+     GPA SUMMARY
+  ================================= */
+
+  .gpa-summary {
+    width: 100%;
+
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+
+    margin-top: 12px;
+  }
+
+  .gpa-card {
+    width: 100%;
+
+    min-height: 82px;
+
+    padding: 15px 17px;
+
+    border-radius: 13px;
+  }
+
+  .gpa-card-content {
+    gap: 4px;
+  }
+
+  .gpa-card span {
+    font-size: 9px;
+  }
+
+  .gpa-card strong {
+    font-size: 24px;
+  }
+
+  .gpa-card > svg {
+    font-size: 22px;
+  }
+
+
+  /* ================================
+     FOOTER STATISTICS
+  ================================= */
+
+  .marks-footer-stat {
+    width: 100%;
+
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+
+    margin-top: 12px;
+
+    padding: 14px;
+
+    border-radius: 13px;
+  }
+
+  .marks-footer-stat div {
+    padding: 5px 0;
+  }
+
+  .marks-footer-stat span {
+    font-size: 8px;
+  }
+
+  .marks-footer-stat strong {
+    font-size: 12px;
+  }
+
+
+  /* ================================
+     GPA CALCULATOR
+  ================================= */
+
+  .gpa-calculator-card {
+    width: 100%;
+
+    min-height: 280px;
+
+    padding: 25px 15px;
+
+    border-radius: 14px;
+  }
+
+  .calculator-icon {
+    width: 48px;
+    height: 48px;
+
+    margin-bottom: 12px;
+
+    border-radius: 13px;
+
+    font-size: 20px;
+  }
+
+  .gpa-calculator-card h2 {
+    font-size: 17px;
+  }
+
+  .gpa-calculator-card p {
+    font-size: 10px;
+
+    max-width: 280px;
+  }
+
+  .big-gpa {
+    margin-top: 18px;
+
+    font-size: 45px;
+  }
+
+  .gpa-label {
+    font-size: 9px;
+  }
+
+
+  /* =================================================
+     PERFORMANCE
+  ================================================= */
+
+  .performance-card {
+    width: 100%;
+
+    min-width: 0;
+
+    padding: 16px;
+
+    border-radius: 14px;
+
+    overflow: visible;
+  }
+
+  .performance-header h2 {
+    font-size: 16px;
+  }
+
+  .performance-header p {
+    margin-top: 4px;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+  }
+
+  .performance-list {
+    width: 100%;
+
+    gap: 15px;
+
+    margin-top: 20px;
+  }
+
+  .performance-info {
+    width: 100%;
+
+    gap: 10px;
+
+    margin-bottom: 7px;
+  }
+
+  .performance-info strong {
+    min-width: 0;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-size: 11px;
+  }
+
+  .performance-info span {
+    flex-shrink: 0;
+
+    font-size: 10px;
+  }
+
+  .progress-track {
+    width: 100%;
+
+    height: 8px;
+
+    border-radius: 20px;
+  }
+
+  .progress-fill {
+    height: 100%;
+  }
+
+
+  /* ================================
+     EMPTY STATE
+  ================================= */
+
+  .marks-empty {
+    width: 100%;
+
+    min-height: 300px;
+
+    padding: 30px 15px;
+
+    border-radius: 14px;
+  }
+
+  .marks-empty svg {
+    font-size: 35px;
+  }
+
+  .marks-empty h2 {
+    font-size: 17px;
+  }
+
+  .marks-empty p {
+    max-width: 280px;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+  }
+
+
+  /* ================================
+     LOADING
+  ================================= */
+
+  .marks-loading {
+    min-height: 400px;
+  }
+
+
+  /* ================================
+     AI BUTTON
+  ================================= */
+
+  .marks-ai-button {
+    width: 48px;
+    height: 48px;
+
+    right: 14px;
+    bottom: 14px;
+
+    font-size: 18px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   MOBILE MARKS FIX
+   INTERNAL + SEMESTER + PERFORMANCE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .marks-page {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 16px 10px 70px;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
+  /* ---------- HEADER ---------- */
+
+  .marks-header {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .marks-title-studentdashboard {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .marks-title-studentdashboard h1 {
+    font-size: 23px;
+    line-height: 1.2;
+  }
+
+  .marks-title-studentdashboard p {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  /* ---------- TABS ---------- */
+
+  .marks-tabs {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 5px;
+    scrollbar-width: none;
+  }
+
+  .marks-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .marks-tabs button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    font-size: 12px;
+    padding: 9px 12px;
+  }
+
+  /* ---------- STUDENT INFO ---------- */
+
+  .student-info-bar {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+
+  .student-info-bar > div {
+    min-width: 0;
+  }
+
+  /* ---------- CARD ---------- */
+
+  .marks-card,
+  .performance-card,
+  .gpa-calculator-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .card-heading,
+  .performance-header {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .card-heading h2,
+  .performance-header h2 {
+    font-size: 17px;
+  }
+
+  .card-heading p,
+  .performance-header p {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  /* =====================================================
+     TABLE WRAPPER
+  ===================================================== */
+
+  .table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: visible;
+  }
+
+  /* =====================================================
+     TURN TABLE INTO MOBILE SUBJECT CARDS
+  ===================================================== */
+
+  .marks-table {
+    width: 100%;
+    min-width: 0 !important;
+    max-width: 100%;
+    display: block;
+    table-layout: auto;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+  }
+
+  .marks-table thead {
+    display: none;
+  }
+
+  .marks-table tbody {
+    display: block;
+    width: 100%;
+  }
+
+  .marks-table tbody tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 10px;
+    padding: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .marks-table tbody td {
+    width: auto;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 10px 11px;
+    font-size: 12px;
+    text-align: right;
+    overflow-wrap: anywhere;
+  }
+
+  /* Subject name becomes full-width */
+
+  .marks-table tbody td.subject-name {
+    grid-column: 1 / -1;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 12px;
+  }
+
+  /* Label each value */
+
+  .marks-table tbody td:not(.subject-name)::before {
+    content: attr(data-label);
+    display: block;
+    float: left;
+    margin-right: 8px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    opacity: 0.65;
+    text-align: left;
+  }
+
+  /* Total */
+
+  .marks-table tbody td.total-cell {
+    font-weight: 700;
+  }
+
+  /* Grade */
+
+  .marks-table tbody td:last-child {
+    font-weight: 700;
+  }
+
+  /* =====================================================
+     SEMESTER TABLE
+  ===================================================== */
+
+  .marks-card .marks-table tbody tr {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* =====================================================
+     GPA SUMMARY
+  ===================================================== */
+
+  .gpa-summary {
+    width: 100%;
+    max-width: 100%;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .gpa-card {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  /* =====================================================
+     GPA CALCULATOR
+  ===================================================== */
+
+  .gpa-calculator-card {
+    min-height: 260px;
+    padding: 24px 16px;
+    text-align: center;
+  }
+
+  .big-gpa {
+    font-size: 48px;
+  }
+
+  /* =====================================================
+     PERFORMANCE
+  ===================================================== */
+
+  .performance-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 16px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .performance-list {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .performance-item {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .performance-info {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .performance-info strong {
+    min-width: 0;
+    max-width: 75%;
+    overflow-wrap: anywhere;
+  }
+
+  .performance-info span {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .progress-track {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .progress-fill {
+    max-width: 100%;
+  }
+
+  /* =====================================================
+     FOOTER STAT
+  ===================================================== */
+
+  .marks-footer-stat {
+    width: 100%;
+    max-width: 100%;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    box-sizing: border-box;
+  }
+
+  .marks-footer-stat > div {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+}
+
+
+/* =========================================================
+   EXTRA SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .marks-page {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .marks-title-studentdashboard h1 {
+    font-size: 21px;
+  }
+
+  .marks-tabs button {
+    font-size: 11px;
+    padding: 8px 10px;
+  }
+
+  .marks-table tbody td {
+    padding: 9px 8px;
+    font-size: 11px;
+  }
+
+  .marks-table tbody td.subject-name {
+    font-size: 13px;
+  }
+
+  .marks-table tbody td:not(.subject-name)::before {
+    font-size: 9px;
+  }
+
+  .performance-card {
+    padding: 13px;
+  }
+
+  .big-gpa {
+    font-size: 42px;
+  }
+}
