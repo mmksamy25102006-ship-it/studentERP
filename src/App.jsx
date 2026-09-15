@@ -358,7 +358,7 @@ function App() {
 
         <NotificationProvider>
 
-          <BrowserRouter>
+<BrowserRouter basename="/studentERP">
 
             <Routes>
 
