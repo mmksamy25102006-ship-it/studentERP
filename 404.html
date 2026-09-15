@@ -3,24 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <script>
       const repo = "/studentERP";
       const path = window.location.pathname;
 
       if (path.startsWith(repo)) {
-        const route = path.substring(repo.length);
+        const route = path.substring(repo.length) || "/";
 
-        window.location.replace(
+        const target =
           repo +
-          "/?redirect=" +
-          encodeURIComponent(
-            route +
-            window.location.search +
-            window.location.hash
-          )
-        );
+          "/?/" +
+          route.replace(/^\/+/, "") +
+          window.location.search +
+          window.location.hash;
+
+        window.location.replace(target);
       }
     </script>
   </head>
+
   <body></body>
 </html>
