@@ -48,6 +48,13 @@ app.get("/", (req, res) => {
 // =========================
 // API Routes
 // =========================
+app.get("/api/test-deployment", (req, res) => {
+  res.json({
+    success: true,
+    message: "Latest StudentERP backend is running",
+    version: "16f7617",
+  });
+});
 
 app.use("/api/auth", authRoutes);
 
