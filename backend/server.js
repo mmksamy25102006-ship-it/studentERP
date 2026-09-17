@@ -20,6 +20,7 @@ const authRoutes = require("./routes/auth");
 const markRoutes = require("./routes/markRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
 const studentRoutes = require("./routes/studentRoutes");
+const facultyRoutes = require("./routes/facultyRoutes");
 
 // New routes for multi-user ERP
 const attendanceRoutes = require("./routes/attendanceRoutes");
@@ -55,7 +56,7 @@ app.use("/api/marks", markRoutes);
 app.use("/api/notifications", notificationRoutes);
 
 app.use("/api/students", studentRoutes);
-
+app.use("/api/faculty", facultyRoutes);
 // Attendance API
 app.use("/api/attendance", attendanceRoutes);
 

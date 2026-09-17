@@ -48,6 +48,10 @@ const userSchema = new mongoose.Schema(
       sparse: true,
     },
 
+    // -----------------------------------------
+    // COMMON USER INFORMATION
+    // -----------------------------------------
+
     department: {
       type: String,
       default: "",
@@ -65,6 +69,26 @@ const userSchema = new mongoose.Schema(
       default: "",
       trim: true,
     },
+
+    // -----------------------------------------
+    // FACULTY INFORMATION
+    // -----------------------------------------
+
+    designation: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    experience: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    // -----------------------------------------
+    // PROFILE
+    // -----------------------------------------
 
     profileImage: {
       type: String,
