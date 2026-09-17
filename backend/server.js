@@ -25,7 +25,7 @@ const facultyRoutes = require("./routes/facultyRoutes");
 // New routes for multi-user ERP
 const attendanceRoutes = require("./routes/attendanceRoutes");
 const assignmentRoutes = require("./routes/assignmentRoutes");
-
+const feeRoutes = require("./routes/feeRoutes");
 // Initialize Express
 const app = express();
 
@@ -69,7 +69,7 @@ app.use("/api/attendance", attendanceRoutes);
 
 // Assignment API
 app.use("/api/assignments", assignmentRoutes);
-
+app.use("/api/fees", feeRoutes);
 // =========================
 // 404 Route
 // =========================
