@@ -2,12 +2,30 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>studenterb</title>
+
+    <script>
+      (function () {
+        var pathSegmentsToKeep = 1;
+
+        var l = window.location;
+        var repo = "/studentERP";
+
+        var route = l.pathname.startsWith(repo)
+          ? l.pathname.substring(repo.length)
+          : l.pathname;
+
+        var redirect =
+          repo +
+          "/?/" +
+          route.replace(/^\/+/, "") +
+          (l.search ? "&" + l.search.substring(1) : "") +
+          l.hash;
+
+        l.replace(redirect);
+      })();
+    </script>
   </head>
-  <body>
-    <div id="root"></div>
-        <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+  <body></body>
 </html>
