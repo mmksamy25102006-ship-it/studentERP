@@ -18,6 +18,41 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+
+
+
+// GET ONE STUDENT BY STUDENT ID
+router.get("/:studentId", async (req, res) => {
+  try {
+    const studentId =
+      req.params.studentId.trim().toUpperCase();
+
+    const student = await Student.findOne({
+      studentId,
+    });
+
+    if (!student) {
+      return res.status(404).json({
+        message: "Student not found",
+      });
+    }
+
+    res.status(200).json({
+      student,
+    });
+  } catch (error) {
+    console.error(
+      "GET STUDENT BY ID ERROR:",
+      error
+    );
+
+    res.status(500).json({
+      message: "Failed to fetch student",
+      error: error.message,
+    });
+  }
+});
 // ADD STUDENT
 router.post("/", async (req, res) => {
   try {

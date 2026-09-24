@@ -51,7 +51,6 @@ const markSchema = new mongoose.Schema(
     rollNo: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
     },
 
@@ -62,6 +61,7 @@ const markSchema = new mongoose.Schema(
 
     semester: {
       type: String,
+      required: true,
       default: "Semester I",
     },
 
@@ -82,6 +82,32 @@ const markSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+  }
+);
+
+/*
+=========================================================
+ONE STUDENT CAN HAVE MULTIPLE SEMESTERS
+
+Example:
+
+22CS002 + Semester I
+22CS002 + Semester II
+22CS002 + Semester III
+...
+22CS002 + Semester VI
+
+But the same semester cannot be duplicated.
+=========================================================
+*/
+
+markSchema.index(
+  {
+    rollNo: 1,
+    semester: 1,
+  },
+  {
+    unique: true,
   }
 );
 
