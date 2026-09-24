@@ -1,14 +1,45 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/studentERP/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>studenterb</title>
-    <script type="module" crossorigin src="/studentERP/assets/index-Co454-Gf.js"></script>
-    <link rel="stylesheet" crossorigin href="/studentERP/assets/index-WU8J-Xmm.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+
+  <link
+    rel="icon"
+    type="image/svg+xml"
+    href="/studentERP/favicon.svg"
+  />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>studenterb</title>
+
+  <script>
+    (function () {
+      const repo = "/studentERP";
+      const search = window.location.search;
+
+      if (search.startsWith("?/")) {
+        const route = search
+          .substring(2)
+          .split("&")[0];
+
+        window.history.replaceState(
+          null,
+          "",
+          repo + "/" + route
+        );
+      }
+    })();
+  </script>
+  <script type="module" crossorigin src="/studentERP/assets/index-Co454-Gf.js"></script>
+  <link rel="stylesheet" crossorigin href="/studentERP/assets/index-WU8J-Xmm.css">
+</head>
+
+<body>
+  <div id="root"></div>
+
+</body>
 </html>
