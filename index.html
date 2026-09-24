@@ -1,13 +1,47 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/studentERP/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>studenterb</title>
-  </head>
-  <body>
-    <div id="root"></div>
-        <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+
+  <link
+    rel="icon"
+    type="image/svg+xml"
+    href="/studentERP/favicon.svg"
+  />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>studenterb</title>
+
+  <script>
+    (function () {
+      const repo = "/studentERP";
+      const search = window.location.search;
+
+      if (search.startsWith("?/")) {
+        const route = search
+          .substring(2)
+          .split("&")[0];
+
+        window.history.replaceState(
+          null,
+          "",
+          repo + "/" + route
+        );
+      }
+    })();
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script
+    type="module"
+    src="/src/main.jsx"
+  ></script>
+</body>
 </html>
