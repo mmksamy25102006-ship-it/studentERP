@@ -16,31 +16,65 @@ const StudentProfile = () => {
   const { studentId } = useParams();
 
   const [student, setStudent] = useState(null);
+  const [cgpa, setCgpa] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchStudent = async () => {
+    const fetchStudentProfile = async () => {
       try {
-        const response = await axios.get(
-          `https://studenterp-5wuj.onrender.com/api/students/${studentId}`
+        // Fetch student details
+        const studentResponse = await axios.get(
+          `https://studenterp-5wuj.onrender.com/api/students/${encodeURIComponent(
+            studentId
+          )}`
         );
 
-        setStudent(response.data.student);
+        setStudent(studentResponse.data.student);
 
+        // Fetch marks and get overall CGPA
+        try {
+          const marksResponse = await axios.get(
+            `https://studenterp-5wuj.onrender.com/api/marks/student/${encodeURIComponent(
+              studentId
+            )}/semesters`
+          );
+
+          const marksData = marksResponse.data;
+
+          // Handle different possible API response structures
+          if (Array.isArray(marksData)) {
+            const latestMark = marksData[marksData.length - 1];
+
+            if (latestMark?.overallCGPA !== undefined) {
+              setCgpa(latestMark.overallCGPA);
+            }
+          } else if (marksData?.marks && Array.isArray(marksData.marks)) {
+            const latestMark =
+              marksData.marks[marksData.marks.length - 1];
+
+            if (latestMark?.overallCGPA !== undefined) {
+              setCgpa(latestMark.overallCGPA);
+            }
+          } else if (marksData?.overallCGPA !== undefined) {
+            setCgpa(marksData.overallCGPA);
+          }
+        } catch (marksError) {
+          console.error("CGPA Fetch Error:", marksError);
+
+          // Fallback to student API CGPA
+          setCgpa(studentResponse.data.student?.cgpa || 0);
+        }
       } catch (error) {
-        console.error(
-          "Student Profile Error:",
-          error
-        );
-
+        console.error("Student Profile Error:", error);
         setStudent(null);
-
       } finally {
         setLoading(false);
       }
     };
 
-    fetchStudent();
+    if (studentId) {
+      fetchStudentProfile();
+    }
   }, [studentId]);
 
   if (loading) {
@@ -58,10 +92,8 @@ const StudentProfile = () => {
       <div className="student-profile-page">
         <div className="student-profile-card">
           <h2>Student Not Found</h2>
-
           <p>
-            The student ID is invalid or the
-            student does not exist.
+            The student ID is invalid or the student does not exist.
           </p>
         </div>
       </div>
@@ -70,146 +102,76 @@ const StudentProfile = () => {
 
   return (
     <div className="student-profile-page">
-
       <div className="student-profile-card">
-
-        {/* HEADER */}
-
         <div className="profile-header">
-
           <div className="profile-avatar">
             <FaUserGraduate />
           </div>
 
           <div>
-
-            <h1>
-              {student.name}
-            </h1>
+            <h1>{student.name}</h1>
 
             <p>
               <FaIdCard />
               {student.studentId}
             </p>
-
           </div>
-
         </div>
-
-
-        {/* VERIFIED */}
 
         <div className="verified-badge">
-
           <FaCheckCircle />
-
           Verified Student
-
         </div>
 
-
-        {/* DETAILS */}
-
         <div className="profile-details">
-
           <div className="profile-item">
-
             <FaIdCard />
 
             <div>
-
-              <span>
-                Student ID
-              </span>
-
-              <strong>
-                {student.studentId}
-              </strong>
-
+              <span>Student ID</span>
+              <strong>{student.studentId}</strong>
             </div>
-
           </div>
 
-
           <div className="profile-item">
-
             <FaGraduationCap />
 
             <div>
-
-              <span>
-                Department
-              </span>
-
-              <strong>
-                {student.department}
-              </strong>
-
+              <span>Department</span>
+              <strong>{student.department}</strong>
             </div>
-
           </div>
 
-
           <div className="profile-item">
-
             <FaGraduationCap />
 
             <div>
-
-              <span>
-                Year
-              </span>
-
-              <strong>
-                {student.year} Year
-              </strong>
-
+              <span>Year</span>
+              <strong>{student.year} Year</strong>
             </div>
-
           </div>
 
-
           <div className="profile-item">
-
             <FaGraduationCap />
 
             <div>
-
-              <span>
-                Current CGPA
-              </span>
-
-              <strong>
-                {student.cgpa}
-              </strong>
-
+              <span>Current CGPA</span>
+              <strong>{cgpa}</strong>
             </div>
-
           </div>
 
-
           <div className="profile-item">
-
             <FaPhone />
 
             <div>
-
-              <span>
-                Phone
-              </span>
-
+              <span>Phone</span>
               <strong>
                 {student.phone || "Not Provided"}
               </strong>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
-
     </div>
   );
 };
