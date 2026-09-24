@@ -32,6 +32,7 @@ import Students from "./pages/Students";
 import Faculty from "./pages/Faculty";
 import Courses from "./pages/Courses";
 import Reports from "./pages/Reports";
+import StudentProfile from "./pages/StudentProfile";
 
 // Faculty
 import MyClasses from "./pages/faculty/MyClasses";
@@ -375,7 +376,10 @@ function App() {
                 path="/admin-login"
                 element={<AdminLogin />}
               />
-
+              <Route
+  path="/student/:studentId"
+  element={<StudentProfile />}
+/>
               {/* =========================================
                   DASHBOARD LAYOUT
               ========================================= */}
