@@ -266,7 +266,7 @@ const qrValue =
           {student.name}
         </h3>
 
-        <p>
+        {/* <p>
           ID : {student.studentId}
         </p>
 
@@ -276,7 +276,7 @@ const qrValue =
 
         <p>
           {student.year} Year
-        </p>
+        </p> */}
 
       </div>
 
