@@ -33,6 +33,7 @@ import Faculty from "./pages/Faculty";
 import Courses from "./pages/Courses";
 import Reports from "./pages/Reports";
 import StudentProfile from "./pages/StudentProfile";
+import Profile from "./pages/Profile";
 
 // Faculty
 import MyClasses from "./pages/faculty/MyClasses";
@@ -160,7 +161,7 @@ function DashboardLayout() {
               path="/dashboard"
               element={<Dashboard />}
             />
-
+<Route path="/profile" element={<Profile />} />
             <Route
               path="/attendance"
               element={<Attendance />}

@@ -1,0 +1,423 @@
+/* =========================================================
+   STUDENT PROFILE
+   LIGHT + DARK THEME
+========================================================= */
+
+.profile-page {
+  min-height: 100%;
+  padding: 30px;
+
+  background: #f5f7fb;
+  color: #0f172a;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+
+/* =========================================================
+   PROFILE HEADER
+========================================================= */
+
+.profile-cover {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+
+  padding: 35px;
+
+  border-radius: 20px;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #1d4ed8
+  );
+
+  color: white;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.12);
+
+  transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+/* Student avatar */
+
+.profile-avatar-large {
+  width: 110px;
+  height: 110px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.18);
+
+  border: 4px solid rgba(255, 255, 255, 0.8);
+
+  font-size: 55px;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease;
+}
+
+
+/* Student name */
+
+.profile-main-info h1 {
+  margin: 0 0 8px;
+
+  font-size: 32px;
+  font-weight: 700;
+}
+
+
+/* Student ID */
+
+.profile-main-info p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin: 0 0 15px;
+
+  font-size: 16px;
+}
+
+
+/* Active status */
+
+.profile-status {
+  display: inline-block;
+
+  padding: 6px 14px;
+
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.2);
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.profile-content {
+  margin-top: 25px;
+}
+
+
+/* Main information section */
+
+.profile-section {
+  padding: 25px;
+
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.06);
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+/* Section title */
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 25px;
+
+  color: #0f172a;
+}
+
+.section-title svg {
+  font-size: 20px;
+}
+
+.section-title h2 {
+  margin: 0;
+
+  font-size: 22px;
+}
+
+
+/* =========================================================
+   INFORMATION GRID
+========================================================= */
+
+.profile-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+
+/* Individual information card */
+
+.profile-info-card {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 20px;
+
+  border-radius: 14px;
+
+  background: #fafbfc;
+
+  border: 1px solid #e5e7eb;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.2s ease;
+}
+
+
+/* Small hover effect */
+
+.profile-info-card:hover {
+  transform: translateY(-2px);
+}
+
+
+/* Icon */
+
+.profile-info-card > svg {
+  flex-shrink: 0;
+
+  font-size: 22px;
+
+  color: #2563eb;
+}
+
+
+/* Text container */
+
+.profile-info-card div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+
+  min-width: 0;
+}
+
+
+/* Label */
+
+.profile-info-card span {
+  font-size: 13px;
+
+  color: #64748b;
+}
+
+
+/* Value */
+
+.profile-info-card strong {
+  font-size: 16px;
+
+  color: #0f172a;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   DARK THEME
+========================================================= */
+
+body.dark,
+.dark-theme .profile-page,
+[data-theme="dark"] .profile-page {
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+
+/* Main page */
+
+.dark-theme .profile-page,
+[data-theme="dark"] .profile-page {
+  background: #0f172a;
+}
+
+
+/* Header */
+
+.dark-theme .profile-cover,
+[data-theme="dark"] .profile-cover {
+  background: linear-gradient(
+    135deg,
+    #1e3a8a,
+    #172554
+  );
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+
+/* Main white section */
+
+.dark-theme .profile-section,
+[data-theme="dark"] .profile-section {
+  background: #111827;
+
+  border-color: #273449;
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+
+/* Section title */
+
+.dark-theme .section-title,
+[data-theme="dark"] .section-title {
+  color: #f8fafc;
+}
+
+
+/* Information cards */
+
+.dark-theme .profile-info-card,
+[data-theme="dark"] .profile-info-card {
+  background: #1e293b;
+
+  border-color: #334155;
+}
+
+
+/* Labels */
+
+.dark-theme .profile-info-card span,
+[data-theme="dark"] .profile-info-card span {
+  color: #94a3b8;
+}
+
+
+/* Values */
+
+.dark-theme .profile-info-card strong,
+[data-theme="dark"] .profile-info-card strong {
+  color: #f8fafc;
+}
+
+
+/* Icons */
+
+.dark-theme .profile-info-card > svg,
+[data-theme="dark"] .profile-info-card > svg {
+  color: #60a5fa;
+}
+
+
+/* Avatar */
+
+.dark-theme .profile-avatar-large,
+[data-theme="dark"] .profile-avatar-large {
+  background: rgba(255, 255, 255, 0.12);
+
+  border-color: rgba(255, 255, 255, 0.65);
+}
+
+
+/* =========================================================
+   LOADING / ERROR
+========================================================= */
+
+.profile-loading,
+.profile-error {
+  min-height: 400px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.dark-theme .profile-loading,
+.dark-theme .profile-error,
+[data-theme="dark"] .profile-loading,
+[data-theme="dark"] .profile-error {
+  color: #e5e7eb;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .profile-page {
+    padding: 15px;
+  }
+
+  .profile-cover {
+    flex-direction: column;
+
+    text-align: center;
+
+    padding: 25px 15px;
+  }
+
+  .profile-avatar-large {
+    width: 90px;
+    height: 90px;
+
+    font-size: 45px;
+  }
+
+  .profile-main-info h1 {
+    font-size: 25px;
+  }
+
+  .profile-main-info p {
+    justify-content: center;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-section {
+    padding: 18px;
+  }
+
+  .profile-info-card {
+    padding: 16px;
+  }
+}

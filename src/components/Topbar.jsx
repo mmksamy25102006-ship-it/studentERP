@@ -405,7 +405,6 @@ showProfile && (
 <div className="profile-dropdown">
 
 
-
 <div
   className="dropdown-item"
   onClick={() => {
@@ -416,7 +415,7 @@ showProfile && (
     } else if (role === "faculty") {
       navigate("/faculty-dashboard");
     } else {
-      navigate("/dashboard");
+      navigate("/profile");
     }
 
     setShowProfile(false);
