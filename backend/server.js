@@ -63,6 +63,15 @@ app.use("/api/marks", markRoutes);
 app.use("/api/notifications", notificationRoutes);
 
 app.use("/api/students", studentRoutes);
+// TEMPORARY DEBUG ROUTE
+app.get("/api/debug-student/:studentId", (req, res) => {
+  res.json({
+    success: true,
+    studentId: req.params.studentId,
+    message: "Parameter route is working",
+  });
+});
+
 app.use("/api/faculty", facultyRoutes);
 // Attendance API
 app.use("/api/attendance", attendanceRoutes);
