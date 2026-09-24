@@ -17,84 +17,98 @@ import "./Dashboard.css";
 
 const Dashboard = () => {
   return (
-<div className="dashboard-page">
+    <div className="dashboard-page">
 
-  {/* Welcome Banner */}
+      {/* Welcome Banner */}
 
-  <div className="dashboard-banner">
-    <div className="banner-left">
-      <span className="badge">
-        ● AI Powered ERP
-      </span>
+      <div className="dashboard-banner">
+        <div className="banner-left">
+          <span className="badge">
+            ● AI Powered ERP
+          </span>
 
-      <h1>Welcome Back 👋</h1>
+          <h1>Welcome Back 👋</h1>
 
-      <p>
-        Manage students, attendance, academics and AI services from one place.
-      </p>
-    </div>
+          <p>
+            Manage students, attendance, academics and AI services from one place.
+          </p>
+        </div>
 
-    <div className="banner-right">
-      <div className="date-card">
-        <h3>Today's Status</h3>
-        <span>Monday</span>
+        <div className="banner-right">
+          <div className="date-card">
+            <h3>Today's Status</h3>
+            <span>
+              {new Date().toLocaleDateString("en-US", {
+                weekday: "long",
+              })}
+            </span>
+            <br />
+              <small>
+    {new Date().toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    })}
+  </small>
+          </div>
+        </div>
       </div>
+
+      {/* Dashboard Cards */}
+
+      <DashboardCards />
+
+      {/* Charts */}
+
+      <div className="dashboard-grid">
+        <div className="grid-item large">
+          <AttendanceChart />
+        </div>
+
+        <div className="grid-item large">
+          <GPAChart />
+        </div>
+      </div>
+
+      {/* Weather + Calendar */}
+
+      <div className="dashboard-grid">
+
+        <div className="grid-item">
+          <WeatherCard />
+        </div>
+
+        <div className="grid-item">
+          <Calendar />
+        </div>
+
+      </div>
+
+      {/* Timetable */}
+
+      <Timetable />
+
+      {/* Notification */}
+
+      <div className="dashboard-grid">
+
+        <div className="grid-item">
+          <Notification />
+        </div>
+
+        <div className="grid-item">
+          <QRCodeCard />
+        </div>
+
+      </div>
+
+      {/* <calculator/> */}
+
+      {/* AI */}
+
+      <ChatBot />
+
     </div>
-  </div>
-
-  {/* Dashboard Cards */}
-
-  <DashboardCards />
-
-  {/* Charts */}
-
-  <div className="dashboard-grid">
-    <div className="grid-item large">
-      <AttendanceChart />
-    </div>
-
-    <div className="grid-item large">
-      <GPAChart />
-    </div>
-  </div>
-
-  {/* Weather + Calendar */}
-
-  <div className="dashboard-grid">
-
-    <div className="grid-item">
-      <WeatherCard />
-    </div>
-
-    <div className="grid-item">
-      <Calendar />
-    </div>
-
-  </div>
-
-  {/* Timetable */}
-
-  <Timetable />
-
-  {/* Notification */}
-
-  <div className="dashboard-grid">
-
-    <div className="grid-item">
-      <Notification />
-    </div>
-
-    <div className="grid-item">
-      <QRCodeCard />
-    </div>
-
-  </div>
-{/* <calculator/> */}
-  {/* AI */}
-
-  <ChatBot />
-
-</div>
   );
 };
 

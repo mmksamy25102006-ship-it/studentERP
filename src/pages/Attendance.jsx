@@ -794,7 +794,7 @@ const Attendance = () => {
 
       <section className="today-section">
 
-        <div className="section-heading">
+        <div className="section-heading-studentattendance">
 
           <div>
             <span className="section-label">

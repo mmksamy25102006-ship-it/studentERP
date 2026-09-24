@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
 import {
   FaChalkboardTeacher,
   FaSearch,
@@ -14,50 +15,13 @@ import {
   FaClock,
   FaIdCard,
 } from "react-icons/fa";
-import "./Faculty.css";
 
-const initialFaculty = [
-  {
-    id: "FAC001",
-    name: "Dr. R. Kumar",
-    department: "Computer Science",
-    designation: "Professor",
-    experience: "15 Years",
-    email: "rkumar@nexus.edu",
-  },
-  {
-    id: "FAC002",
-    name: "Mrs. Priya",
-    department: "Information Technology",
-    designation: "Assistant Professor",
-    experience: "8 Years",
-    email: "priya@nexus.edu",
-  },
-  {
-    id: "FAC003",
-    name: "Mr. Arun",
-    department: "Electronics",
-    designation: "Associate Professor",
-    experience: "10 Years",
-    email: "arun@nexus.edu",
-  },
-  {
-    id: "FAC004",
-    name: "Dr. Rajesh",
-    department: "Mechanical",
-    designation: "Professor",
-    experience: "18 Years",
-    email: "rajesh@nexus.edu",
-  },
-  {
-    id: "FAC005",
-    name: "Ms. Meena",
-    department: "Artificial Intelligence",
-    designation: "Assistant Professor",
-    experience: "5 Years",
-    email: "meena@nexus.edu",
-  },
-];
+import "./Faculty.css";
+import API from "../api";
+
+// =====================================================
+// EMPTY FORM
+// =====================================================
 
 const emptyForm = {
   id: "",
@@ -68,34 +32,100 @@ const emptyForm = {
   email: "",
 };
 
+// =====================================================
+// FACULTY COMPONENT
+// =====================================================
+
 const Faculty = () => {
-  const [faculty, setFaculty] = useState(initialFaculty);
+  // =====================================================
+  // STATE
+  // =====================================================
+
+  const [faculty, setFaculty] = useState([]);
+
   const [search, setSearch] = useState("");
 
   const [showModal, setShowModal] = useState(false);
+
   const [editingFaculty, setEditingFaculty] = useState(null);
 
   const [formData, setFormData] = useState(emptyForm);
+
   const [errors, setErrors] = useState({});
 
-  /* =========================
-        OPEN ADD MODAL
-  ========================= */
+  const [loading, setLoading] = useState(true);
+
+  const [saving, setSaving] = useState(false);
+
+  // =====================================================
+  // FETCH FACULTY FROM DATABASE
+  // =====================================================
+
+  useEffect(() => {
+    fetchFaculty();
+  }, []);
+
+  const fetchFaculty = async () => {
+    try {
+      setLoading(true);
+
+      const response = await API.get("/faculty");
+
+      const data = Array.isArray(response.data)
+        ? response.data
+        : response.data.faculty || [];
+
+      const formattedFaculty = data.map((item) => ({
+        ...item,
+
+        // MongoDB facultyId -> UI id
+        id: item.facultyId || item.id || "",
+      }));
+
+      setFaculty(formattedFaculty);
+    } catch (error) {
+      console.error("Fetch Faculty Error:", error);
+
+      alert(
+        error.response?.data?.message ||
+          "Failed to load faculty records from database"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // =====================================================
+  // GENERATE NEXT FACULTY ID
+  // =====================================================
+
+  const generateNextFacultyId = () => {
+    const numbers = faculty
+      .map((item) =>
+        parseInt(
+          String(item.id || "").replace(/^FAC/i, ""),
+          10
+        )
+      )
+      .filter(Number.isFinite);
+
+    const nextNumber =
+      numbers.length > 0
+        ? Math.max(...numbers) + 1
+        : 1;
+
+    return `FAC${String(nextNumber).padStart(3, "0")}`;
+  };
+
+  // =====================================================
+  // OPEN ADD FACULTY MODAL
+  // =====================================================
 
   const handleAddFaculty = () => {
     setEditingFaculty(null);
 
-    const nextNumber =
-      faculty.length > 0
-        ? Math.max(
-            ...faculty.map((item) =>
-              parseInt(item.id.replace("FAC", ""), 10)
-            )
-          ) + 1
-        : 1;
-
     setFormData({
-      id: `FAC${String(nextNumber).padStart(3, "0")}`,
+      id: generateNextFacultyId(),
       name: "",
       department: "",
       designation: "",
@@ -104,38 +134,50 @@ const Faculty = () => {
     });
 
     setErrors({});
+
     setShowModal(true);
   };
 
-  /* =========================
-        OPEN EDIT MODAL
-  ========================= */
+  // =====================================================
+  // OPEN EDIT FACULTY MODAL
+  // =====================================================
 
   const handleEditFaculty = (item) => {
     setEditingFaculty(item);
 
     setFormData({
-      ...item,
+      id: item.facultyId || item.id || "",
+      name: item.name || "",
+      department: item.department || "",
+      designation: item.designation || "",
+      experience: item.experience || "",
+      email: item.email || "",
     });
 
     setErrors({});
+
     setShowModal(true);
   };
 
-  /* =========================
-        CLOSE MODAL
-  ========================= */
+  // =====================================================
+  // CLOSE MODAL
+  // =====================================================
 
   const closeModal = () => {
+    if (saving) return;
+
     setShowModal(false);
+
     setEditingFaculty(null);
+
     setFormData(emptyForm);
+
     setErrors({});
   };
 
-  /* =========================
-        FORM CHANGE
-  ========================= */
+  // =====================================================
+  // FORM CHANGE
+  // =====================================================
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -153,9 +195,9 @@ const Faculty = () => {
     }
   };
 
-  /* =========================
-        FORM VALIDATION
-  ========================= */
+  // =====================================================
+  // FORM VALIDATION
+  // =====================================================
 
   const validateForm = () => {
     const newErrors = {};
@@ -165,21 +207,30 @@ const Faculty = () => {
     }
 
     if (!formData.department) {
-      newErrors.department = "Please select a department";
+      newErrors.department =
+        "Please select a department";
     }
 
     if (!formData.designation) {
-      newErrors.designation = "Please select a designation";
+      newErrors.designation =
+        "Please select a designation";
     }
 
     if (!formData.experience.trim()) {
-      newErrors.experience = "Experience is required";
+      newErrors.experience =
+        "Experience is required";
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email address is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Enter a valid email address";
+      newErrors.email =
+        "Email address is required";
+    } else if (
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+        formData.email
+      )
+    ) {
+      newErrors.email =
+        "Enter a valid email address";
     }
 
     setErrors(newErrors);
@@ -187,69 +238,184 @@ const Faculty = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  /* =========================
-        SAVE FACULTY
-  ========================= */
+  // =====================================================
+  // SAVE FACULTY
+  // ADD + UPDATE
+  // =====================================================
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) return;
 
-    if (editingFaculty) {
-      setFaculty((prev) =>
-        prev.map((item) =>
-          item.id === editingFaculty.id
-            ? {
-                ...formData,
-                id: editingFaculty.id,
-              }
-            : item
-        )
-      );
-    } else {
-      setFaculty((prev) => [...prev, formData]);
-    }
+    try {
+      setSaving(true);
 
-    closeModal();
+      // =================================================
+      // UPDATE EXISTING FACULTY
+      // =================================================
+
+      if (editingFaculty) {
+        const response = await API.put(
+          `/faculty/${editingFaculty._id}`,
+          {
+            facultyId: formData.id,
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            department: formData.department,
+            designation: formData.designation,
+            experience: formData.experience.trim(),
+          }
+        );
+
+        const updatedFaculty =
+          response.data.faculty;
+
+        const formattedFaculty = {
+          ...updatedFaculty,
+
+          id:
+            updatedFaculty.facultyId ||
+            updatedFaculty.id ||
+            "",
+        };
+
+        setFaculty((prev) =>
+          prev.map((item) =>
+            item._id === editingFaculty._id
+              ? formattedFaculty
+              : item
+          )
+        );
+
+        alert("Faculty updated successfully");
+      }
+
+      // =================================================
+      // ADD NEW FACULTY
+      // =================================================
+
+      else {
+        const response = await API.post(
+          "/faculty",
+          {
+            facultyId: formData.id,
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            department: formData.department,
+            designation: formData.designation,
+            experience:
+              formData.experience.trim(),
+          }
+        );
+
+        const newFaculty =
+          response.data.faculty;
+
+        const formattedFaculty = {
+          ...newFaculty,
+
+          id:
+            newFaculty.facultyId ||
+            newFaculty.id ||
+            "",
+        };
+
+        setFaculty((prev) => [
+          ...prev,
+          formattedFaculty,
+        ]);
+
+        alert(
+          "Faculty added successfully\n\n" +
+            "Default login password: Faculty@123"
+        );
+      }
+
+      closeModal();
+    } catch (error) {
+      console.error(
+        "Save Faculty Error:",
+        error
+      );
+
+      alert(
+        error.response?.data?.message ||
+          "Failed to save faculty"
+      );
+    } finally {
+      setSaving(false);
+    }
   };
 
-  /* =========================
-        DELETE FACULTY
-  ========================= */
+  // =====================================================
+  // DELETE FACULTY
+  // =====================================================
 
-  const handleDelete = (id, name) => {
+  const handleDelete = async (id, name) => {
     const confirmDelete = window.confirm(
       `Are you sure you want to delete ${name}?`
     );
 
     if (!confirmDelete) return;
 
-    setFaculty((prev) =>
-      prev.filter((item) => item.id !== id)
-    );
+    try {
+      await API.delete(`/faculty/${id}`);
+
+      setFaculty((prev) =>
+        prev.filter(
+          (item) => item._id !== id
+        )
+      );
+
+      alert("Faculty deleted successfully");
+    } catch (error) {
+      console.error(
+        "Delete Faculty Error:",
+        error
+      );
+
+      alert(
+        error.response?.data?.message ||
+          "Failed to delete faculty"
+      );
+    }
   };
 
-  /* =========================
-        SEARCH
-  ========================= */
+  // =====================================================
+  // SEARCH
+  // =====================================================
 
-  const filteredFaculty = faculty.filter((item) => {
-    const query = search.toLowerCase();
+  const filteredFaculty = faculty.filter(
+    (item) => {
+      const query = search.toLowerCase();
 
-    return (
-      item.name.toLowerCase().includes(query) ||
-      item.department.toLowerCase().includes(query) ||
-      item.id.toLowerCase().includes(query) ||
-      item.designation.toLowerCase().includes(query)
-    );
-  });
+      return (
+        String(item.name || "")
+          .toLowerCase()
+          .includes(query) ||
+        String(item.department || "")
+          .toLowerCase()
+          .includes(query) ||
+        String(item.id || "")
+          .toLowerCase()
+          .includes(query) ||
+        String(item.designation || "")
+          .toLowerCase()
+          .includes(query)
+      );
+    }
+  );
+
+  // =====================================================
+  // RETURN UI
+  // =====================================================
 
   return (
     <div className="faculty-page">
 
       {/* =========================
-              TOP TOOLBAR
+          TOP TOOLBAR
       ========================= */}
 
       <div className="top-toolbar">
@@ -293,7 +459,7 @@ const Faculty = () => {
       </div>
 
       {/* =========================
-              SEARCH BAR
+          SEARCH BAR
       ========================= */}
 
       <div className="search-container">
@@ -323,7 +489,7 @@ const Faculty = () => {
       </div>
 
       {/* =========================
-                TABLE
+          TABLE
       ========================= */}
 
       <div className="faculty-table">
@@ -331,6 +497,7 @@ const Faculty = () => {
         <table>
 
           <thead>
+
             <tr>
               <th>ID</th>
               <th>Name</th>
@@ -340,117 +507,16 @@ const Faculty = () => {
               <th>Email</th>
               <th>Action</th>
             </tr>
+
           </thead>
 
           <tbody>
 
-            {filteredFaculty.map((item) => (
+            {/* =====================
+                LOADING
+            ===================== */}
 
-              <tr key={item.id}>
-
-                {/* ID */}
-
-                <td>
-                  <span className="faculty-id">
-                    {item.id}
-                  </span>
-                </td>
-
-                {/* NAME */}
-
-                <td>
-
-                  <div className="faculty-name">
-
-                    <div className="faculty-avatar">
-                      {item.name
-                        .charAt(0)
-                        .toUpperCase()}
-                    </div>
-
-                    <span>
-                      {item.name}
-                    </span>
-
-                  </div>
-
-                </td>
-
-                {/* DEPARTMENT */}
-
-                <td>
-                  <span className="dept-badge">
-                    {item.department}
-                  </span>
-                </td>
-
-                {/* DESIGNATION */}
-
-                <td>
-                  <span className="designation-badge">
-                    {item.designation}
-                  </span>
-                </td>
-
-                {/* EXPERIENCE */}
-
-                <td>
-                  <span className="experience-text">
-                    {item.experience}
-                  </span>
-                </td>
-
-                {/* EMAIL */}
-
-                <td>
-                  <span className="email-text">
-                    {item.email}
-                  </span>
-                </td>
-
-                {/* ACTION */}
-
-                <td>
-
-                  <div className="action-buttons">
-
-                    <button
-                      className="edit-btn"
-                      onClick={() =>
-                        handleEditFaculty(item)
-                      }
-                      title="Edit Faculty"
-                      type="button"
-                    >
-                      <FaEdit />
-                    </button>
-
-                    <button
-                      className="delete-btn"
-                      onClick={() =>
-                        handleDelete(
-                          item.id,
-                          item.name
-                        )
-                      }
-                      title="Delete Faculty"
-                      type="button"
-                    >
-                      <FaTrash />
-                    </button>
-
-                  </div>
-
-                </td>
-
-              </tr>
-
-            ))}
-
-            {/* NO DATA */}
-
-            {filteredFaculty.length === 0 && (
-
+            {loading && (
               <tr>
 
                 <td
@@ -463,35 +529,195 @@ const Faculty = () => {
                     <FaSearch />
 
                     <h3>
-                      No Faculty Found
+                      Loading Faculty...
                     </h3>
 
                     <p>
-                      No faculty records match
-                      your search.
+                      Fetching faculty records
+                      from database.
                     </p>
-
-                    {search && (
-
-                      <button
-                        onClick={() =>
-                          setSearch("")
-                        }
-                        className="reset-search"
-                        type="button"
-                      >
-                        Clear Search
-                      </button>
-
-                    )}
 
                   </div>
 
                 </td>
 
               </tr>
-
             )}
+
+            {/* =====================
+                FACULTY DATA
+            ===================== */}
+
+            {!loading &&
+              filteredFaculty.map(
+                (item) => (
+
+                  <tr
+                    key={item._id}
+                  >
+
+                    {/* ID */}
+
+                    <td>
+
+                      <span className="faculty-id">
+                        {item.id}
+                      </span>
+
+                    </td>
+
+                    {/* NAME */}
+
+                    <td>
+
+                      <div className="faculty-name">
+
+                        <div className="faculty-avatar">
+
+                          {item.name
+                            .charAt(0)
+                            .toUpperCase()}
+
+                        </div>
+
+                        <span>
+                          {item.name}
+                        </span>
+
+                      </div>
+
+                    </td>
+
+                    {/* DEPARTMENT */}
+
+                    <td>
+
+                      <span className="dept-badge">
+                        {item.department}
+                      </span>
+
+                    </td>
+
+                    {/* DESIGNATION */}
+
+                    <td>
+
+                      <span className="designation-badge">
+                        {item.designation}
+                      </span>
+
+                    </td>
+
+                    {/* EXPERIENCE */}
+
+                    <td>
+
+                      <span className="experience-text">
+                        {item.experience}
+                      </span>
+
+                    </td>
+
+                    {/* EMAIL */}
+
+                    <td>
+
+                      <span className="email-text">
+                        {item.email}
+                      </span>
+
+                    </td>
+
+                    {/* ACTION */}
+
+                    <td>
+
+                      <div className="action-buttons">
+
+                        <button
+                          className="edit-btn"
+                          onClick={() =>
+                            handleEditFaculty(
+                              item
+                            )
+                          }
+                          title="Edit Faculty"
+                          type="button"
+                        >
+                          <FaEdit />
+                        </button>
+
+                        <button
+                          className="delete-btn"
+                          onClick={() =>
+                            handleDelete(
+                              item._id,
+                              item.name
+                            )
+                          }
+                          title="Delete Faculty"
+                          type="button"
+                        >
+                          <FaTrash />
+                        </button>
+
+                      </div>
+
+                    </td>
+
+                  </tr>
+
+                )
+              )}
+
+            {/* =====================
+                NO DATA
+            ===================== */}
+
+            {!loading &&
+              filteredFaculty.length ===
+                0 && (
+
+                <tr>
+
+                  <td
+                    colSpan="7"
+                    className="no-data"
+                  >
+
+                    <div className="no-data-content">
+
+                      <FaSearch />
+
+                      <h3>
+                        No Faculty Found
+                      </h3>
+
+                      <p>
+                        {search
+                          ? "No faculty records match your search."
+                          : "No faculty records available in the database."}
+                      </p>
+
+                      {search && (
+                        <button
+                          onClick={() =>
+                            setSearch("")
+                          }
+                          className="reset-search"
+                          type="button"
+                        >
+                          Clear Search
+                        </button>
+                      )}
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              )}
 
           </tbody>
 
@@ -500,7 +726,7 @@ const Faculty = () => {
       </div>
 
       {/* =========================
-              ADD / EDIT MODAL
+          ADD / EDIT MODAL
       ========================= */}
 
       {showModal && (
@@ -556,6 +782,7 @@ const Faculty = () => {
                 onClick={closeModal}
                 type="button"
                 title="Close"
+                disabled={saving}
               >
                 <FaTimes />
               </button>
@@ -589,7 +816,8 @@ const Faculty = () => {
                   />
 
                   <small>
-                    Faculty ID is automatically generated.
+                    Faculty ID is automatically
+                    generated.
                   </small>
 
                 </div>
@@ -637,7 +865,9 @@ const Faculty = () => {
 
                   <select
                     name="department"
-                    value={formData.department}
+                    value={
+                      formData.department
+                    }
                     onChange={handleChange}
                     className={
                       errors.department
@@ -700,7 +930,9 @@ const Faculty = () => {
 
                   <select
                     name="designation"
-                    value={formData.designation}
+                    value={
+                      formData.designation
+                    }
                     onChange={handleChange}
                     className={
                       errors.designation
@@ -757,7 +989,9 @@ const Faculty = () => {
                     type="text"
                     name="experience"
                     placeholder="Example: 5 Years"
-                    value={formData.experience}
+                    value={
+                      formData.experience
+                    }
                     onChange={handleChange}
                     className={
                       errors.experience
@@ -815,6 +1049,7 @@ const Faculty = () => {
                   type="button"
                   className="cancel-btn"
                   onClick={closeModal}
+                  disabled={saving}
                 >
                   <FaTimes />
                   Cancel
@@ -823,12 +1058,16 @@ const Faculty = () => {
                 <button
                   type="submit"
                   className="save-btn"
+                  disabled={saving}
                 >
                   <FaSave />
 
-                  {editingFaculty
+                  {saving
+                    ? "Saving..."
+                    : editingFaculty
                     ? "Update Faculty"
                     : "Save Faculty"}
+
                 </button>
 
               </div>

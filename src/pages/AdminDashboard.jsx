@@ -194,9 +194,9 @@ const AdminDashboard = () => {
 
         <div className="table-card">
 
-          <div className="section-heading">
+          <div className="section-heading-admin">
 
-            <div className="section-icon students-heading">
+            <div className="section-icon students-heading-admin">
               <FaUserGraduate />
             </div>
 

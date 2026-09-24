@@ -7,11 +7,14 @@ import {
   FaSearch,
   FaSave,
 } from "react-icons/fa";
+import API from "../../api";
 
 const Fees = () => {
   const [fees, setFees] = useState([]);
   const [search, setSearch] = useState("");
   const [editIndex, setEditIndex] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   const [form, setForm] = useState({
     regNo: "",
@@ -22,14 +25,40 @@ const Fees = () => {
     paidFee: "",
   });
 
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("fees")) || [];
-    setFees(data);
-  }, []);
+  // =====================================================
+  // FETCH FEES FROM BACKEND
+  // =====================================================
 
   useEffect(() => {
-    localStorage.setItem("fees", JSON.stringify(fees));
-  }, [fees]);
+    fetchFees();
+  }, []);
+
+  const fetchFees = async () => {
+    try {
+      setLoading(true);
+
+      const response = await API.get("/fees");
+
+      if (response.data.success) {
+        setFees(response.data.fees || []);
+      } else {
+        setFees([]);
+      }
+    } catch (error) {
+      console.error("Fetch Fees Error:", error);
+
+      alert(
+        error.response?.data?.message ||
+          "Failed to load fee records"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // =====================================================
+  // FORM CHANGE
+  // =====================================================
 
   const handleChange = (e) => {
     setForm({
@@ -38,43 +67,11 @@ const Fees = () => {
     });
   };
 
-  const saveFee = () => {
-    if (
-      !form.regNo ||
-      !form.name ||
-      !form.department ||
-      !form.semester ||
-      !form.totalFee ||
-      !form.paidFee
-    ) {
-      alert("Please fill all fields");
-      return;
-    }
+  // =====================================================
+  // RESET FORM
+  // =====================================================
 
-    const total = Number(form.totalFee);
-    const paid = Number(form.paidFee);
-    const pending = total - paid;
-
-    let status = "Paid";
-
-    if (paid === 0) status = "Unpaid";
-    else if (pending > 0) status = "Partial";
-
-    const record = {
-      ...form,
-      pendingFee: pending,
-      status,
-    };
-
-    if (editIndex !== null) {
-      const updated = [...fees];
-      updated[editIndex] = record;
-      setFees(updated);
-      setEditIndex(null);
-    } else {
-      setFees([...fees, record]);
-    }
-
+  const resetForm = () => {
     setForm({
       regNo: "",
       name: "",
@@ -83,24 +80,193 @@ const Fees = () => {
       totalFee: "",
       paidFee: "",
     });
+
+    setEditIndex(null);
   };
 
-  const editFee = (index) => {
-    setForm(fees[index]);
-    setEditIndex(index);
-  };
+  // =====================================================
+  // ADD / UPDATE FEE
+  // =====================================================
 
-  const deleteFee = (index) => {
-    if (window.confirm("Delete this record?")) {
-      setFees(fees.filter((_, i) => i !== index));
+  const saveFee = async () => {
+    if (
+      !form.regNo.trim() ||
+      !form.name.trim() ||
+      !form.department.trim() ||
+      !form.semester.trim() ||
+      form.totalFee === "" ||
+      form.paidFee === ""
+    ) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    const total = Number(form.totalFee);
+    const paid = Number(form.paidFee);
+
+    if (Number.isNaN(total) || Number.isNaN(paid)) {
+      alert("Fee amounts must be valid numbers");
+      return;
+    }
+
+    if (total < 0 || paid < 0) {
+      alert("Fee amounts cannot be negative");
+      return;
+    }
+
+    if (paid > total) {
+      alert("Paid fee cannot be greater than total fee");
+      return;
+    }
+
+    try {
+      setSaving(true);
+
+      const feeData = {
+        regNo: form.regNo.trim(),
+        name: form.name.trim(),
+        department: form.department.trim(),
+        semester: form.semester.trim(),
+        totalFee: total,
+        paidFee: paid,
+      };
+
+      // =================================================
+      // UPDATE EXISTING FEE
+      // =================================================
+
+      if (editIndex !== null) {
+        const feeId = fees[editIndex]?._id;
+
+        if (!feeId) {
+          alert("Fee record ID is missing");
+          return;
+        }
+
+        const response = await API.put(
+          `/fees/${feeId}`,
+          feeData
+        );
+
+        if (response.data.success) {
+          alert("Fee updated successfully");
+
+          await fetchFees();
+
+          resetForm();
+        }
+
+        return;
+      }
+
+      // =================================================
+      // ADD NEW FEE
+      // =================================================
+
+      const response = await API.post("/fees", feeData);
+
+      if (response.data.success) {
+        alert("Fee added successfully");
+
+        await fetchFees();
+
+        resetForm();
+      }
+    } catch (error) {
+      console.error("Save Fee Error:", error);
+
+      alert(
+        error.response?.data?.message ||
+          "Failed to save fee record"
+      );
+    } finally {
+      setSaving(false);
     }
   };
 
-  const filtered = fees.filter(
-    (f) =>
-      f.name.toLowerCase().includes(search.toLowerCase()) ||
-      f.regNo.toLowerCase().includes(search.toLowerCase())
-  );
+  // =====================================================
+  // EDIT FEE
+  // =====================================================
+
+  const editFee = (index) => {
+    const fee = fees[index];
+
+    if (!fee) {
+      return;
+    }
+
+    setForm({
+      regNo: fee.regNo || "",
+      name: fee.name || "",
+      department: fee.department || "",
+      semester: fee.semester || "",
+      totalFee: fee.totalFee ?? "",
+      paidFee: fee.paidFee ?? "",
+    });
+
+    setEditIndex(index);
+  };
+
+  // =====================================================
+  // DELETE FEE
+  // =====================================================
+
+  const deleteFee = async (index) => {
+    if (!window.confirm("Delete this record?")) {
+      return;
+    }
+
+    const fee = fees[index];
+
+    if (!fee?._id) {
+      alert("Fee record ID is missing");
+      return;
+    }
+
+    try {
+      const response = await API.delete(
+        `/fees/${fee._id}`
+      );
+
+      if (response.data.success) {
+        alert("Fee deleted successfully");
+
+        await fetchFees();
+
+        // If deleted record was being edited
+        if (editIndex === index) {
+          resetForm();
+        }
+      }
+    } catch (error) {
+      console.error("Delete Fee Error:", error);
+
+      alert(
+        error.response?.data?.message ||
+          "Failed to delete fee record"
+      );
+    }
+  };
+
+  // =====================================================
+  // SEARCH
+  // =====================================================
+
+  const searchText = search.toLowerCase();
+
+  const filtered = fees.filter((f) => {
+    const name = String(f.name || "").toLowerCase();
+    const regNo = String(f.regNo || "").toLowerCase();
+
+    return (
+      name.includes(searchText) ||
+      regNo.includes(searchText)
+    );
+  });
+
+  // =====================================================
+  // UI
+  // =====================================================
 
   return (
     <div className="fees-page">
@@ -109,6 +275,10 @@ const Fees = () => {
       <div className="fee-count">
         Total Students : <strong>{fees.length}</strong>
       </div>
+
+      {/* =========================
+          FEE FORM
+      ========================= */}
 
       <div className="fee-form">
         <input
@@ -149,6 +319,7 @@ const Fees = () => {
           name="totalFee"
           value={form.totalFee}
           onChange={handleChange}
+          min="0"
         />
 
         <input
@@ -157,10 +328,15 @@ const Fees = () => {
           name="paidFee"
           value={form.paidFee}
           onChange={handleChange}
+          min="0"
         />
 
-        <button onClick={saveFee}>
-          {editIndex !== null ? (
+        <button onClick={saveFee} disabled={saving}>
+          {saving ? (
+            <>
+              <FaSave /> Saving...
+            </>
+          ) : editIndex !== null ? (
             <>
               <FaSave /> Update
             </>
@@ -170,10 +346,26 @@ const Fees = () => {
             </>
           )}
         </button>
+
+        {/* Cancel edit */}
+        {editIndex !== null && (
+          <button
+            type="button"
+            onClick={resetForm}
+            disabled={saving}
+          >
+            Cancel
+          </button>
+        )}
       </div>
+
+      {/* =========================
+          SEARCH
+      ========================= */}
 
       <div className="search-box">
         <FaSearch />
+
         <input
           type="text"
           placeholder="Search Student..."
@@ -181,6 +373,10 @@ const Fees = () => {
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
+
+      {/* =========================
+          FEE TABLE
+      ========================= */}
 
       <table>
         <thead>
@@ -198,47 +394,80 @@ const Fees = () => {
         </thead>
 
         <tbody>
-          {filtered.map((item, index) => (
-            <tr key={index}>
-              <td>{item.regNo}</td>
-              <td>{item.name}</td>
-              <td>{item.department}</td>
-              <td>{item.semester}</td>
-              <td>₹{item.totalFee}</td>
-              <td>₹{item.paidFee}</td>
-              <td>₹{item.pendingFee}</td>
-
-              <td>
-                <span
-                  className={
-                    item.status === "Paid"
-                      ? "paid"
-                      : item.status === "Partial"
-                      ? "partial"
-                      : "unpaid"
-                  }
-                >
-                  {item.status}
-                </span>
-              </td>
-
-              <td>
-                <button
-                  className="edit-btn"
-                  onClick={() => editFee(index)}
-                >
-                  <FaEdit />
-                </button>
-
-                <button
-                  className="delete-btn"
-                  onClick={() => deleteFee(index)}
-                >
-                  <FaTrash />
-                </button>
+          {loading ? (
+            <tr>
+              <td colSpan="9" style={{ textAlign: "center" }}>
+                Loading fee records...
               </td>
             </tr>
-          ))}
+          ) : filtered.length === 0 ? (
+            <tr>
+              <td colSpan="9" style={{ textAlign: "center" }}>
+                {search
+                  ? "No matching fee records found"
+                  : "No fee records found"}
+              </td>
+            </tr>
+          ) : (
+            filtered.map((item, index) => (
+              <tr key={item._id || index}>
+                <td>{item.regNo}</td>
+
+                <td>{item.name}</td>
+
+                <td>{item.department}</td>
+
+                <td>{item.semester}</td>
+
+                <td>
+                  ₹{Number(item.totalFee || 0).toLocaleString("en-IN")}
+                </td>
+
+                <td>
+                  ₹{Number(item.paidFee || 0).toLocaleString("en-IN")}
+                </td>
+
+                <td>
+                  ₹
+                  {Number(item.pendingFee || 0).toLocaleString(
+                    "en-IN"
+                  )}
+                </td>
+
+                <td>
+                  <span
+                    className={
+                      item.status === "Paid"
+                        ? "paid"
+                        : item.status === "Partial"
+                        ? "partial"
+                        : "unpaid"
+                    }
+                  >
+                    {item.status}
+                  </span>
+                </td>
+
+                <td>
+                  <button
+                    className="edit-btn"
+                    onClick={() => editFee(index)}
+                    disabled={saving}
+                  >
+                    <FaEdit />
+                  </button>
+
+                  <button
+                    className="delete-btn"
+                    onClick={() => deleteFee(index)}
+                    disabled={saving}
+                  >
+                    <FaTrash />
+                  </button>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>

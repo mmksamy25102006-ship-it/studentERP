@@ -461,7 +461,7 @@
    SECTION HEADING
 ========================================================= */
 
-.section-heading {
+.section-heading-admin {
     display: flex;
     align-items: center;
 
@@ -497,7 +497,7 @@
 }
 
 
-.section-heading h2 {
+.section-heading-admin h2 {
     margin: 0;
 
     color: #172554;
@@ -507,7 +507,7 @@
 }
 
 
-.section-heading p {
+.section-heading-admin p {
     margin: 3px 0 0;
 
     color: #94a3b8;
@@ -881,12 +881,12 @@
    DARK SECTION HEADINGS
 ========================================================= */
 
-.dark-theme .section-heading h2 {
+.dark-theme .section-heading-admin h2 {
     color: #f8fafc;
 }
 
 
-.dark-theme .section-heading p {
+.dark-theme .section-heading-admin p {
     color: #94a3b8;
 }
 
