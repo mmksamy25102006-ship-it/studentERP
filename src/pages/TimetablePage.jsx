@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   FaCalendarAlt,
   FaClock,
@@ -7,158 +7,130 @@ import {
 import "./TimetablePage.css";
 
 const TimetablePage = () => {
-  const [timetable] = useState([
+  const timetable = [
     {
       day: "Monday",
-      classes: [
-        {
-          time: "09:00 - 10:00",
-          subject: "Database Management System",
-          faculty: "Dr. Kumar",
-          room: "A-101",
-        },
-        {
-          time: "10:00 - 11:00",
-          subject: "Operating System",
-          faculty: "Dr. Ravi",
-          room: "A-102",
-        },
-        {
-          time: "11:15 - 12:15",
-          subject: "Java Programming",
-          faculty: "Mrs. Priya",
-          room: "Lab-1",
-        },
-        {
-          time: "01:15 - 02:15",
-          subject: "Computer Networks",
-          faculty: "Mr. Arun",
-          room: "A-103",
-        },
+      periods: [
+        "DBMS",
+        "Operating System",
+        "Break",
+        "Computer Networks",
+        "Java",
+        "Lab",
       ],
     },
     {
       day: "Tuesday",
-      classes: [
-        {
-          time: "09:00 - 10:00",
-          subject: "Artificial Intelligence",
-          faculty: "Dr. Raj",
-          room: "A-104",
-        },
-        {
-          time: "10:00 - 11:00",
-          subject: "Software Engineering",
-          faculty: "Mrs. Meena",
-          room: "A-105",
-        },
-        {
-          time: "11:15 - 12:15",
-          subject: "DBMS Lab",
-          faculty: "Mr. Kumar",
-          room: "Lab-2",
-        },
+      periods: [
+        "Java",
+        "DBMS",
+        "Break",
+        "Software Engineering",
+        "Maths",
+        "Lab",
       ],
     },
     {
       day: "Wednesday",
-      classes: [
-        {
-          time: "09:00 - 10:00",
-          subject: "Operating System",
-          faculty: "Dr. Ravi",
-          room: "A-102",
-        },
-        {
-          time: "10:00 - 11:00",
-          subject: "Computer Networks",
-          faculty: "Mr. Arun",
-          room: "A-103",
-        },
-        {
-          time: "01:15 - 03:15",
-          subject: "Java Lab",
-          faculty: "Mrs. Priya",
-          room: "Lab-1",
-        },
+      periods: [
+        "Computer Networks",
+        "Java",
+        "Break",
+        "DBMS",
+        "Operating System",
+        "Seminar",
       ],
     },
     {
       day: "Thursday",
-      classes: [
-        {
-          time: "09:00 - 10:00",
-          subject: "Software Engineering",
-          faculty: "Mrs. Meena",
-          room: "A-105",
-        },
-        {
-          time: "10:00 - 11:00",
-          subject: "Artificial Intelligence",
-          faculty: "Dr. Raj",
-          room: "A-104",
-        },
+      periods: [
+        "Maths",
+        "DBMS",
+        "Break",
+        "Java",
+        "Software Engineering",
+        "Library",
       ],
     },
     {
       day: "Friday",
-      classes: [
-        {
-          time: "09:00 - 10:00",
-          subject: "Database Management System",
-          faculty: "Dr. Kumar",
-          room: "A-101",
-        },
-        {
-          time: "10:00 - 12:00",
-          subject: "Project Work",
-          faculty: "Project Guide",
-          room: "Project Lab",
-        },
+      periods: [
+        "Operating System",
+        "Computer Networks",
+        "Break",
+        "Java Lab",
+        "Project",
+        "Sports",
       ],
     },
-  ]);
+  ];
+
+  const timeSlots = [
+    "9:00 – 10:00",
+    "10:00 – 11:00",
+    "11:00 – 11:15",
+    "11:15 – 12:15",
+    "12:15 – 1:15",
+    "2:00 – 4:00",
+  ];
 
   return (
     <div className="timetable-page">
+      {/* Header */}
       <div className="page-header">
         <h1>
-          <FaCalendarAlt /> Class Timetable
+          <FaCalendarAlt />
+          Class Timetable
         </h1>
-        <p>Weekly Schedule</p>
+
+        <p>III B.Sc B - Weekly Schedule</p>
       </div>
 
-      {timetable.map((day) => (
-        <div className="day-card" key={day.day}>
-          <h2>{day.day}</h2>
-
-          <table>
+      {/* Timetable Card */}
+      <div className="timetable-card">
+        <div className="table-wrapper">
+          <table className="weekly-timetable">
             <thead>
               <tr>
                 <th>
-                  <FaClock /> Time
+                  <FaCalendarAlt />
+                  Day
                 </th>
-                <th>
-                  <FaBook /> Subject
-                </th>
-                <th>Faculty</th>
-                <th>Room</th>
+
+                {timeSlots.map((time, index) => (
+                  <th key={index}>
+                    <FaClock />
+                    {time}
+                  </th>
+                ))}
               </tr>
             </thead>
 
             <tbody>
-              {day.classes.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.time}</td>
-                  <td>{item.subject}</td>
-                  <td>{item.faculty}</td>
-                  <td>{item.room}</td>
+              {timetable.map((day) => (
+                <tr key={day.day}>
+                  <td className="day-name">
+                    {day.day}
+                  </td>
+
+                  {day.periods.map((subject, index) => (
+                    <td
+                      key={index}
+                      className={
+                        subject === "Break"
+                          ? "break-cell"
+                          : ""
+                      }
+                    >
+                      {subject}
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-      ))}
+      </div>
     </div>
   );
 };

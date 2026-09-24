@@ -7,7 +7,7 @@
     min-height: 100vh;
     padding: 32px;
     background: #f4f7fc;
-    color: #1e293b;
+    color: #0f172a;
     transition: background 0.3s ease, color 0.3s ease;
 }
 
@@ -25,41 +25,43 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
 
-    margin: 0 0 10px;
+    margin: 0 0 8px;
 
-    color: #2563eb;
-    font-size: 36px;
+    color: #111827;
+    font-size: 32px;
     font-weight: 700;
     line-height: 1.3;
 }
 
 .page-header h1 svg {
-    font-size: 32px;
+    color: #2563eb;
+    font-size: 28px;
 }
 
 .page-header p {
     margin: 0;
-    color: #64748b;
-    font-size: 18px;
+
+    color: #1e3a8a;
+    font-size: 16px;
     font-weight: 500;
 }
 
 
 /* =========================================================
-   DAY CARD
+   TIMETABLE CARD
 ========================================================= */
 
-.day-card {
+.timetable-card {
     width: 100%;
+
     background: #ffffff;
 
     border: 1px solid #e2e8f0;
     border-radius: 18px;
 
-    padding: 28px;
-    margin-bottom: 30px;
+    padding: 20px;
 
     box-shadow:
         0 8px 25px rgba(15, 23, 42, 0.07);
@@ -70,57 +72,41 @@
         background 0.3s ease;
 }
 
-.day-card:hover {
-    transform: translateY(-4px);
-
+.timetable-card:hover {
     box-shadow:
-        0 15px 35px rgba(15, 23, 42, 0.12);
-}
-
-
-/* =========================================================
-   DAY TITLE
-========================================================= */
-
-.day-card h2 {
-    display: flex;
-    align-items: center;
-
-    margin: 0 0 22px;
-
-    padding-left: 14px;
-
-    border-left: 5px solid #2563eb;
-
-    color: #1e3a8a;
-
-    font-size: 27px;
-    font-weight: 700;
-
-    line-height: 1.3;
+        0 15px 35px rgba(15, 23, 42, 0.10);
 }
 
 
 /* =========================================================
    TABLE WRAPPER
-   Keeps table structure intact
 ========================================================= */
 
-.day-card {
+.table-wrapper {
+    width: 100%;
     overflow-x: auto;
+
+    border-radius: 14px;
 }
 
-.day-card table {
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.weekly-timetable {
     width: 100%;
-    min-width: 700px;
+    min-width: 900px;
 
     border-collapse: separate;
     border-spacing: 0;
 
+    border: 1px solid #dbe3ef;
+    border-radius: 14px;
+
     overflow: hidden;
 
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
+    table-layout: fixed;
 }
 
 
@@ -128,34 +114,45 @@
    TABLE HEADER
 ========================================================= */
 
-.day-card thead {
-    background: linear-gradient(
-        135deg,
-        #2563eb,
-        #1d4ed8
-    );
+.weekly-timetable thead {
+    background:
+        linear-gradient(
+            135deg,
+            #4338ca,
+            #4f46e5,
+            #6366f1
+        );
 }
 
-.day-card thead th {
-    padding: 17px 16px;
+.weekly-timetable thead th {
+    padding: 16px 10px;
 
     color: #ffffff;
 
-    font-size: 17px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
 
     text-align: center;
+
     white-space: nowrap;
 
-    border-bottom: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-.day-card thead th:first-child {
-    border-top-left-radius: 12px;
+.weekly-timetable thead th:first-child {
+    width: 120px;
 }
 
-.day-card thead th:last-child {
-    border-top-right-radius: 12px;
+.weekly-timetable thead th:last-child {
+    border-right: none;
+}
+
+.weekly-timetable thead th svg {
+    margin-right: 5px;
+
+    font-size: 12px;
+
+    vertical-align: middle;
 }
 
 
@@ -163,28 +160,46 @@
    TABLE BODY
 ========================================================= */
 
-.day-card tbody td {
-    padding: 17px 16px;
+.weekly-timetable tbody td {
+    height: 58px;
+
+    padding: 12px 8px;
+
+    color: #111827;
+
+    font-size: 13px;
+    font-weight: 600;
 
     text-align: center;
 
-    color: #334155;
+    line-height: 1.35;
 
-    font-size: 16px;
-    font-weight: 500;
+    border-right: 1px solid #dbe3ef;
+    border-bottom: 1px solid #dbe3ef;
 
-    line-height: 1.5;
+    background: #ffffff;
+}
 
-    border-bottom: 1px solid #e2e8f0;
+.weekly-timetable tbody tr:last-child td {
+    border-bottom: none;
+}
 
-    white-space: nowrap;
+.weekly-timetable tbody td:last-child {
+    border-right: none;
 }
 
 
-/* Remove last row border */
+/* =========================================================
+   DAY COLUMN
+========================================================= */
 
-.day-card tbody tr:last-child td {
-    border-bottom: none;
+.weekly-timetable .day-name {
+    color: #3730a3;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    background: #eef2ff;
 }
 
 
@@ -192,37 +207,64 @@
    ALTERNATE ROW
 ========================================================= */
 
-.day-card tbody tr:nth-child(even) {
+.weekly-timetable tbody tr:nth-child(even) td {
     background: #f8fafc;
 }
 
+.weekly-timetable tbody tr:nth-child(even) .day-name {
+    background: #eef2ff;
+}
+
 
 /* =========================================================
-   TABLE HOVER
+   BREAK
 ========================================================= */
 
-.day-card tbody tr {
+.weekly-timetable .break-cell {
+    color: #64748b;
+
+    font-weight: 600;
+
+    background: #f1f5f9;
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.weekly-timetable tbody tr {
     transition: background 0.2s ease;
 }
 
-.day-card tbody tr:hover {
-    background: #eaf2ff;
+.weekly-timetable tbody tr:hover td {
+    background: #eef4ff;
 }
 
-.day-card tbody tr:hover td {
-    color: #1e40af;
+.weekly-timetable tbody tr:hover .day-name {
+    background: #e0e7ff;
 }
 
 
 /* =========================================================
-   ICONS
+   SCROLLBAR
 ========================================================= */
 
-.day-card th svg {
-    margin-right: 7px;
-    vertical-align: middle;
+.table-wrapper::-webkit-scrollbar {
+    height: 7px;
+}
 
-    font-size: 16px;
+.table-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
 }
 
 
@@ -253,22 +295,26 @@
 ========================================================= */
 
 .dark-theme .page-header h1 {
-    color: #7dd3fc;
+    color: #f8fafc;
 
     text-shadow:
         0 0 22px rgba(56, 189, 248, 0.18);
 }
 
+.dark-theme .page-header h1 svg {
+    color: #38bdf8;
+}
+
 .dark-theme .page-header p {
-    color: #94a3b8;
+    color: #93c5fd;
 }
 
 
 /* =========================================================
-   DARK DAY CARD - GLASS EFFECT
+   DARK CARD
 ========================================================= */
 
-.dark-theme .day-card {
+.dark-theme .timetable-card {
     background:
         linear-gradient(
             145deg,
@@ -286,35 +332,12 @@
     -webkit-backdrop-filter: blur(14px);
 }
 
-.dark-theme .day-card:hover {
-    border-color:
-        rgba(56, 189, 248, 0.24);
-
-    box-shadow:
-        0 18px 40px rgba(0, 0, 0, 0.38),
-        0 0 25px rgba(37, 99, 235, 0.08);
-}
-
-
-/* =========================================================
-   DARK DAY TITLE
-========================================================= */
-
-.dark-theme .day-card h2 {
-    color: #7dd3fc;
-
-    border-left-color: #38bdf8;
-
-    text-shadow:
-        0 0 15px rgba(56, 189, 248, 0.12);
-}
-
 
 /* =========================================================
    DARK TABLE
 ========================================================= */
 
-.dark-theme .day-card table {
+.dark-theme .weekly-timetable {
     border-color:
         rgba(148, 163, 184, 0.13);
 
@@ -327,97 +350,111 @@
    DARK TABLE HEADER
 ========================================================= */
 
-.dark-theme .day-card thead {
+.dark-theme .weekly-timetable thead {
     background:
         linear-gradient(
             135deg,
-            #1d4ed8,
-            #2563eb
+            #3730a3,
+            #4338ca,
+            #4f46e5
         );
 }
 
-.dark-theme .day-card thead th {
+.dark-theme .weekly-timetable thead th {
     color: #ffffff;
 
-    border-bottom:
+    border-right:
         1px solid rgba(147, 197, 253, 0.18);
 }
 
 
 /* =========================================================
-   DARK TABLE BODY
+   DARK BODY
 ========================================================= */
 
-.dark-theme .day-card tbody td {
+.dark-theme .weekly-timetable tbody td {
     color: #dbeafe;
+
+    background:
+        rgba(15, 23, 42, 0.35);
+
+    border-right:
+        1px solid rgba(148, 163, 184, 0.10);
 
     border-bottom:
         1px solid rgba(148, 163, 184, 0.10);
 }
 
 
-/* Dark alternate rows */
+/* =========================================================
+   DARK DAY
+========================================================= */
 
-.dark-theme .day-card tbody tr:nth-child(even) {
+.dark-theme .weekly-timetable .day-name {
+    color: #a5b4fc;
+
+    background:
+        rgba(67, 56, 202, 0.20);
+}
+
+
+/* =========================================================
+   DARK ALTERNATE
+========================================================= */
+
+.dark-theme .weekly-timetable tbody tr:nth-child(even) td {
     background:
         rgba(51, 65, 85, 0.42);
 }
 
-.dark-theme .day-card tbody tr:nth-child(odd) {
+.dark-theme .weekly-timetable tbody tr:nth-child(even) .day-name {
     background:
-        rgba(15, 23, 42, 0.35);
+        rgba(67, 56, 202, 0.24);
 }
 
 
 /* =========================================================
-   DARK TABLE HOVER
+   DARK BREAK
 ========================================================= */
 
-.dark-theme .day-card tbody tr:hover {
+.dark-theme .weekly-timetable .break-cell {
+    color: #94a3b8;
+
+    background:
+        rgba(71, 85, 105, 0.30);
+}
+
+
+/* =========================================================
+   DARK HOVER
+========================================================= */
+
+.dark-theme .weekly-timetable tbody tr:hover td {
     background:
         rgba(37, 99, 235, 0.18);
 }
 
-.dark-theme .day-card tbody tr:hover td {
-    color: #ffffff;
+.dark-theme .weekly-timetable tbody tr:hover .day-name {
+    background:
+        rgba(67, 56, 202, 0.30);
 }
 
 
 /* =========================================================
-   SCROLLBAR
+   DARK SCROLLBAR
 ========================================================= */
 
-.day-card::-webkit-scrollbar {
-    height: 7px;
-}
-
-.day-card::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.day-card::-webkit-scrollbar-thumb {
-    background: #94a3b8;
-    border-radius: 10px;
-}
-
-.day-card::-webkit-scrollbar-thumb:hover {
-    background: #64748b;
-}
-
-
-/* Dark scrollbar */
-
-.dark-theme .day-card::-webkit-scrollbar-thumb {
+.dark-theme .table-wrapper::-webkit-scrollbar-thumb {
     background: #334155;
 }
 
-.dark-theme .day-card::-webkit-scrollbar-thumb:hover {
+.dark-theme .table-wrapper::-webkit-scrollbar-thumb:hover {
     background: #475569;
 }
 
 
 /* =========================================================
-   RESPONSIVE - TABLET
+   TABLET
 ========================================================= */
 
 @media (max-width: 992px) {
@@ -427,39 +464,21 @@
     }
 
     .page-header h1 {
-        font-size: 32px;
+        font-size: 30px;
     }
 
-    .page-header p {
-        font-size: 17px;
+    .timetable-card {
+        padding: 18px;
     }
 
-    .day-card {
-        padding: 24px;
-    }
-
-    .day-card h2 {
-        font-size: 25px;
-    }
-
-    .day-card table {
-        min-width: 720px;
-    }
-
-    .day-card thead th {
-        font-size: 16px;
-        padding: 16px;
-    }
-
-    .day-card tbody td {
-        font-size: 15px;
-        padding: 16px;
+    .weekly-timetable {
+        min-width: 850px;
     }
 }
 
 
 /* =========================================================
-   RESPONSIVE - MOBILE
+   MOBILE
 ========================================================= */
 
 @media (max-width: 768px) {
@@ -469,45 +488,47 @@
     }
 
     .page-header {
-        margin-bottom: 25px;
+        margin-bottom: 24px;
     }
 
     .page-header h1 {
-        font-size: 27px;
-        gap: 10px;
+        font-size: 26px;
     }
 
     .page-header h1 svg {
-        font-size: 25px;
+        font-size: 23px;
     }
 
     .page-header p {
-        font-size: 16px;
+        font-size: 15px;
     }
 
-    .day-card {
-        padding: 18px;
-        margin-bottom: 22px;
+    .timetable-card {
+        padding: 14px;
+
         border-radius: 15px;
     }
 
-    .day-card h2 {
-        font-size: 22px;
-        margin-bottom: 18px;
+    .weekly-timetable {
+        min-width: 850px;
     }
 
-    .day-card table {
-        min-width: 700px;
+    .weekly-timetable thead th {
+        padding: 14px 8px;
+
+        font-size: 12px;
     }
 
-    .day-card thead th {
-        padding: 14px;
-        font-size: 15px;
+    .weekly-timetable tbody td {
+        height: 55px;
+
+        padding: 10px 7px;
+
+        font-size: 12px;
     }
 
-    .day-card tbody td {
-        padding: 14px;
-        font-size: 15px;
+    .weekly-timetable thead th:first-child {
+        width: 100px;
     }
 }
 
@@ -519,32 +540,32 @@
 @media (max-width: 480px) {
 
     .timetable-page {
-        padding: 14px;
+        padding: 12px;
     }
 
     .page-header h1 {
-        font-size: 24px;
+        font-size: 23px;
     }
 
     .page-header p {
-        font-size: 15px;
-    }
-
-    .day-card {
-        padding: 15px;
-    }
-
-    .day-card h2 {
-        font-size: 20px;
-    }
-
-    .day-card table {
-        min-width: 680px;
-    }
-
-    .day-card thead th,
-    .day-card tbody td {
         font-size: 14px;
-        padding: 12px;
+    }
+
+    .timetable-card {
+        padding: 10px;
+    }
+
+    .weekly-timetable {
+        min-width: 820px;
+    }
+
+    .weekly-timetable thead th {
+        font-size: 11px;
+        padding: 12px 6px;
+    }
+
+    .weekly-timetable tbody td {
+        font-size: 11px;
+        padding: 9px 6px;
     }
 }
