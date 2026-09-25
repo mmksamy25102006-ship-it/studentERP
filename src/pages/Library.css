@@ -973,6 +973,7 @@
 .dark-theme .search-box input,
 .dark-theme .category-filter select {
     color: #f8fafc;
+    border: none;
 }
 
 .dark-theme .search-box input::placeholder {
