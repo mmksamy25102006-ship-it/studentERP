@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 
 import API from "../../api";
+import { useAuth } from "../../context/AuthContext";
 import "./FacultyMarks.css";
 
 /* =========================================================
@@ -106,6 +107,15 @@ const defaultSubjects = [
   },
 ];
 
+const semesters = [
+  "Semester I",
+  "Semester II",
+  "Semester III",
+  "Semester IV",
+  "Semester V",
+  "Semester VI",
+];
+
 /* =========================================================
    GRADE CALCULATOR
 ========================================================= */
@@ -157,14 +167,24 @@ const calculateGrade = (total) => {
 ========================================================= */
 
 const FacultyMarks = () => {
+  const { user } = useAuth();
+
+  const facultyId =
+    user?.facultyId ||
+    localStorage.getItem("facultyId") ||
+    null;
+
   const [students, setStudents] = useState(initialStudents);
 
   const [selectedRollNo, setSelectedRollNo] =
     useState(initialStudents[0].rollNo);
 
-  const [subjects, setSubjects] = useState(
-    defaultSubjects.map((item) => ({ ...item }))
-  );
+  const [selectedSemester, setSelectedSemester] =
+    useState("Semester I");
+
+  const [facultySubjects, setFacultySubjects] = useState([]);
+
+  const [subjects, setSubjects] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -176,18 +196,54 @@ const FacultyMarks = () => {
      LOAD ALL STUDENTS + MARKS
   ======================================================= */
 
+  const fetchFacultySubjects = async () => {
+    if (!facultyId) {
+      setFacultySubjects([]);
+      return [];
+    }
+
+    const response = await API.get(
+      `/faculty-subjects/faculty/${encodeURIComponent(
+        facultyId
+      )}?semester=${encodeURIComponent(selectedSemester)}`
+    );
+
+    const assignments =
+      Array.isArray(response.data)
+        ? response.data
+        : response.data?.assignments || [];
+
+    setFacultySubjects(assignments);
+    return assignments;
+  };
+
   const fetchStudentsAndMarks = async () => {
     try {
       setLoading(true);
       setError("");
 
+      if (!facultyId) {
+        setStudents(initialStudents);
+        setSubjects([]);
+        setError(
+          "Faculty ID is not available for this account. Please login again."
+        );
+        return;
+      }
+
+      /*
+       * Load only subjects assigned to the logged-in faculty
+       * for the selected semester.
+       */
+      const assignments = await fetchFacultySubjects();
+
+      if (assignments.length === 0) {
+        setSubjects([]);
+      }
+
       /*
        * First get actual students from MongoDB.
-       *
-       * This is important because the faculty should
-       * be able to manage marks for many students.
        */
-
       let studentList = [];
 
       try {
@@ -202,28 +258,15 @@ const FacultyMarks = () => {
           studentList = backendStudents.map(
             (student, index) => ({
               id: student._id || index + 1,
-
-              /*
-               * Student model currently uses studentId.
-               * Existing Mark model uses rollNo.
-               *
-               * We use studentId as rollNo when available.
-               */
-
               rollNo:
                 student.studentId ||
                 student.rollNo ||
                 "",
-
               name:
                 student.name ||
                 "Student",
             })
           );
-
-          /*
-           * Remove students that don't have an identifier.
-           */
 
           studentList = studentList.filter(
             (student) => student.rollNo
@@ -238,36 +281,15 @@ const FacultyMarks = () => {
 
       /*
        * If MongoDB has no students yet,
-       * keep your existing fallback students.
+       * keep the existing fallback students.
        */
-
       if (studentList.length === 0) {
         studentList = initialStudents;
-      }
-
-      setStudents(studentList);
-
-      /*
-       * If the currently selected student no longer exists,
-       * select the first available student.
-       */
-
-      const selectedExists = studentList.some(
-        (student) =>
-          student.rollNo === selectedRollNo
-      );
-
-      let activeRollNo = selectedRollNo;
-
-      if (!selectedExists) {
-        activeRollNo = studentList[0].rollNo;
-        setSelectedRollNo(activeRollNo);
       }
 
       /*
        * Fetch all marks.
        */
-
       const marksResponse = await API.get("/marks");
 
       const backendMarks =
@@ -276,12 +298,8 @@ const FacultyMarks = () => {
           : marksResponse.data?.marks || [];
 
       /*
-       * Keep students that already have marks in the list
-       * even if they are not present in the Student collection.
-       *
-       * This prevents existing marks from disappearing.
+       * Keep students that already have marks in the list.
        */
-
       const existingStudentMap = new Map();
 
       backendMarks.forEach((mark, index) => {
@@ -307,33 +325,36 @@ const FacultyMarks = () => {
 
       setStudents(combinedStudents);
 
-      /*
-       * Load marks for selected student.
-       */
-
-      const selectedMark = backendMarks.find(
-        (mark) =>
-          mark.rollNo === activeRollNo
+      const selectedExists = combinedStudents.some(
+        (student) =>
+          student.rollNo === selectedRollNo
       );
 
-      if (selectedMark) {
-        loadStudentSubjects(selectedMark);
-      } else {
-        setSubjects(
-          defaultSubjects.map((item) => ({
-            ...item,
-          }))
-        );
+      let activeRollNo = selectedRollNo;
+
+      if (!selectedExists && combinedStudents.length > 0) {
+        activeRollNo = combinedStudents[0].rollNo;
+        setSelectedRollNo(activeRollNo);
       }
+
+      /*
+       * Load marks for the selected student + semester.
+       */
+      const selectedMark = backendMarks.find(
+        (mark) =>
+          mark.rollNo === activeRollNo &&
+          mark.semester === selectedSemester
+      );
+
+      loadStudentSubjects(
+        selectedMark,
+        assignments
+      );
     } catch (err) {
       console.error(
         "FETCH STUDENT MARKS ERROR:",
         err
       );
-
-      /*
-       * Keep existing fallback behavior.
-       */
 
       if (err.response?.status !== 404) {
         setError(
@@ -350,43 +371,67 @@ const FacultyMarks = () => {
      LOAD SELECTED STUDENT SUBJECTS
   ======================================================= */
 
-  const loadStudentSubjects = (student) => {
-    if (
-      student &&
-      Array.isArray(student.subjects) &&
-      student.subjects.length > 0
-    ) {
-      const mergedSubjects =
-        defaultSubjects.map(
-          (defaultSubject) => {
-            const savedSubject =
-              student.subjects.find(
-                (item) =>
-                  item.subject ===
-                  defaultSubject.subject
-              );
+  const loadStudentSubjects = (
+    student,
+    assignments = facultySubjects
+  ) => {
+    /*
+     * Only subjects assigned to this faculty for the
+     * selected semester are displayed.
+     */
+    const assignedSubjects = assignments.map(
+      (assignment) => assignment.subject
+    );
 
-            if (savedSubject) {
-              return {
-                ...defaultSubject,
-                ...savedSubject,
-              };
-            }
+    if (assignedSubjects.length === 0) {
+      setSubjects([]);
+      return;
+    }
 
-            return {
-              ...defaultSubject,
-            };
-          }
+    const savedSubjects = Array.isArray(
+      student?.subjects
+    )
+      ? student.subjects
+      : [];
+
+    const mergedSubjects = assignments.map(
+      (assignment) => {
+        const savedSubject = savedSubjects.find(
+          (item) =>
+            item.subject === assignment.subject
         );
 
-      setSubjects(mergedSubjects);
-    } else {
-      setSubjects(
-        defaultSubjects.map((item) => ({
-          ...item,
-        }))
-      );
-    }
+        return {
+          subject: assignment.subject,
+          credits:
+            Number(
+              savedSubject?.credits ??
+                assignment.credits ??
+                3
+            ),
+          internal1: Number(
+            savedSubject?.internal1 || 0
+          ),
+          internal2: Number(
+            savedSubject?.internal2 || 0
+          ),
+          assignment: Number(
+            savedSubject?.assignment || 0
+          ),
+          lab: Number(
+            savedSubject?.lab || 0
+          ),
+          grade:
+            savedSubject?.grade || "-",
+          gradePoints: Number(
+            savedSubject?.gradePoints || 0
+          ),
+          facultyId,
+        };
+      }
+    );
+
+    setSubjects(mergedSubjects);
   };
 
   /* =======================================================
@@ -395,7 +440,7 @@ const FacultyMarks = () => {
 
   useEffect(() => {
     fetchStudentsAndMarks();
-  }, []);
+  }, [facultyId, selectedSemester]);
 
   /* =======================================================
      WHEN STUDENT CHANGES
@@ -407,17 +452,6 @@ const FacultyMarks = () => {
     setMessage("");
     setError("");
 
-    /*
-     * Reset subjects while loading the selected student's
-     * marks so marks from another student are not displayed.
-     */
-
-    setSubjects(
-      defaultSubjects.map((item) => ({
-        ...item,
-      }))
-    );
-
     try {
       const response = await API.get(
         `/marks/student/${encodeURIComponent(
@@ -425,13 +459,23 @@ const FacultyMarks = () => {
         )}`
       );
 
-      loadStudentSubjects(response.data);
-    } catch (err) {
-      /*
-       * Student does not have marks yet.
-       * Start with empty subjects.
-       */
+      const markData = Array.isArray(response.data)
+        ? response.data.find(
+            (item) =>
+              item.semester === selectedSemester
+          )
+        : response.data?.marks
+          ? response.data.marks.find(
+              (item) =>
+                item.semester === selectedSemester
+            )
+          : response.data;
 
+      loadStudentSubjects(
+        markData,
+        facultySubjects
+      );
+    } catch (err) {
       if (err.response?.status !== 404) {
         console.error(
           "LOAD STUDENT MARKS ERROR:",
@@ -439,12 +483,17 @@ const FacultyMarks = () => {
         );
       }
 
-      setSubjects(
-        defaultSubjects.map((item) => ({
-          ...item,
-        }))
+      loadStudentSubjects(
+        null,
+        facultySubjects
       );
     }
+  };
+
+  const handleSemesterChange = (semester) => {
+    setSelectedSemester(semester);
+    setMessage("");
+    setError("");
   };
 
   /* =======================================================
@@ -682,7 +731,7 @@ const FacultyMarks = () => {
           selectedStudent.name,
 
         semester:
-          "Semester I",
+          selectedSemester,
 
         subjects:
           finalSubjects,
@@ -773,7 +822,7 @@ const FacultyMarks = () => {
           <FaSyncAlt className="loading-icon" />
 
           <p>
-            Loading student marks...
+            Loading faculty subjects and student marks...
           </p>
         </div>
       </div>
@@ -877,6 +926,48 @@ const FacultyMarks = () => {
       </div>
 
       {/* ===================================================
+          SEMESTER SELECTOR
+      =================================================== */}
+
+      <div className="student-selector-card semester-selector-card">
+        <div className="selector-icon">
+          <FaBook />
+        </div>
+
+        <div className="selector-content">
+          <label>
+            Select Semester
+          </label>
+
+          <select
+            value={selectedSemester}
+            onChange={(e) =>
+              handleSemesterChange(e.target.value)
+            }
+          >
+            {semesters.map((semester) => (
+              <option
+                key={semester}
+                value={semester}
+              >
+                {semester}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="selected-student-info">
+          <strong>
+            {facultySubjects.length} Subject
+            {facultySubjects.length === 1 ? "" : "s"}
+          </strong>
+          <span>
+            Assigned to you
+          </span>
+        </div>
+      </div>
+
+      {/* ===================================================
           SUCCESS MESSAGE
       =================================================== */}
 
@@ -928,7 +1019,7 @@ const FacultyMarks = () => {
           </div>
 
           <div className="semester-badge">
-            Semester I
+            {selectedSemester}
           </div>
 
         </div>
@@ -991,8 +1082,17 @@ const FacultyMarks = () => {
 
             <tbody>
 
-              {subjects.map(
-                (subject, index) => {
+              {subjects.length === 0 ? (
+                <tr>
+                  <td colSpan="8" className="subject-name">
+                    <strong>
+                      No subjects assigned to you for {selectedSemester}.
+                    </strong>
+                  </td>
+                </tr>
+              ) : (
+                subjects.map(
+                  (subject, index) => {
 
                   const total =
                     Number(
@@ -1168,6 +1268,7 @@ const FacultyMarks = () => {
                     </tr>
                   );
                 }
+                )
               )}
 
             </tbody>
@@ -1192,7 +1293,7 @@ const FacultyMarks = () => {
               {totalMarks}
 
               <small>
-                /450
+                /{subjects.length * 75}
               </small>
             </strong>
 
