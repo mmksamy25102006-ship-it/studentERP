@@ -193,7 +193,7 @@ const FacultyMarks = () => {
   const [error, setError] = useState("");
 
   /* =======================================================
-     LOAD ALL STUDENTS + MARKS
+     LOAD FACULTY SUBJECTS
   ======================================================= */
 
   const fetchFacultySubjects = async () => {
@@ -202,20 +202,50 @@ const FacultyMarks = () => {
       return [];
     }
 
-    const response = await API.get(
-      `/faculty-subjects/faculty/${encodeURIComponent(
-        facultyId
-      )}?semester=${encodeURIComponent(selectedSemester)}`
-    );
+    try {
+      const response = await API.get(
+        `/faculty-subjects/faculty/${encodeURIComponent(
+          facultyId
+        )}?semester=${encodeURIComponent(selectedSemester)}`
+      );
 
-    const assignments =
-      Array.isArray(response.data)
-        ? response.data
-        : response.data?.assignments || [];
+      /*
+       * Backend currently returns:
+       *
+       * {
+       *   success: true,
+       *   subjects: [...]
+       * }
+       *
+       * Support both "subjects" and "assignments"
+       * so the frontend remains compatible.
+       */
 
-    setFacultySubjects(assignments);
-    return assignments;
+      const assignments =
+        Array.isArray(response.data)
+          ? response.data
+          : response.data?.subjects ||
+            response.data?.assignments ||
+            [];
+
+      setFacultySubjects(assignments);
+
+      return assignments;
+    } catch (err) {
+      console.error(
+        "FETCH FACULTY SUBJECTS ERROR:",
+        err
+      );
+
+      setFacultySubjects([]);
+
+      return [];
+    }
   };
+
+  /* =======================================================
+     LOAD ALL STUDENTS + MARKS
+  ======================================================= */
 
   const fetchStudentsAndMarks = async () => {
     try {
@@ -225,9 +255,11 @@ const FacultyMarks = () => {
       if (!facultyId) {
         setStudents(initialStudents);
         setSubjects([]);
+
         setError(
           "Faculty ID is not available for this account. Please login again."
         );
+
         return;
       }
 
@@ -235,7 +267,9 @@ const FacultyMarks = () => {
        * Load only subjects assigned to the logged-in faculty
        * for the selected semester.
        */
-      const assignments = await fetchFacultySubjects();
+
+      const assignments =
+        await fetchFacultySubjects();
 
       if (assignments.length === 0) {
         setSubjects([]);
@@ -244,33 +278,43 @@ const FacultyMarks = () => {
       /*
        * First get actual students from MongoDB.
        */
+
       let studentList = [];
 
       try {
-        const studentResponse = await API.get("/students");
+        const studentResponse =
+          await API.get("/students");
 
         const backendStudents =
           Array.isArray(studentResponse.data)
             ? studentResponse.data
-            : studentResponse.data?.students || [];
+            : studentResponse.data?.students ||
+              [];
 
         if (backendStudents.length > 0) {
-          studentList = backendStudents.map(
-            (student, index) => ({
-              id: student._id || index + 1,
-              rollNo:
-                student.studentId ||
-                student.rollNo ||
-                "",
-              name:
-                student.name ||
-                "Student",
-            })
-          );
+          studentList =
+            backendStudents.map(
+              (student, index) => ({
+                id:
+                  student._id ||
+                  index + 1,
 
-          studentList = studentList.filter(
-            (student) => student.rollNo
-          );
+                rollNo:
+                  student.studentId ||
+                  student.rollNo ||
+                  "",
+
+                name:
+                  student.name ||
+                  "Student",
+              })
+            );
+
+          studentList =
+            studentList.filter(
+              (student) =>
+                student.rollNo
+            );
         }
       } catch (studentError) {
         console.error(
@@ -283,68 +327,128 @@ const FacultyMarks = () => {
        * If MongoDB has no students yet,
        * keep the existing fallback students.
        */
+
       if (studentList.length === 0) {
-        studentList = initialStudents;
+        studentList =
+          initialStudents;
       }
 
       /*
        * Fetch all marks.
        */
-      const marksResponse = await API.get("/marks");
 
-      const backendMarks =
-        Array.isArray(marksResponse.data)
-          ? marksResponse.data
-          : marksResponse.data?.marks || [];
+      let backendMarks = [];
 
-      /*
-       * Keep students that already have marks in the list.
-       */
-      const existingStudentMap = new Map();
+      try {
+        const marksResponse =
+          await API.get("/marks");
 
-      backendMarks.forEach((mark, index) => {
-        if (!mark.rollNo) return;
-
-        existingStudentMap.set(mark.rollNo, {
-          id: mark._id || `mark-${index}`,
-          rollNo: mark.rollNo,
-          name: mark.name || "Student",
-        });
-      });
-
-      studentList.forEach((student) => {
-        existingStudentMap.set(
-          student.rollNo,
-          student
+        backendMarks =
+          Array.isArray(
+            marksResponse.data
+          )
+            ? marksResponse.data
+            : marksResponse.data?.marks ||
+              [];
+      } catch (marksError) {
+        console.error(
+          "FETCH ALL MARKS ERROR:",
+          marksError
         );
-      });
 
-      const combinedStudents = Array.from(
-        existingStudentMap.values()
-      );
-
-      setStudents(combinedStudents);
-
-      const selectedExists = combinedStudents.some(
-        (student) =>
-          student.rollNo === selectedRollNo
-      );
-
-      let activeRollNo = selectedRollNo;
-
-      if (!selectedExists && combinedStudents.length > 0) {
-        activeRollNo = combinedStudents[0].rollNo;
-        setSelectedRollNo(activeRollNo);
+        /*
+         * No marks should not prevent the
+         * faculty from entering new marks.
+         */
+        backendMarks = [];
       }
 
       /*
-       * Load marks for the selected student + semester.
+       * Keep students that already have marks
+       * in the list.
        */
-      const selectedMark = backendMarks.find(
-        (mark) =>
-          mark.rollNo === activeRollNo &&
-          mark.semester === selectedSemester
+
+      const existingStudentMap =
+        new Map();
+
+      backendMarks.forEach(
+        (mark, index) => {
+          if (!mark.rollNo) return;
+
+          existingStudentMap.set(
+            mark.rollNo,
+            {
+              id:
+                mark._id ||
+                `mark-${index}`,
+
+              rollNo:
+                mark.rollNo,
+
+              name:
+                mark.name ||
+                "Student",
+            }
+          );
+        }
       );
+
+      studentList.forEach(
+        (student) => {
+          existingStudentMap.set(
+            student.rollNo,
+            student
+          );
+        }
+      );
+
+      const combinedStudents =
+        Array.from(
+          existingStudentMap.values()
+        );
+
+      setStudents(
+        combinedStudents
+      );
+
+      const selectedExists =
+        combinedStudents.some(
+          (student) =>
+            student.rollNo ===
+            selectedRollNo
+        );
+
+      let activeRollNo =
+        selectedRollNo;
+
+      if (
+        !selectedExists &&
+        combinedStudents.length > 0
+      ) {
+        activeRollNo =
+          combinedStudents[0].rollNo;
+
+        setSelectedRollNo(
+          activeRollNo
+        );
+      }
+
+      /*
+       * Load marks for the selected
+       * student + semester.
+       *
+       * If the student has no marks,
+       * selectedMark will simply be undefined.
+       */
+
+      const selectedMark =
+        backendMarks.find(
+          (mark) =>
+            mark.rollNo ===
+              activeRollNo &&
+            mark.semester ===
+              selectedSemester
+        );
 
       loadStudentSubjects(
         selectedMark,
@@ -356,12 +460,10 @@ const FacultyMarks = () => {
         err
       );
 
-      if (err.response?.status !== 404) {
-        setError(
-          err.response?.data?.message ||
-            "Unable to load student marks from server."
-        );
-      }
+      setError(
+        err.response?.data?.message ||
+          "Unable to load student marks from server."
+      );
     } finally {
       setLoading(false);
     }
@@ -376,62 +478,93 @@ const FacultyMarks = () => {
     assignments = facultySubjects
   ) => {
     /*
-     * Only subjects assigned to this faculty for the
-     * selected semester are displayed.
+     * Only subjects assigned to this faculty
+     * for the selected semester are displayed.
      */
-    const assignedSubjects = assignments.map(
-      (assignment) => assignment.subject
-    );
 
-    if (assignedSubjects.length === 0) {
+    const assignedSubjects =
+      assignments.map(
+        (assignment) =>
+          assignment.subject
+      );
+
+    if (
+      assignedSubjects.length === 0
+    ) {
       setSubjects([]);
       return;
     }
 
-    const savedSubjects = Array.isArray(
-      student?.subjects
-    )
-      ? student.subjects
-      : [];
+    const savedSubjects =
+      Array.isArray(
+        student?.subjects
+      )
+        ? student.subjects
+        : [];
 
-    const mergedSubjects = assignments.map(
-      (assignment) => {
-        const savedSubject = savedSubjects.find(
-          (item) =>
-            item.subject === assignment.subject
-        );
+    const mergedSubjects =
+      assignments.map(
+        (assignment) => {
+          const savedSubject =
+            savedSubjects.find(
+              (item) =>
+                item.subject ===
+                assignment.subject
+            );
 
-        return {
-          subject: assignment.subject,
-          credits:
-            Number(
-              savedSubject?.credits ??
-                assignment.credits ??
-                3
-            ),
-          internal1: Number(
-            savedSubject?.internal1 || 0
-          ),
-          internal2: Number(
-            savedSubject?.internal2 || 0
-          ),
-          assignment: Number(
-            savedSubject?.assignment || 0
-          ),
-          lab: Number(
-            savedSubject?.lab || 0
-          ),
-          grade:
-            savedSubject?.grade || "-",
-          gradePoints: Number(
-            savedSubject?.gradePoints || 0
-          ),
-          facultyId,
-        };
-      }
+          return {
+            subject:
+              assignment.subject,
+
+            credits:
+              Number(
+                savedSubject?.credits ??
+                  assignment.credits ??
+                  3
+              ),
+
+            internal1:
+              Number(
+                savedSubject?.internal1 ||
+                  0
+              ),
+
+            internal2:
+              Number(
+                savedSubject?.internal2 ||
+                  0
+              ),
+
+            assignment:
+              Number(
+                savedSubject?.assignment ||
+                  0
+              ),
+
+            lab:
+              Number(
+                savedSubject?.lab ||
+                  0
+              ),
+
+            grade:
+              savedSubject?.grade ||
+              "-",
+
+            gradePoints:
+              Number(
+                savedSubject?.gradePoints ||
+                  0
+              ),
+
+            facultyId,
+          };
+        }
+      );
+
+    setSubjects(
+      mergedSubjects
     );
-
-    setSubjects(mergedSubjects);
   };
 
   /* =======================================================
@@ -440,61 +573,92 @@ const FacultyMarks = () => {
 
   useEffect(() => {
     fetchStudentsAndMarks();
-  }, [facultyId, selectedSemester]);
+  }, [
+    facultyId,
+    selectedSemester,
+  ]);
 
   /* =======================================================
      WHEN STUDENT CHANGES
   ======================================================= */
 
-  const handleStudentChange = async (rollNo) => {
-    setSelectedRollNo(rollNo);
-
-    setMessage("");
-    setError("");
-
-    try {
-      const response = await API.get(
-        `/marks/student/${encodeURIComponent(
-          rollNo
-        )}`
+  const handleStudentChange =
+    async (rollNo) => {
+      setSelectedRollNo(
+        rollNo
       );
 
-      const markData = Array.isArray(response.data)
-        ? response.data.find(
-            (item) =>
-              item.semester === selectedSemester
+      setMessage("");
+      setError("");
+
+      try {
+        const response =
+          await API.get(
+            `/marks/student/${encodeURIComponent(
+              rollNo
+            )}`
+          );
+
+        const markData =
+          Array.isArray(
+            response.data
           )
-        : response.data?.marks
-          ? response.data.marks.find(
-              (item) =>
-                item.semester === selectedSemester
-            )
-          : response.data;
+            ? response.data.find(
+                (item) =>
+                  item.semester ===
+                  selectedSemester
+              )
+            : response.data?.marks
+              ? response.data.marks.find(
+                  (item) =>
+                    item.semester ===
+                    selectedSemester
+                )
+              : response.data;
 
-      loadStudentSubjects(
-        markData,
-        facultySubjects
-      );
-    } catch (err) {
-      if (err.response?.status !== 404) {
-        console.error(
-          "LOAD STUDENT MARKS ERROR:",
-          err
+        loadStudentSubjects(
+          markData,
+          facultySubjects
+        );
+      } catch (err) {
+        /*
+         * 404 means the student has no marks yet.
+         * This is NOT a fatal error.
+         *
+         * We still show the subjects assigned
+         * to the logged-in faculty.
+         */
+
+        if (
+          err.response?.status !==
+          404
+        ) {
+          console.error(
+            "LOAD STUDENT MARKS ERROR:",
+            err
+          );
+        }
+
+        loadStudentSubjects(
+          null,
+          facultySubjects
         );
       }
+    };
 
-      loadStudentSubjects(
-        null,
-        facultySubjects
+  /* =======================================================
+     SEMESTER CHANGE
+  ======================================================= */
+
+  const handleSemesterChange =
+    (semester) => {
+      setSelectedSemester(
+        semester
       );
-    }
-  };
 
-  const handleSemesterChange = (semester) => {
-    setSelectedSemester(semester);
-    setMessage("");
-    setError("");
-  };
+      setMessage("");
+      setError("");
+    };
 
   /* =======================================================
      INPUT CHANGE
@@ -505,9 +669,14 @@ const FacultyMarks = () => {
     field,
     value
   ) => {
-    let numericValue = Number(value);
+    let numericValue =
+      Number(value);
 
-    if (Number.isNaN(numericValue)) {
+    if (
+      Number.isNaN(
+        numericValue
+      )
+    ) {
       numericValue = 0;
     }
 
@@ -522,9 +691,12 @@ const FacultyMarks = () => {
       lab: 25,
     };
 
-    const max = limits[field];
+    const max =
+      limits[field];
 
-    if (numericValue < 0) {
+    if (
+      numericValue < 0
+    ) {
       numericValue = 0;
     }
 
@@ -535,107 +707,137 @@ const FacultyMarks = () => {
       numericValue = max;
     }
 
-    setSubjects((prev) => {
-      const updated = [...prev];
+    setSubjects(
+      (prev) => {
+        const updated = [
+          ...prev,
+        ];
 
-      updated[index] = {
-        ...updated[index],
-        [field]: numericValue,
-      };
+        updated[index] = {
+          ...updated[index],
+          [field]:
+            numericValue,
+        };
 
-      /* Calculate total */
+        /* Calculate total */
 
-      const total =
-        Number(
-          updated[index].internal1 || 0
-        ) +
-        Number(
-          updated[index].internal2 || 0
-        ) +
-        Number(
-          updated[index].assignment || 0
-        ) +
-        Number(
-          updated[index].lab || 0
-        );
+        const total =
+          Number(
+            updated[index]
+              .internal1 || 0
+          ) +
+          Number(
+            updated[index]
+              .internal2 || 0
+          ) +
+          Number(
+            updated[index]
+              .assignment || 0
+          ) +
+          Number(
+            updated[index]
+              .lab || 0
+          );
 
-      /* Calculate grade */
+        /* Calculate grade */
 
-      const gradeData =
-        calculateGrade(total);
+        const gradeData =
+          calculateGrade(
+            total
+          );
 
-      updated[index] = {
-        ...updated[index],
+        updated[index] = {
+          ...updated[index],
 
-        grade: gradeData.grade,
+          grade:
+            gradeData.grade,
 
-        gradePoints:
-          gradeData.gradePoints,
-      };
+          gradePoints:
+            gradeData.gradePoints,
+        };
 
-      return updated;
-    });
+        return updated;
+      }
+    );
   };
 
   /* =======================================================
      CALCULATE SGPA
   ======================================================= */
 
-  const sgpa = useMemo(() => {
-    let totalCredits = 0;
-    let weightedPoints = 0;
+  const sgpa = useMemo(
+    () => {
+      let totalCredits = 0;
+      let weightedPoints = 0;
 
-    subjects.forEach((subject) => {
-      const credits =
-        Number(subject.credits || 0);
+      subjects.forEach(
+        (subject) => {
+          const credits =
+            Number(
+              subject.credits ||
+                0
+            );
 
-      const gradePoints =
-        Number(
-          subject.gradePoints || 0
-        );
+          const gradePoints =
+            Number(
+              subject.gradePoints ||
+                0
+            );
 
-      totalCredits += credits;
+          totalCredits +=
+            credits;
 
-      weightedPoints +=
-        credits * gradePoints;
-    });
+          weightedPoints +=
+            credits *
+            gradePoints;
+        }
+      );
 
-    if (totalCredits === 0) {
-      return 0;
-    }
+      if (
+        totalCredits === 0
+      ) {
+        return 0;
+      }
 
-    return (
-      weightedPoints /
-      totalCredits
-    );
-  }, [subjects]);
+      return (
+        weightedPoints /
+        totalCredits
+      );
+    },
+    [subjects]
+  );
 
   /* =======================================================
      TOTAL MARKS
   ======================================================= */
 
-  const totalMarks = useMemo(() => {
-    return subjects.reduce(
-      (sum, subject) => {
-        return (
-          sum +
-          Number(
-            subject.internal1 || 0
-          ) +
-          Number(
-            subject.internal2 || 0
-          ) +
-          Number(
-            subject.assignment || 0
-          ) +
-          Number(
-            subject.lab || 0
-          )
-        );
-      },
-      0
-    );
-  }, [subjects]);
+  const totalMarks =
+    useMemo(() => {
+      return subjects.reduce(
+        (sum, subject) => {
+          return (
+            sum +
+            Number(
+              subject.internal1 ||
+                0
+            ) +
+            Number(
+              subject.internal2 ||
+                0
+            ) +
+            Number(
+              subject.assignment ||
+                0
+            ) +
+            Number(
+              subject.lab ||
+                0
+            )
+          );
+        },
+        0
+      );
+    }, [subjects]);
 
   /* =======================================================
      SELECTED STUDENT
@@ -659,10 +861,23 @@ const FacultyMarks = () => {
       setMessage("");
       setError("");
 
-      if (!selectedStudent) {
+      if (
+        !selectedStudent
+      ) {
         setError(
           "Please select a student."
         );
+
+        return;
+      }
+
+      if (
+        subjects.length === 0
+      ) {
+        setError(
+          `No subjects are assigned to you for ${selectedSemester}.`
+        );
+
         return;
       }
 
@@ -671,56 +886,72 @@ const FacultyMarks = () => {
        */
 
       const finalSubjects =
-        subjects.map((subject) => {
-          const total =
-            Number(
-              subject.internal1 || 0
-            ) +
-            Number(
-              subject.internal2 || 0
-            ) +
-            Number(
-              subject.assignment || 0
-            ) +
-            Number(
-              subject.lab || 0
-            );
+        subjects.map(
+          (subject) => {
+            const total =
+              Number(
+                subject.internal1 ||
+                  0
+              ) +
+              Number(
+                subject.internal2 ||
+                  0
+              ) +
+              Number(
+                subject.assignment ||
+                  0
+              ) +
+              Number(
+                subject.lab ||
+                  0
+              );
 
-          const gradeData =
-            calculateGrade(total);
+            const gradeData =
+              calculateGrade(
+                total
+              );
 
-          return {
-            ...subject,
+            return {
+              ...subject,
 
-            internal1: Number(
-              subject.internal1 || 0
-            ),
+              internal1:
+                Number(
+                  subject.internal1 ||
+                    0
+                ),
 
-            internal2: Number(
-              subject.internal2 || 0
-            ),
+              internal2:
+                Number(
+                  subject.internal2 ||
+                    0
+                ),
 
-            assignment: Number(
-              subject.assignment || 0
-            ),
+              assignment:
+                Number(
+                  subject.assignment ||
+                    0
+                ),
 
-            lab: Number(
-              subject.lab || 0
-            ),
+              lab:
+                Number(
+                  subject.lab ||
+                    0
+                ),
 
-            grade:
-              gradeData.grade,
+              grade:
+                gradeData.grade,
 
-            gradePoints:
-              gradeData.gradePoints,
-          };
-        });
+              gradePoints:
+                gradeData.gradePoints,
+            };
+          }
+        );
 
       /*
        * Data sent to backend.
        *
-       * The student's unique identifier is used
-       * as the Mark rollNo.
+       * The student's unique identifier
+       * is used as Mark rollNo.
        */
 
       const marksData = {
@@ -752,8 +983,7 @@ const FacultyMarks = () => {
       /*
        * PUT request.
        *
-       * API automatically sends the JWT token
-       * because we updated src/api.js.
+       * API automatically sends the JWT token.
        */
 
       const response =
@@ -773,7 +1003,9 @@ const FacultyMarks = () => {
        * Update UI with saved data.
        */
 
-      setSubjects(finalSubjects);
+      setSubjects(
+        finalSubjects
+      );
 
       setMessage(
         `Marks updated successfully for ${selectedStudent.rollNo}`
@@ -822,7 +1054,8 @@ const FacultyMarks = () => {
           <FaSyncAlt className="loading-icon" />
 
           <p>
-            Loading faculty subjects and student marks...
+            Loading faculty subjects and
+            student marks...
           </p>
         </div>
       </div>
@@ -886,7 +1119,9 @@ const FacultyMarks = () => {
           </label>
 
           <select
-            value={selectedRollNo}
+            value={
+              selectedRollNo
+            }
             onChange={(e) =>
               handleStudentChange(
                 e.target.value
@@ -896,8 +1131,12 @@ const FacultyMarks = () => {
             {students.map(
               (student) => (
                 <option
-                  key={student.rollNo}
-                  value={student.rollNo}
+                  key={
+                    student.rollNo
+                  }
+                  value={
+                    student.rollNo
+                  }
                 >
                   {student.rollNo}
                   {" — "}
@@ -913,11 +1152,15 @@ const FacultyMarks = () => {
           <div className="selected-student-info">
 
             <strong>
-              {selectedStudent.name}
+              {
+                selectedStudent.name
+              }
             </strong>
 
             <span>
-              {selectedStudent.rollNo}
+              {
+                selectedStudent.rollNo
+              }
             </span>
 
           </div>
@@ -930,41 +1173,62 @@ const FacultyMarks = () => {
       =================================================== */}
 
       <div className="student-selector-card semester-selector-card">
+
         <div className="selector-icon">
           <FaBook />
         </div>
 
         <div className="selector-content">
+
           <label>
             Select Semester
           </label>
 
           <select
-            value={selectedSemester}
+            value={
+              selectedSemester
+            }
             onChange={(e) =>
-              handleSemesterChange(e.target.value)
+              handleSemesterChange(
+                e.target.value
+              )
             }
           >
-            {semesters.map((semester) => (
-              <option
-                key={semester}
-                value={semester}
-              >
-                {semester}
-              </option>
-            ))}
+            {semesters.map(
+              (semester) => (
+                <option
+                  key={semester}
+                  value={semester}
+                >
+                  {semester}
+                </option>
+              )
+            )}
           </select>
+
         </div>
 
         <div className="selected-student-info">
+
           <strong>
-            {facultySubjects.length} Subject
-            {facultySubjects.length === 1 ? "" : "s"}
+            {
+              facultySubjects.length
+            }{" "}
+            Subject
+            {
+              facultySubjects.length ===
+              1
+                ? ""
+                : "s"
+            }
           </strong>
+
           <span>
             Assigned to you
           </span>
+
         </div>
+
       </div>
 
       {/* ===================================================
@@ -1014,12 +1278,16 @@ const FacultyMarks = () => {
 
             <p>
               Enter marks for{" "}
-              {selectedStudent?.name}
+              {
+                selectedStudent?.name
+              }
             </p>
           </div>
 
           <div className="semester-badge">
-            {selectedSemester}
+            {
+              selectedSemester
+            }
           </div>
 
         </div>
@@ -1082,192 +1350,215 @@ const FacultyMarks = () => {
 
             <tbody>
 
-              {subjects.length === 0 ? (
+              {subjects.length ===
+              0 ? (
                 <tr>
-                  <td colSpan="8" className="subject-name">
+                  <td
+                    colSpan="8"
+                    className="subject-name"
+                  >
                     <strong>
-                      No subjects assigned to you for {selectedSemester}.
+                      No subjects assigned
+                      to you for{" "}
+                      {
+                        selectedSemester
+                      }
+                      .
                     </strong>
                   </td>
                 </tr>
               ) : (
                 subjects.map(
-                  (subject, index) => {
+                  (
+                    subject,
+                    index
+                  ) => {
 
-                  const total =
-                    Number(
-                      subject.internal1 ||
-                        0
-                    ) +
-                    Number(
-                      subject.internal2 ||
-                        0
-                    ) +
-                    Number(
-                      subject.assignment ||
-                        0
-                    ) +
-                    Number(
-                      subject.lab ||
-                        0
+                    const total =
+                      Number(
+                        subject.internal1 ||
+                          0
+                      ) +
+                      Number(
+                        subject.internal2 ||
+                          0
+                      ) +
+                      Number(
+                        subject.assignment ||
+                          0
+                      ) +
+                      Number(
+                        subject.lab ||
+                          0
+                      );
+
+                    return (
+                      <tr
+                        key={
+                          subject.subject
+                        }
+                      >
+
+                        {/* SUBJECT */}
+
+                        <td className="subject-name">
+
+                          <strong>
+                            {
+                              subject.subject
+                            }
+                          </strong>
+
+                        </td>
+
+                        {/* CREDITS */}
+
+                        <td>
+
+                          <span className="credits">
+                            {
+                              subject.credits
+                            }
+                          </span>
+
+                        </td>
+
+                        {/* CIA 1 */}
+
+                        <td>
+
+                          <input
+                            type="number"
+                            min="0"
+                            max="20"
+                            value={
+                              subject.internal1
+                            }
+                            onChange={(
+                              e
+                            ) =>
+                              handleChange(
+                                index,
+                                "internal1",
+                                e.target.value
+                              )
+                            }
+                          />
+
+                        </td>
+
+                        {/* CIA 2 */}
+
+                        <td>
+
+                          <input
+                            type="number"
+                            min="0"
+                            max="20"
+                            value={
+                              subject.internal2
+                            }
+                            onChange={(
+                              e
+                            ) =>
+                              handleChange(
+                                index,
+                                "internal2",
+                                e.target.value
+                              )
+                            }
+                          />
+
+                        </td>
+
+                        {/* ASSIGNMENT */}
+
+                        <td>
+
+                          <input
+                            type="number"
+                            min="0"
+                            max="10"
+                            value={
+                              subject.assignment
+                            }
+                            onChange={(
+                              e
+                            ) =>
+                              handleChange(
+                                index,
+                                "assignment",
+                                e.target.value
+                              )
+                            }
+                          />
+
+                        </td>
+
+                        {/* LAB */}
+
+                        <td>
+
+                          <input
+                            type="number"
+                            min="0"
+                            max="25"
+                            value={
+                              subject.lab
+                            }
+                            onChange={(
+                              e
+                            ) =>
+                              handleChange(
+                                index,
+                                "lab",
+                                e.target.value
+                              )
+                            }
+                          />
+
+                        </td>
+
+                        {/* TOTAL */}
+
+                        <td>
+
+                          <strong className="total-value">
+                            {
+                              total
+                            }
+                            /75
+                          </strong>
+
+                        </td>
+
+                        {/* GRADE */}
+
+                        <td>
+
+                          <span
+                            className={`faculty-grade grade-${String(
+                              subject.grade
+                            )
+                              .replace(
+                                "+",
+                                "plus"
+                              )
+                              .replace(
+                                "-",
+                                "minus"
+                              )}`}
+                          >
+                            {
+                              subject.grade
+                            }
+                          </span>
+
+                        </td>
+
+                      </tr>
                     );
-
-                  return (
-                    <tr
-                      key={
-                        subject.subject
-                      }
-                    >
-
-                      {/* SUBJECT */}
-
-                      <td className="subject-name">
-
-                        <strong>
-                          {
-                            subject.subject
-                          }
-                        </strong>
-
-                      </td>
-
-                      {/* CREDITS */}
-
-                      <td>
-
-                        <span className="credits">
-                          {
-                            subject.credits
-                          }
-                        </span>
-
-                      </td>
-
-                      {/* CIA 1 */}
-
-                      <td>
-
-                        <input
-                          type="number"
-                          min="0"
-                          max="20"
-                          value={
-                            subject.internal1
-                          }
-                          onChange={(e) =>
-                            handleChange(
-                              index,
-                              "internal1",
-                              e.target.value
-                            )
-                          }
-                        />
-
-                      </td>
-
-                      {/* CIA 2 */}
-
-                      <td>
-
-                        <input
-                          type="number"
-                          min="0"
-                          max="20"
-                          value={
-                            subject.internal2
-                          }
-                          onChange={(e) =>
-                            handleChange(
-                              index,
-                              "internal2",
-                              e.target.value
-                            )
-                          }
-                        />
-
-                      </td>
-
-                      {/* ASSIGNMENT */}
-
-                      <td>
-
-                        <input
-                          type="number"
-                          min="0"
-                          max="10"
-                          value={
-                            subject.assignment
-                          }
-                          onChange={(e) =>
-                            handleChange(
-                              index,
-                              "assignment",
-                              e.target.value
-                            )
-                          }
-                        />
-
-                      </td>
-
-                      {/* LAB */}
-
-                      <td>
-
-                        <input
-                          type="number"
-                          min="0"
-                          max="25"
-                          value={
-                            subject.lab
-                          }
-                          onChange={(e) =>
-                            handleChange(
-                              index,
-                              "lab",
-                              e.target.value
-                            )
-                          }
-                        />
-
-                      </td>
-
-                      {/* TOTAL */}
-
-                      <td>
-
-                        <strong className="total-value">
-                          {total}/75
-                        </strong>
-
-                      </td>
-
-                      {/* GRADE */}
-
-                      <td>
-
-                        <span
-                          className={`faculty-grade grade-${String(
-                            subject.grade
-                          )
-                            .replace(
-                              "+",
-                              "plus"
-                            )
-                            .replace(
-                              "-",
-                              "minus"
-                            )}`}
-                        >
-                          {
-                            subject.grade
-                          }
-                        </span>
-
-                      </td>
-
-                    </tr>
-                  );
-                }
+                  }
                 )
               )}
 
@@ -1290,10 +1581,16 @@ const FacultyMarks = () => {
             </span>
 
             <strong>
-              {totalMarks}
+              {
+                totalMarks
+              }
 
               <small>
-                /{subjects.length * 75}
+                /
+                {
+                  subjects.length *
+                  75
+                }
               </small>
             </strong>
 
@@ -1306,17 +1603,22 @@ const FacultyMarks = () => {
             </span>
 
             <strong>
-              {sgpa.toFixed(2)}
+              {
+                sgpa.toFixed(2)
+              }
             </strong>
 
           </div>
 
           <button
             className="save-marks-btn"
-            onClick={saveMarks}
+            onClick={
+              saveMarks
+            }
             disabled={
               saving ||
-              !selectedStudent
+              !selectedStudent ||
+              subjects.length === 0
             }
           >
 
