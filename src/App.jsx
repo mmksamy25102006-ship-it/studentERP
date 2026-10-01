@@ -42,6 +42,7 @@ import FacultyMarks from "./pages/faculty/FacultyMarks";
 import FacultyAssignments from "./pages/faculty/FacultyAssignments";
 import FacultyTimetable from "./pages/faculty/FacultyTimetable";
 import FacultyNotification from "./pages/faculty/FacultyNotification";
+import FacultyProfile from "./pages/FacultyProfile";
 
 // Admin
 import Department from "./pages/admin/Department";
@@ -306,6 +307,11 @@ function DashboardLayout() {
             <Route
               path="/faculty/assignments"
               element={<FacultyAssignments />}
+            />
+
+            <Route
+              path="/faculty/profile"
+              element={<FacultyProfile />}
             />
 
             {/* =========================================

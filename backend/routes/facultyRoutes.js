@@ -27,6 +27,44 @@ router.get("/", async (req, res) => {
 });
 
 // =====================================================
+// GET FACULTY BY FACULTY ID
+// =====================================================
+
+router.get("/:facultyId", async (req, res) => {
+  try {
+    const facultyId = req.params.facultyId.trim();
+
+    const faculty = await User.findOne({
+      role: "faculty",
+      facultyId: new RegExp(
+        `^${facultyId.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`,
+        "i"
+      ),
+    }).select("-password");
+
+    if (!faculty) {
+      return res.status(404).json({
+        success: false,
+        message: "Faculty not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      faculty,
+    });
+  } catch (error) {
+    console.error("Get Faculty By ID Error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch faculty",
+      error: error.message,
+    });
+  }
+});
+
+// =====================================================
 // CREATE FACULTY
 // =====================================================
 

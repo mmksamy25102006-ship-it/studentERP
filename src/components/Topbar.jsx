@@ -413,7 +413,7 @@ showProfile && (
     if (role === "admin") {
       navigate("/admin-dashboard");
     } else if (role === "faculty") {
-      navigate("/faculty-dashboard");
+      navigate("/faculty/profile");
     } else {
       navigate("/profile");
     }
