@@ -28,6 +28,7 @@ const assignmentRoutes = require("./routes/assignmentRoutes");
 const facultySubjectRoutes = require("./routes/facultySubjectRoutes");
 const feeRoutes = require("./routes/feeRoutes");
 const libraryRoutes = require("./routes/libraryRoutes");
+const requestRoutes = require("./routes/requestRoutes");
 // Initialize Express
 const app = express();
 
@@ -85,6 +86,9 @@ app.use("/api/fees", feeRoutes);
 
 // Library API
 app.use("/api/library", libraryRoutes);
+
+// Leave / Bonafide requests
+app.use("/api/requests", requestRoutes);
 // =========================
 // 404 Route
 // =========================

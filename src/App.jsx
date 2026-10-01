@@ -25,6 +25,7 @@ import Exams from "./pages/Exams";
 import Fees from "./pages/Fees";
 import Library from "./pages/Library";
 import Notices from "./pages/Notices";
+import Requests from "./pages/Requests";
 import Settings from "./pages/Settings";
 import FacultyDashboard from "./pages/FacultyDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -44,6 +45,7 @@ import FacultyTimetable from "./pages/faculty/FacultyTimetable";
 import FacultyNotification from "./pages/faculty/FacultyNotification";
 import FacultyProfile from "./pages/FacultyProfile";
 import FacultyLibrary from "./pages/faculty/FacultyLibrary";
+import FacultyRequests from "./pages/faculty/FacultyRequests";
 
 // Admin
 import Department from "./pages/admin/Department";
@@ -204,6 +206,11 @@ function DashboardLayout() {
               element={<Notices />}
             />
 
+            <Route
+              path="/requests"
+              element={<Requests />}
+            />
+
             {/* =========================================
                 SETTINGS
             ========================================= */}
@@ -318,6 +325,11 @@ function DashboardLayout() {
             <Route
               path="/faculty/library"
               element={<FacultyLibrary />}
+            />
+
+            <Route
+              path="/faculty/requests"
+              element={<FacultyRequests />}
             />
 
             {/* =========================================

@@ -21,6 +21,7 @@ import {
   FaFileAlt,
   FaChartBar,
   FaUserTie,
+  FaFileSignature,
 } from "react-icons/fa";
 
 import "./Sidebar.css";
@@ -155,6 +156,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       path: "/faculty/library",
     },
     {
+      title: "Approvals",
+      icon: <FaFileSignature />,
+      path: "/faculty/requests",
+    },
+    {
       title: "Profile",
       icon: <FaUserTie />,
       path: "/faculty/profile",
@@ -211,6 +217,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       title: "Notices",
       icon: <FaBullhorn />,
       path: "/notices",
+    },
+    {
+      title: "Leave & Bonafide",
+      icon: <FaFileSignature />,
+      path: "/requests",
     },
     {
       title: "Profile",
