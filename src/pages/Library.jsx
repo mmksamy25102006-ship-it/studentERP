@@ -23,6 +23,7 @@ import {
 } from "react-icons/fa";
 
 import API from "./../api";
+import BookCover from "./../components/BookCover";
 import { formatDate } from "./../utils/format";
 
 import "./Library.css";
@@ -575,8 +576,16 @@ const Library = () => {
                 key={issue._id}
               >
 
-                <div className="my-book-icon">
-                  <FaBookOpen />
+                <div className="my-book-cover">
+                  <BookCover
+                    title={getBookTitle(issue)}
+                    author={
+                      issue.book?.author || ""
+                    }
+                    isbn={issue.book?.isbn || ""}
+                    coverUrl={issue.book?.coverUrl}
+                    size="sm"
+                  />
                 </div>
 
                 <div className="my-book-info">
@@ -748,8 +757,20 @@ const Library = () => {
                 <tr key={bookId}>
 
                   <td className="book-title">
-                    <FaBookOpen />
-                    {book.title}
+
+                    <BookCover
+                      title={book.title}
+                      author={book.author}
+                      isbn={book.isbn}
+                      coverUrl={book.coverUrl}
+                      size="sm"
+                    />
+
+                    <div className="book-title-text">
+                      <strong>{book.title}</strong>
+                      <small>{book.isbn}</small>
+                    </div>
+
                   </td>
 
                   <td>{book.author}</td>
@@ -895,8 +916,14 @@ const Library = () => {
             </button>
 
 
-            <div className="modal-book-icon">
-              <FaBookOpen />
+            <div className="modal-book-cover">
+              <BookCover
+                title={selectedBook.title}
+                author={selectedBook.author}
+                isbn={selectedBook.isbn}
+                coverUrl={selectedBook.coverUrl}
+                size="xl"
+              />
             </div>
 
 

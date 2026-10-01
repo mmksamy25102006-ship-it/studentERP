@@ -431,11 +431,33 @@
 
     align-items: center;
 
-    gap: 10px;
+    gap: 12px;
 
     color: #172554 !important;
 
     font-weight: 600;
+}
+
+.book-title-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    min-width: 0;
+}
+
+.book-title-text strong {
+    color: #172554;
+
+    font-size: 14px;
+
+    word-break: break-word;
+}
+
+.book-title-text small {
+    color: #94a3b8;
+
+    font-size: 11px;
 }
 
 .book-title svg {
@@ -753,6 +775,15 @@
     font-size: 27px;
 }
 
+/* Book cover shown in the details modal */
+
+.modal-book-cover {
+    display: flex;
+    justify-content: center;
+
+    margin: 0 auto 20px;
+}
+
 .book-modal h2 {
     margin: 0;
 
@@ -1028,6 +1059,14 @@
 
 .dark-theme .book-title {
     color: #f1f5f9 !important;
+}
+
+.dark-theme .book-title-text strong {
+    color: #f1f5f9;
+}
+
+.dark-theme .book-title-text small {
+    color: #64748b;
 }
 
 .dark-theme .book-title svg {
@@ -1353,6 +1392,12 @@
     background: #eff6ff;
 
     font-size: 19px;
+}
+
+/* Generated / real cover inside issued book card */
+
+.my-book-cover {
+    flex-shrink: 0;
 }
 
 .my-book-card.overdue .my-book-icon {

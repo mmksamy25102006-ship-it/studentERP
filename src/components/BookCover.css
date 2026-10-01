@@ -1,0 +1,205 @@
+/* =========================================================
+   BOOK COVER
+   Generated gradient cover or real image
+   ========================================================= */
+
+.book-cover {
+    position: relative;
+
+    flex-shrink: 0;
+
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+
+    border-radius: 6px;
+
+    box-shadow:
+        0 4px 12px rgba(15, 23, 42, 0.22);
+
+    /* Keeps text readable on any gradient */
+    color: #ffffff;
+
+    /* Faint page texture */
+    background-image:
+        linear-gradient(
+            115deg,
+            rgba(255, 255, 255, 0.10) 0%,
+            transparent 45%
+        );
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.book-cover:hover {
+    transform: translateY(-2px) scale(1.03);
+
+    box-shadow:
+        0 10px 22px rgba(15, 23, 42, 0.30);
+}
+
+
+/* =========================================================
+   SPINE
+   ========================================================= */
+
+.book-cover-spine {
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+    left: 0;
+
+    width: 9%;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.32) 0%,
+            rgba(0, 0, 0, 0.10) 60%,
+            rgba(255, 255, 255, 0.12) 100%
+        );
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   TEXT
+   ========================================================= */
+
+.book-cover-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    gap: 4px;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 8% 9% 8% 15%;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+}
+
+.book-cover-title {
+    font-weight: 700;
+
+    line-height: 1.25;
+
+    /* Clamp to 3 lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+.book-cover-author {
+    opacity: 0.82;
+
+    line-height: 1.3;
+
+    /* Clamp to 2 lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   SIZES
+   3:4 book proportion
+   ========================================================= */
+
+.book-cover.xs {
+    width: 32px;
+    height: 43px;
+
+    border-radius: 4px;
+}
+
+.book-cover.sm {
+    width: 42px;
+    height: 56px;
+}
+
+.book-cover.md {
+    width: 58px;
+    height: 78px;
+}
+
+.book-cover.lg {
+    width: 96px;
+    height: 128px;
+}
+
+.book-cover.xl {
+    width: 132px;
+    height: 176px;
+}
+
+
+/* Font scaling per size */
+
+.book-cover.xs .book-cover-title {
+    font-size: 6px;
+}
+
+.book-cover.xs .book-cover-author {
+    font-size: 5px;
+}
+
+.book-cover.sm .book-cover-title {
+    font-size: 8px;
+}
+
+.book-cover.sm .book-cover-author {
+    font-size: 6.5px;
+}
+
+.book-cover.md .book-cover-title {
+    font-size: 10px;
+}
+
+.book-cover.md .book-cover-author {
+    font-size: 8px;
+}
+
+.book-cover.lg .book-cover-title {
+    font-size: 15px;
+}
+
+.book-cover.lg .book-cover-author {
+    font-size: 12px;
+}
+
+.book-cover.xl .book-cover-title {
+    font-size: 20px;
+}
+
+.book-cover.xl .book-cover-author {
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   REAL IMAGE
+   ========================================================= */
+
+.book-cover img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}

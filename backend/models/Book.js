@@ -39,6 +39,14 @@ const bookSchema = new mongoose.Schema(
       default: "",
     },
 
+    // Optional real cover image.
+    // Leave empty to use the generated gradient cover.
+    coverUrl: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+
     totalCopies: {
       type: Number,
       required: true,

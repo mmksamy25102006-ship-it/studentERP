@@ -26,6 +26,7 @@ import {
 } from "react-icons/fa";
 
 import API from "./../../api";
+import BookCover from "./../../components/BookCover";
 import { formatDate } from "./../../utils/format";
 
 import "./FacultyLibrary.css";
@@ -37,6 +38,7 @@ const EMPTY_BOOK = {
   isbn: "",
   publisher: "",
   shelf: "",
+  coverUrl: "",
   totalCopies: 1,
   finePerDay: 10,
   description: "",
@@ -348,6 +350,7 @@ const FacultyLibrary = () => {
       isbn: book.isbn || "",
       publisher: book.publisher || "",
       shelf: book.shelf || "",
+      coverUrl: book.coverUrl || "",
       totalCopies: book.totalCopies || 1,
       finePerDay: book.finePerDay || 0,
       description: book.description || "",
@@ -405,6 +408,7 @@ const FacultyLibrary = () => {
         isbn: bookForm.isbn.trim(),
         publisher: bookForm.publisher.trim(),
         shelf: bookForm.shelf.trim(),
+        coverUrl: bookForm.coverUrl.trim(),
         totalCopies: Number(bookForm.totalCopies),
         finePerDay: Number(bookForm.finePerDay) || 0,
         description: bookForm.description.trim(),
@@ -624,7 +628,18 @@ const FacultyLibrary = () => {
                   className="fl-reservation-card"
                   key={item._id}
                 >
-                  <div>
+                  <BookCover
+                    title={
+                      item.book?.title ||
+                      item.bookTitle
+                    }
+                    author={item.book?.author || ""}
+                    isbn={item.book?.isbn || ""}
+                    coverUrl={item.book?.coverUrl}
+                    size="sm"
+                  />
+
+                  <div className="fl-res-text">
                     <strong>
                       {item.book?.title ||
                         item.bookTitle}
@@ -745,8 +760,16 @@ const FacultyLibrary = () => {
                   <tr key={book._id}>
 
                     <td className="fl-book-title">
-                      <FaBookOpen />
-                      <div>
+
+                      <BookCover
+                        title={book.title}
+                        author={book.author}
+                        isbn={book.isbn}
+                        coverUrl={book.coverUrl}
+                        size="sm"
+                      />
+
+                      <div className="fl-book-text">
                         <strong>{book.title}</strong>
 
                         <small>
@@ -898,8 +921,19 @@ const FacultyLibrary = () => {
                   <tr key={issue._id}>
 
                     <td className="fl-book-title">
-                      <FaBookOpen />
-                      <div>
+
+                      <BookCover
+                        title={
+                          issue.book?.title ||
+                          issue.bookTitle
+                        }
+                        author={issue.book?.author || ""}
+                        isbn={issue.book?.isbn || ""}
+                        coverUrl={issue.book?.coverUrl}
+                        size="sm"
+                      />
+
+                      <div className="fl-book-text">
                         <strong>
                           {issue.book?.title ||
                             issue.bookTitle}
@@ -1023,6 +1057,16 @@ const FacultyLibrary = () => {
               <FaUserPlus />
             </div>
 
+            <div className="fl-modal-cover">
+              <BookCover
+                title={issueModal.title}
+                author={issueModal.author}
+                isbn={issueModal.isbn}
+                coverUrl={issueModal.coverUrl}
+                size="lg"
+              />
+            </div>
+
             <h2>Issue Book</h2>
 
             <p className="fl-modal-sub">
@@ -1132,6 +1176,16 @@ const FacultyLibrary = () => {
                 ? "Edit Book"
                 : "Add New Book"}
             </h2>
+
+            <div className="fl-modal-cover">
+              <BookCover
+                title={bookForm.title}
+                author={bookForm.author}
+                isbn={bookForm.isbn}
+                coverUrl={bookForm.coverUrl}
+                size="lg"
+              />
+            </div>
 
             <form onSubmit={handleSaveBook}>
 
@@ -1284,6 +1338,24 @@ const FacultyLibrary = () => {
                       setBookForm((prev) => ({
                         ...prev,
                         finePerDay: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+
+                <div className="fl-field span2">
+                  <label>
+                    Cover Image URL (optional)
+                  </label>
+
+                  <input
+                    type="url"
+                    placeholder="https://... leave empty for a generated cover"
+                    value={bookForm.coverUrl}
+                    onChange={(e) =>
+                      setBookForm((prev) => ({
+                        ...prev,
+                        coverUrl: e.target.value,
                       }))
                     }
                   />

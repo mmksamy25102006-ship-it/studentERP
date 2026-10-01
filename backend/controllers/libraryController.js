@@ -141,6 +141,7 @@ const createBook = async (req, res) => {
       isbn,
       publisher,
       shelf,
+      coverUrl,
       totalCopies,
       finePerDay,
       description,
@@ -181,6 +182,7 @@ const createBook = async (req, res) => {
       isbn: String(isbn).trim(),
       publisher: publisher || "",
       shelf: shelf || "",
+      coverUrl: coverUrl || "",
       totalCopies: copies,
       availableCopies: copies,
       finePerDay: Number(finePerDay) || 0,
@@ -213,6 +215,7 @@ const updateBook = async (req, res) => {
       isbn,
       publisher,
       shelf,
+      coverUrl,
       totalCopies,
       finePerDay,
       description,
@@ -262,6 +265,10 @@ const updateBook = async (req, res) => {
 
     if (shelf !== undefined) {
       book.shelf = shelf;
+    }
+
+    if (coverUrl !== undefined) {
+      book.coverUrl = coverUrl.trim();
     }
 
     if (description !== undefined) {

@@ -329,11 +329,12 @@
     background: #faf5ff;
 }
 
-.fl-reservation-card > div {
+.fl-res-text {
     display: flex;
     flex-direction: column;
     gap: 4px;
 
+    flex: 1;
     min-width: 0;
 }
 
@@ -638,7 +639,7 @@
 .fl-book-title {
     display: flex;
     align-items: center;
-    gap: 11px;
+    gap: 12px;
 }
 
 .fl-book-title > svg {
@@ -647,7 +648,9 @@
     color: #0d9488;
 }
 
-.fl-book-title > div {
+/* Text block next to the cover */
+
+.fl-book-text {
     display: flex;
     flex-direction: column;
     gap: 3px;
@@ -1030,6 +1033,15 @@
     background: #f0fdfa;
 
     font-size: 25px;
+}
+
+/* Live cover preview inside modals */
+
+.fl-modal-cover {
+    display: flex;
+    justify-content: center;
+
+    margin: 16px 0 20px;
 }
 
 .fl-modal h2 {
