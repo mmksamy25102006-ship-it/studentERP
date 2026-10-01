@@ -27,6 +27,7 @@ const attendanceRoutes = require("./routes/attendanceRoutes");
 const assignmentRoutes = require("./routes/assignmentRoutes");
 const facultySubjectRoutes = require("./routes/facultySubjectRoutes");
 const feeRoutes = require("./routes/feeRoutes");
+const libraryRoutes = require("./routes/libraryRoutes");
 // Initialize Express
 const app = express();
 
@@ -81,6 +82,9 @@ app.use("/api/attendance", attendanceRoutes);
 app.use("/api/assignments", assignmentRoutes);
 app.use("/api/faculty-subjects", facultySubjectRoutes);
 app.use("/api/fees", feeRoutes);
+
+// Library API
+app.use("/api/library", libraryRoutes);
 // =========================
 // 404 Route
 // =========================

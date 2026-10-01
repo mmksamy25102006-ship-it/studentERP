@@ -1107,8 +1107,630 @@
 
 
 /* =========================================================
+   LOADING + NOTICES
+   ========================================================= */
+
+.library-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    min-height: 300px;
+
+    color: #64748b;
+
+    font-size: 16px;
+}
+
+.spin {
+    animation: librarySpin 1s linear infinite;
+}
+
+@keyframes librarySpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.library-notice {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 20px;
+
+    padding: 13px 17px;
+
+    border-radius: 12px;
+
+    color: #15803d;
+
+    background: #f0fdf4;
+
+    border: 1px solid #bbf7d0;
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.library-notice.warning {
+    color: #b45309;
+
+    background: #fffbeb;
+
+    border-color: #fde68a;
+}
+
+
+/* =========================================================
+   MY ISSUED BOOKS
+   ========================================================= */
+
+.my-books-section {
+    margin-bottom: 25px;
+
+    padding: 24px;
+
+    background: rgba(255, 255, 255, 0.88);
+
+    border: 1px solid rgba(148, 163, 184, 0.18);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.my-books-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    flex-wrap: wrap;
+    gap: 15px;
+
+    margin-bottom: 20px;
+
+    padding-bottom: 18px;
+
+    border-bottom: 1px solid #e8edf5;
+}
+
+.my-books-title {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.my-books-title > svg {
+    width: 40px;
+    height: 40px;
+
+    padding: 9px;
+
+    box-sizing: content-box;
+
+    border-radius: 12px;
+
+    color: #2563eb;
+
+    background: rgba(37, 99, 235, 0.10);
+}
+
+.my-books-title h2 {
+    margin: 0;
+
+    color: #172554;
+
+    font-size: 20px;
+}
+
+.my-books-title p {
+    margin: 3px 0 0;
+
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+.my-books-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.summary-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 7px 13px;
+
+    border-radius: 999px;
+
+    color: #475569;
+
+    background: #f1f5f9;
+
+    border: 1px solid #e2e8f0;
+
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.summary-chip.overdue {
+    color: #b91c1c;
+
+    background: #fef2f2;
+
+    border-color: #fecaca;
+}
+
+.summary-chip.fine {
+    color: #b45309;
+
+    background: #fffbeb;
+
+    border-color: #fde68a;
+}
+
+
+/* Empty state */
+
+.my-books-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    padding: 35px 20px;
+
+    color: #64748b;
+
+    font-size: 15px;
+}
+
+.my-books-empty svg {
+    color: #16a34a;
+
+    font-size: 20px;
+}
+
+
+/* Issued book cards */
+
+.my-books-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.my-book-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    padding: 17px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+
+    background: #f8fafc;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.my-book-card:hover {
+    transform: translateY(-2px);
+
+    border-color: #bfdbfe;
+}
+
+.my-book-card.overdue {
+    background: #fef2f2;
+
+    border-color: #fecaca;
+}
+
+.my-book-icon {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 12px;
+
+    color: #2563eb;
+
+    background: #eff6ff;
+
+    font-size: 19px;
+}
+
+.my-book-card.overdue .my-book-icon {
+    color: #dc2626;
+
+    background: #fee2e2;
+}
+
+.my-book-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    min-width: 0;
+    flex: 1;
+}
+
+.my-book-info strong {
+    color: #172554;
+
+    font-size: 15px;
+
+    word-break: break-word;
+}
+
+.my-book-info span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+.my-book-status {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 7px;
+
+    flex-shrink: 0;
+}
+
+.overdue-badge,
+.with-you-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 6px 11px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.overdue-badge {
+    color: #b91c1c;
+
+    background: #fee2e2;
+
+    border: 1px solid #fecaca;
+}
+
+.with-you-badge {
+    color: #15803d;
+
+    background: #dcfce7;
+
+    border: 1px solid #bbf7d0;
+}
+
+.my-book-fine {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+
+    color: #b45309;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+/* Reservations */
+
+.my-reservations {
+    margin-top: 22px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #e8edf5;
+}
+
+.my-reservations h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin: 0 0 14px;
+
+    color: #172554;
+
+    font-size: 16px;
+}
+
+.my-reservation-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 15px;
+
+    margin-bottom: 10px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+
+    background: #fafbfc;
+
+    color: #334155;
+
+    font-size: 14px;
+}
+
+.my-reservation-row > span:first-child {
+    flex: 1;
+    min-width: 0;
+
+    font-weight: 600;
+
+    word-break: break-word;
+}
+
+.pending-badge {
+    padding: 5px 11px;
+
+    border-radius: 999px;
+
+    color: #6d28d9;
+
+    background: #f5f3ff;
+
+    border: 1px solid #ddd6fe;
+
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.cancel-reserve-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    min-height: 32px;
+
+    padding: 0 12px;
+
+    border: 1px solid #fecaca;
+    border-radius: 9px;
+
+    color: #dc2626;
+
+    background: #fef2f2;
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.cancel-reserve-btn:hover {
+    color: #ffffff;
+
+    background: #dc2626;
+}
+
+
+/* =========================================================
+   DARK THEME - NEW SECTIONS
+   ========================================================= */
+
+.dark-theme .library-status,
+.dark-theme .library-notice {
+    color: #94a3b8;
+}
+
+.dark-theme .library-notice {
+    color: #4ade80;
+
+    background: rgba(34, 197, 94, 0.10);
+
+    border-color: rgba(34, 197, 94, 0.25);
+}
+
+.dark-theme .library-notice.warning {
+    color: #fbbf24;
+
+    background: rgba(245, 158, 11, 0.10);
+
+    border-color: rgba(245, 158, 11, 0.25);
+}
+
+.dark-theme .my-books-section {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(30, 41, 59, 0.82),
+            rgba(15, 30, 48, 0.78)
+        );
+
+    border-color: rgba(148, 163, 184, 0.14);
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.30);
+}
+
+.dark-theme .my-books-header {
+    border-bottom-color: rgba(148, 163, 184, 0.14);
+}
+
+.dark-theme .my-books-title > svg {
+    color: #60a5fa;
+
+    background: rgba(59, 130, 246, 0.12);
+}
+
+.dark-theme .my-books-title h2,
+.dark-theme .my-reservations h3 {
+    color: #f8fafc;
+}
+
+.dark-theme .my-books-title p,
+.dark-theme .my-books-empty {
+    color: #94a3b8;
+}
+
+.dark-theme .summary-chip {
+    color: #cbd5e1;
+
+    background: rgba(30, 41, 59, 0.6);
+
+    border-color: rgba(148, 163, 184, 0.18);
+}
+
+.dark-theme .summary-chip.overdue {
+    color: #fca5a5;
+
+    background: rgba(239, 68, 68, 0.12);
+
+    border-color: rgba(239, 68, 68, 0.25);
+}
+
+.dark-theme .summary-chip.fine {
+    color: #fcd34d;
+
+    background: rgba(245, 158, 11, 0.12);
+
+    border-color: rgba(245, 158, 11, 0.25);
+}
+
+.dark-theme .my-book-card {
+    background: rgba(30, 41, 59, 0.5);
+
+    border-color: rgba(148, 163, 184, 0.14);
+}
+
+.dark-theme .my-book-card:hover {
+    border-color: rgba(96, 165, 250, 0.35);
+}
+
+.dark-theme .my-book-card.overdue {
+    background: rgba(239, 68, 68, 0.08);
+
+    border-color: rgba(239, 68, 68, 0.25);
+}
+
+.dark-theme .my-book-icon {
+    color: #60a5fa;
+
+    background: rgba(59, 130, 246, 0.12);
+}
+
+.dark-theme .my-book-card.overdue .my-book-icon {
+    color: #f87171;
+
+    background: rgba(239, 68, 68, 0.15);
+}
+
+.dark-theme .my-book-info strong {
+    color: #f1f5f9;
+}
+
+.dark-theme .my-book-info span {
+    color: #94a3b8;
+}
+
+.dark-theme .my-book-fine {
+    color: #fcd34d;
+}
+
+.dark-theme .my-reservations {
+    border-top-color: rgba(148, 163, 184, 0.14);
+}
+
+.dark-theme .my-reservation-row {
+    color: #e2e8f0;
+
+    background: rgba(30, 41, 59, 0.5);
+
+    border-color: rgba(148, 163, 184, 0.14);
+}
+
+.dark-theme .pending-badge {
+    color: #c4b5fd;
+
+    background: rgba(124, 58, 237, 0.15);
+
+    border-color: rgba(167, 139, 250, 0.25);
+}
+
+.dark-theme .cancel-reserve-btn {
+    color: #fca5a5;
+
+    background: rgba(239, 68, 68, 0.12);
+
+    border-color: rgba(239, 68, 68, 0.25);
+}
+
+
+/* =========================================================
+   RESPONSIVE - NEW SECTIONS
+   ========================================================= */
+
+@media (max-width: 992px) {
+
+    .my-books-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .my-books-section {
+        padding: 18px;
+    }
+
+    .my-books-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .my-book-card {
+        flex-wrap: wrap;
+    }
+
+    .my-book-status {
+        flex-direction: row;
+        align-items: center;
+
+        width: 100%;
+
+        justify-content: flex-end;
+    }
+}
+
+
+/* =========================================================
    TABLET
-========================================================= */
+   ========================================================= */
 
 @media (max-width: 992px) {
 

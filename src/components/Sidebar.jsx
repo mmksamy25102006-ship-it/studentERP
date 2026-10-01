@@ -150,6 +150,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       path: "/faculty/notices",
     },
     {
+      title: "Library",
+      icon: <FaBook />,
+      path: "/faculty/library",
+    },
+    {
       title: "Profile",
       icon: <FaUserTie />,
       path: "/faculty/profile",
