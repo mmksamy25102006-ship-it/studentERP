@@ -20,6 +20,9 @@ const router = express.Router();
 router.get("/stats", getRequestStats);
 router.get("/student/:studentId", getStudentRequests);
 
+// Faculty views all requests
+router.get("/", getRequests);
+
 // Student applies
 router.post("/", createRequest);
 
