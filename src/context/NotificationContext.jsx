@@ -1,8 +1,11 @@
 import React, {
   createContext,
+  useContext,
   useEffect,
   useState,
 } from "react";
+
+import { useAuth } from "./AuthContext";
 
 import API from "./../api";
 
@@ -27,6 +30,8 @@ const API_URL = "https://studenterp-5wuj.onrender.com/api/notifications";
 
 export const NotificationProvider = ({ children }) => {
 
+  const { isAuthenticated } = useAuth();
+
   const [notifications, setNotifications] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -46,10 +51,15 @@ export const NotificationProvider = ({ children }) => {
 
     } catch (error) {
 
-      console.error(
-        "Failed to fetch notifications:",
-        error
-      );
+      // A 401 before login (the login page has no token)
+      // is expected and not something to log. Everything
+      // else is a real failure.
+      if (error.response?.status !== 401) {
+        console.error(
+          "Failed to fetch notifications:",
+          error
+        );
+      }
 
     } finally {
 
@@ -66,6 +76,15 @@ export const NotificationProvider = ({ children }) => {
 
   useEffect(() => {
 
+    // The provider wraps the login page, which has no
+    // token, so the notifications endpoint would answer
+    // 401 and spam the console every 30 seconds. Only
+    // poll while someone is signed in.
+    if (!isAuthenticated) {
+      setLoading(false);
+      return;
+    }
+
     // Fetch immediately
     fetchNotifications();
 
@@ -81,7 +100,7 @@ export const NotificationProvider = ({ children }) => {
     // Cleanup interval
     return () => clearInterval(interval);
 
-  }, []);
+  }, [isAuthenticated]);
 
 
   // ========================================
