@@ -4,7 +4,7 @@ import React, {
   useState,
 } from "react";
 
-import axios from "axios";
+import API from "./../api";
 
 
 // ========================================
@@ -40,7 +40,7 @@ export const NotificationProvider = ({ children }) => {
 
     try {
 
-      const response = await axios.get(API_URL);
+      const response = await API.get("/notifications");
 
       setNotifications(response.data);
 
@@ -92,8 +92,8 @@ export const NotificationProvider = ({ children }) => {
 
     try {
 
-      const response = await axios.post(
-        API_URL,
+      const response = await API.post(
+        "/notifications",
         {
           ...notification,
           read: false,
@@ -128,8 +128,8 @@ export const NotificationProvider = ({ children }) => {
 
     try {
 
-      const response = await axios.put(
-        `${API_URL}/${id}/read`
+      const response = await API.put(
+        `/notifications/${id}/read`
       );
 
 
@@ -162,8 +162,8 @@ export const NotificationProvider = ({ children }) => {
 
     try {
 
-      await axios.put(
-        `${API_URL}/read-all`
+      await API.put(
+        "/notifications/read-all"
       );
 
 
