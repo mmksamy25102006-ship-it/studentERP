@@ -20,6 +20,14 @@ const NotificationSchema = new mongoose.Schema(
       trim: true,
     },
 
+    // Faculty / admin ID that created the notice. Used to
+    // let a sender list and manage only their own posts.
+    facultyId: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
     // Notification type
     type: {
       type: String,

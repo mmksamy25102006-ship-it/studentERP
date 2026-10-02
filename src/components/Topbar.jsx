@@ -325,7 +325,13 @@ fullscreen
 
 className="icon-btn notification-btn"
 
-onClick={()=>navigate("/notices")}
+onClick={()=>{
+  const role = (user?.role || "").toLowerCase();
+
+  navigate(
+    role === "faculty" ? "/faculty/notices" : "/notices"
+  );
+}}
 
 >
 
