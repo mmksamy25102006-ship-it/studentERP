@@ -3,12 +3,22 @@ const router = express.Router();
 
 const Notification = require("../models/Notification");
 
+const {
+  verifyToken,
+  isFacultyOrAdmin,
+} = require("../middleware/authMiddleware");
+
 
 // ========================================
 // CREATE NOTIFICATION
+// Only faculty and admin may post a notice.
 // ========================================
 
-router.post("/", async (req, res) => {
+router.post(
+  "/",
+  verifyToken,
+  isFacultyOrAdmin,
+  async (req, res) => {
   try {
 
     const notification = await Notification.create({
@@ -32,7 +42,10 @@ router.post("/", async (req, res) => {
 // GET ALL NOTIFICATIONS
 // ========================================
 
-router.get("/", async (req, res) => {
+router.get(
+  "/",
+  verifyToken,
+  async (req, res) => {
   try {
 
     const notifications = await Notification.find()
@@ -54,7 +67,10 @@ router.get("/", async (req, res) => {
 // GET UNREAD NOTIFICATION COUNT
 // ========================================
 
-router.get("/unread-count", async (req, res) => {
+router.get(
+  "/unread-count",
+  verifyToken,
+  async (req, res) => {
   try {
 
     const count = await Notification.countDocuments({
@@ -79,7 +95,10 @@ router.get("/unread-count", async (req, res) => {
 // MARK ONE NOTIFICATION AS READ
 // ========================================
 
-router.put("/:id/read", async (req, res) => {
+router.put(
+  "/:id/read",
+  verifyToken,
+  async (req, res) => {
   try {
 
     const notification =
@@ -117,7 +136,10 @@ router.put("/:id/read", async (req, res) => {
 // MARK ALL NOTIFICATIONS AS READ
 // ========================================
 
-router.put("/read-all", async (req, res) => {
+router.put(
+  "/read-all",
+  verifyToken,
+  async (req, res) => {
   try {
 
     await Notification.updateMany(

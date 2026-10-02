@@ -4,11 +4,21 @@ const router = express.Router();
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 
+const {
+  verifyToken,
+  isAdmin,
+  isFacultyOrAdmin,
+} = require("../middleware/authMiddleware");
+
 // =====================================================
 // GET ALL FACULTY
 // =====================================================
 
-router.get("/", async (req, res) => {
+router.get(
+  "/",
+  verifyToken,
+  isFacultyOrAdmin,
+  async (req, res) => {
   try {
     const faculty = await User.find({ role: "faculty" })
       .select("-password")
@@ -30,7 +40,11 @@ router.get("/", async (req, res) => {
 // GET FACULTY BY FACULTY ID
 // =====================================================
 
-router.get("/:facultyId", async (req, res) => {
+router.get(
+  "/:facultyId",
+  verifyToken,
+  isFacultyOrAdmin,
+  async (req, res) => {
   try {
     const facultyId = req.params.facultyId.trim();
 
@@ -68,7 +82,11 @@ router.get("/:facultyId", async (req, res) => {
 // CREATE FACULTY
 // =====================================================
 
-router.post("/", async (req, res) => {
+router.post(
+  "/",
+  verifyToken,
+  isAdmin,
+  async (req, res) => {
   try {
     const {
       name,
@@ -166,7 +184,11 @@ const facultyPassword = password || "Faculty@123";
 // UPDATE FACULTY
 // =====================================================
 
-router.put("/:id", async (req, res) => {
+router.put(
+  "/:id",
+  verifyToken,
+  isAdmin,
+  async (req, res) => {
   try {
     const {
       name,
@@ -303,7 +325,11 @@ router.put("/:id", async (req, res) => {
 // DELETE FACULTY
 // =====================================================
 
-router.delete("/:id", async (req, res) => {
+router.delete(
+  "/:id",
+  verifyToken,
+  isAdmin,
+  async (req, res) => {
   try {
     const faculty = await User.findOne({
       _id: req.params.id,

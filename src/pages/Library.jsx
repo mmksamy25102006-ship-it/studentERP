@@ -344,9 +344,10 @@ const Library = () => {
     }
 
     try {
+      // The server reads the student ID from the login
+      // token, so a body studentId is not sent.
       const response = await API.post("/library/reserve", {
         bookId: book._id || book.id,
-        studentId,
       });
 
       setReservations((prev) => [

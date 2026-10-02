@@ -3,12 +3,22 @@ const router = express.Router();
 
 const FacultySubject = require("../models/FacultySubject");
 
+const {
+  verifyToken,
+  isFacultyOrAdmin,
+  ownsFaculty,
+} = require("../middleware/authMiddleware");
+
 // ======================================================
 // GET SUBJECTS ASSIGNED TO A FACULTY
 // GET /api/faculty-subjects/faculty/:facultyId
 // ======================================================
 
-router.get("/faculty/:facultyId", async (req, res) => {
+router.get(
+  "/faculty/:facultyId",
+  verifyToken,
+  ownsFaculty("facultyId"),
+  async (req, res) => {
   try {
     const { facultyId } = req.params;
     const { semester } = req.query;
@@ -48,7 +58,11 @@ router.get("/faculty/:facultyId", async (req, res) => {
 // GET /api/faculty-subjects
 // ======================================================
 
-router.get("/", async (req, res) => {
+router.get(
+  "/",
+  verifyToken,
+  isFacultyOrAdmin,
+  async (req, res) => {
   try {
     const assignments = await FacultySubject.find().sort({
       facultyId: 1,
@@ -77,7 +91,11 @@ router.get("/", async (req, res) => {
 // POST /api/faculty-subjects
 // ======================================================
 
-router.post("/", async (req, res) => {
+router.post(
+  "/",
+  verifyToken,
+  isFacultyOrAdmin,
+  async (req, res) => {
   try {
     const {
       facultyId,
@@ -136,7 +154,11 @@ router.post("/", async (req, res) => {
 // DELETE /api/faculty-subjects/:id
 // ======================================================
 
-router.delete("/:id", async (req, res) => {
+router.delete(
+  "/:id",
+  verifyToken,
+  isFacultyOrAdmin,
+  async (req, res) => {
   try {
     const deleted = await FacultySubject.findByIdAndDelete(
       req.params.id

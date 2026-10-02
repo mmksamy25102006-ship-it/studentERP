@@ -8,6 +8,8 @@ const FacultySubject = require("../models/FacultySubject");
 const {
   verifyToken,
   isFaculty,
+  isFacultyOrAdmin,
+  ownsStudent,
 } = require("../middleware/authMiddleware");
 
 // ======================================================
@@ -39,7 +41,11 @@ const normalizeSubject = (value) => {
 // GET /api/marks
 // ======================================================
 
-router.get("/", async (req, res) => {
+router.get(
+  "/",
+  verifyToken,
+  isFacultyOrAdmin,
+  async (req, res) => {
   try {
     const marks = await Mark.find().sort({
       rollNo: 1,
@@ -66,7 +72,11 @@ router.get("/", async (req, res) => {
 // Returns latest updated semester.
 // ======================================================
 
-router.get("/student/:rollNo", async (req, res) => {
+router.get(
+  "/student/:rollNo",
+  verifyToken,
+  ownsStudent("rollNo"),
+  async (req, res) => {
   try {
     const { rollNo } = req.params;
 
@@ -100,7 +110,11 @@ router.get("/student/:rollNo", async (req, res) => {
 // GET /api/marks/student/:rollNo/semesters
 // ======================================================
 
-router.get("/student/:rollNo/semesters", async (req, res) => {
+router.get(
+  "/student/:rollNo/semesters",
+  verifyToken,
+  ownsStudent("rollNo"),
+  async (req, res) => {
   try {
     const { rollNo } = req.params;
 
@@ -524,7 +538,11 @@ router.put(
 // Deletes all semester records for that student.
 // ======================================================
 
-router.delete("/:rollNo", async (req, res) => {
+router.delete(
+  "/:rollNo",
+  verifyToken,
+  isFaculty,
+  async (req, res) => {
   try {
     const { rollNo } = req.params;
 

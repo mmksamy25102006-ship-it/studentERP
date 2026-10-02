@@ -2,8 +2,19 @@ const express = require("express");
 const router = express.Router();
 const Student = require("../models/Student");
 
+const {
+  verifyToken,
+  isAdmin,
+  isFacultyOrAdmin,
+  ownsStudent,
+} = require("../middleware/authMiddleware");
+
 // GET ALL STUDENTS
-router.get("/", async (req, res) => {
+router.get(
+  "/",
+  verifyToken,
+  isFacultyOrAdmin,
+  async (req, res) => {
   try {
     const students = await Student.find().sort({ createdAt: -1 });
 
@@ -23,7 +34,11 @@ router.get("/", async (req, res) => {
 
 
 // GET ONE STUDENT BY STUDENT ID
-router.get("/:studentId", async (req, res) => {
+router.get(
+  "/:studentId",
+  verifyToken,
+  ownsStudent("studentId"),
+  async (req, res) => {
   try {
     const studentId =
       req.params.studentId.trim().toUpperCase();
@@ -54,7 +69,11 @@ router.get("/:studentId", async (req, res) => {
   }
 });
 // ADD STUDENT
-router.post("/", async (req, res) => {
+router.post(
+  "/",
+  verifyToken,
+  isAdmin,
+  async (req, res) => {
   try {
     console.log("POST /api/students");
     console.log("Received data:", req.body);
@@ -146,7 +165,11 @@ router.post("/", async (req, res) => {
 });
 
 // UPDATE STUDENT
-router.put("/:id", async (req, res) => {
+router.put(
+  "/:id",
+  verifyToken,
+  isAdmin,
+  async (req, res) => {
   try {
     const student = await Student.findById(req.params.id);
 
@@ -193,7 +216,11 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE STUDENT
-router.delete("/:id", async (req, res) => {
+router.delete(
+  "/:id",
+  verifyToken,
+  isAdmin,
+  async (req, res) => {
   try {
     const student = await Student.findByIdAndDelete(req.params.id);
 

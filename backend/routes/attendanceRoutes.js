@@ -8,13 +8,34 @@ const {
 
 const router = express.Router();
 
+const {
+  verifyToken,
+  isFacultyOrAdmin,
+  ownsStudent,
+} = require("../middleware/authMiddleware");
+
 // GET all attendance
-router.get("/", getAllAttendance);
+router.get(
+  "/",
+  verifyToken,
+  isFacultyOrAdmin,
+  getAllAttendance
+);
 
 // GET attendance for a specific student
-router.get("/student/:studentId", getStudentAttendance);
+router.get(
+  "/student/:studentId",
+  verifyToken,
+  ownsStudent("studentId"),
+  getStudentAttendance
+);
 
 // CREATE / UPDATE attendance
-router.post("/", createAttendance);
+router.post(
+  "/",
+  verifyToken,
+  isFacultyOrAdmin,
+  createAttendance
+);
 
 module.exports = router;

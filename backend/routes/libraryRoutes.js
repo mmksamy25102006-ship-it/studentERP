@@ -18,35 +18,87 @@ const {
 
 const router = express.Router();
 
+const {
+  verifyToken,
+  isFacultyOrAdmin,
+  ownsStudent,
+} = require("../middleware/authMiddleware");
+
 // =====================================================
 // STATIC / NESTED ROUTES
 // Must be registered before "/:id" so they are not
 // swallowed by the single segment parameter route.
 // =====================================================
 
-router.get("/categories", getCategories);
-router.get("/issues/all", getIssues);
-router.get("/issues/student/:studentId", getStudentIssues);
-router.get("/reservations", getReservations);
+router.get(
+  "/categories",
+  verifyToken,
+  getCategories
+);
 
-router.post("/issue", issueBook);
-router.post("/return", returnBook);
-router.post("/reserve", reserveBook);
+router.get(
+  "/issues/all",
+  verifyToken,
+  isFacultyOrAdmin,
+  getIssues
+);
+
+router.get(
+  "/issues/student/:studentId",
+  verifyToken,
+  ownsStudent("studentId"),
+  getStudentIssues
+);
+
+router.get(
+  "/reservations",
+  verifyToken,
+  getReservations
+);
+
+router.post(
+  "/issue",
+  verifyToken,
+  isFacultyOrAdmin,
+  issueBook
+);
+
+router.post(
+  "/return",
+  verifyToken,
+  isFacultyOrAdmin,
+  returnBook
+);
+
+router.post(
+  "/reserve",
+  verifyToken,
+  reserveBook
+);
 
 router.delete(
   "/reserve/:bookId/student/:studentId",
+  verifyToken,
+  ownsStudent("studentId"),
   cancelReservation
 );
 
 // =====================================================
 // BOOKS
+// Any signed-in user can browse the catalogue.
+// Faculty and admin manage the catalogue itself.
 // =====================================================
 
-router.get("/", getBooks);
-router.get("/:id", getBookById);
+router.get("/", verifyToken, getBooks);
+router.get("/:id", verifyToken, getBookById);
 
-router.post("/", createBook);
-router.put("/:id", updateBook);
-router.delete("/:id", deleteBook);
+router.post("/", verifyToken, isFacultyOrAdmin, createBook);
+router.put("/:id", verifyToken, isFacultyOrAdmin, updateBook);
+router.delete(
+  "/:id",
+  verifyToken,
+  isFacultyOrAdmin,
+  deleteBook
+);
 
 module.exports = router;

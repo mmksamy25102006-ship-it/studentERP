@@ -601,18 +601,33 @@ const getStudentIssues = async (req, res) => {
 // RESERVE A BOOK
 const reserveBook = async (req, res) => {
   try {
-    const { bookId, studentId, studentName } = req.body;
+    const { bookId } = req.body;
 
-    if (!bookId || !studentId) {
+    // Reserving is a student action, so the student ID
+    // comes from the token. A body studentId is ignored
+    // so nobody can reserve a book on someone else's behalf.
+    const cleanStudentId = String(
+      req.user?.studentId || ""
+    )
+      .trim()
+      .toUpperCase();
+
+    if (!bookId) {
       return res.status(400).json({
         success: false,
-        message: "Book and student ID are required",
+        message: "Book is required",
       });
     }
 
-    const cleanStudentId = String(studentId)
-      .trim()
-      .toUpperCase();
+    if (!cleanStudentId) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "Only a student with a student ID can reserve a book",
+      });
+    }
+
+    const studentName = req.user?.name || "";
 
     const book = await Book.findById(bookId);
 
@@ -714,7 +729,7 @@ const cancelReservation = async (req, res) => {
 // GET RESERVATIONS
 const getReservations = async (req, res) => {
   try {
-    const { status, studentId } = req.query;
+    const { status } = req.query;
 
     const filter = {};
 
@@ -722,8 +737,29 @@ const getReservations = async (req, res) => {
       filter.status = status;
     }
 
-    if (studentId) {
-      filter.studentId = String(studentId)
+    // Faculty and admin may look at any student. A
+    // student is always pinned to their own ID from
+    // the token, whatever the query string asks for.
+    if (req.user.role === "student") {
+      const ownId = String(
+        req.user.studentId || ""
+      )
+        .trim()
+        .toUpperCase();
+
+      if (!ownId) {
+        return res.status(403).json({
+          success: false,
+          message:
+            "Your account has no student ID. Contact the admin.",
+        });
+      }
+
+      filter.studentId = ownId;
+    } else if (req.query.studentId) {
+      filter.studentId = String(
+        req.query.studentId
+      )
         .trim()
         .toUpperCase();
     }

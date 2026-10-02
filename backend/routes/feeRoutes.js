@@ -3,13 +3,45 @@ const router = express.Router();
 
 const Fee = require("../models/Fee");
 
+const {
+  verifyToken,
+  isAdmin,
+  isFacultyOrAdmin,
+} = require("../middleware/authMiddleware");
+
 // =====================================================
-// GET ALL FEES
+// GET FEES
+//
+// Faculty and admin see every record. A student only
+// ever receives their own, filtered here on the server
+// rather than in the browser.
 // =====================================================
 
-router.get("/", async (req, res) => {
+router.get("/", verifyToken, async (req, res) => {
   try {
-    const fees = await Fee.find().sort({ createdAt: -1 });
+    const filter = {};
+
+    if (req.user.role === "student") {
+      const studentId = String(
+        req.user.studentId || ""
+      )
+        .trim()
+        .toUpperCase();
+
+      if (!studentId) {
+        return res.status(403).json({
+          success: false,
+          message:
+            "Your account has no student ID. Contact the admin.",
+        });
+      }
+
+      filter.regNo = studentId;
+    }
+
+    const fees = await Fee.find(filter).sort({
+      createdAt: -1,
+    });
 
     res.json({
       success: true,
@@ -30,7 +62,11 @@ router.get("/", async (req, res) => {
 // CREATE FEE
 // =====================================================
 
-router.post("/", async (req, res) => {
+router.post(
+  "/",
+  verifyToken,
+  isAdmin,
+  async (req, res) => {
   try {
     const {
       regNo,
@@ -120,7 +156,11 @@ router.post("/", async (req, res) => {
 // UPDATE FEE
 // =====================================================
 
-router.put("/:id", async (req, res) => {
+router.put(
+  "/:id",
+  verifyToken,
+  isAdmin,
+  async (req, res) => {
   try {
     const {
       regNo,
@@ -205,7 +245,11 @@ router.put("/:id", async (req, res) => {
 // DELETE FEE
 // =====================================================
 
-router.delete("/:id", async (req, res) => {
+router.delete(
+  "/:id",
+  verifyToken,
+  isAdmin,
+  async (req, res) => {
   try {
     const fee = await Fee.findById(req.params.id);
 

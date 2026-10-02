@@ -81,6 +81,95 @@ const isStudent = (req, res, next) => {
   next();
 };
 
+// Student IDs are stored uppercase on the Student and
+// StudentRequest collections but keep whatever case the
+// user typed on the User record, so both sides of every
+// comparison are normalised.
+const normaliseId = (value) =>
+  String(value || "")
+    .trim()
+    .toUpperCase();
+
+// Lets a student read their own record while blocking
+// access to anybody else's. Faculty and admin may read
+// any student's record.
+//
+// Use as: router.get("/student/:studentId", verifyToken, ownsStudent("studentId"), handler)
+const ownsStudent = (paramName) => {
+  return (req, res, next) => {
+    if (
+      req.user.role === "faculty" ||
+      req.user.role === "admin"
+    ) {
+      return next();
+    }
+
+    const requested = normaliseId(
+      req.params[paramName]
+    );
+
+    const own = normaliseId(req.user.studentId);
+
+    if (!own) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "Your account has no student ID. Contact the admin.",
+      });
+    }
+
+    if (requested !== own) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "You can only access your own records",
+      });
+    }
+
+    next();
+  };
+};
+
+// Same idea as ownsStudent, for faculty-owned records.
+// Use as: router.get("/faculty/:facultyId", verifyToken, ownsFaculty("facultyId"), handler)
+const ownsFaculty = (paramName) => {
+  return (req, res, next) => {
+    if (req.user.role === "admin") {
+      return next();
+    }
+
+    if (req.user.role !== "faculty") {
+      return res.status(403).json({
+        success: false,
+        message: "Faculty access only.",
+      });
+    }
+
+    const requested = normaliseId(
+      req.params[paramName]
+    );
+
+    const own = normaliseId(req.user.facultyId);
+
+    if (!own) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "Your account has no faculty ID. Contact the admin.",
+      });
+    }
+
+    if (requested !== own) {
+      return res.status(403).json({
+        success: false,
+        message: "You can only access your own records",
+      });
+    }
+
+    next();
+  };
+};
+
 // Faculty or Admin Only
 const isFacultyOrAdmin = (req, res, next) => {
   if (
@@ -102,4 +191,7 @@ module.exports = {
   isFaculty,
   isStudent,
   isFacultyOrAdmin,
+  ownsStudent,
+  ownsFaculty,
+  normaliseId,
 };
