@@ -492,6 +492,15 @@
     background: #f5f3ff;
 }
 
+/* The HOD page shares this stylesheet but its second
+   kind is a permission, not a bonafide certificate. */
+
+.fr-type.permission {
+    color: #b45309;
+
+    background: #fffbeb;
+}
+
 
 /* Detail cell */
 
@@ -612,6 +621,25 @@
     color: #ffffff;
 
     background: #4f46e5;
+}
+
+/* An HOD cannot action their own request, so the row
+   shows a static note instead of a clickable button. */
+
+.fr-review-btn.disabled {
+    color: #92400e;
+
+    border-color: #fde68a;
+
+    background: #fffbeb;
+
+    cursor: not-allowed;
+}
+
+.fr-review-btn.disabled:hover {
+    color: #92400e;
+
+    background: #fffbeb;
 }
 
 
@@ -818,6 +846,12 @@
     color: #7c3aed;
 
     background: #f5f3ff;
+}
+
+.fr-modal-icon.permission {
+    color: #b45309;
+
+    background: #fffbeb;
 }
 
 .fr-modal-grid {
@@ -1229,12 +1263,26 @@
     background: rgba(139, 92, 246, 0.14);
 }
 
+.dark-theme .fr-type.permission {
+    color: #fcd34d;
+
+    background: rgba(245, 158, 11, 0.14);
+}
+
 .dark-theme .fr-review-btn {
     color: #a5b4fc;
 
     background: rgba(99, 102, 241, 0.12);
 
     border-color: rgba(129, 140, 248, 0.30);
+}
+
+.dark-theme .fr-review-btn.disabled {
+    color: #fcd34d;
+
+    background: rgba(245, 158, 11, 0.12);
+
+    border-color: rgba(245, 158, 11, 0.30);
 }
 
 .dark-theme .fr-pagination button {

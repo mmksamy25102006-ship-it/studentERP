@@ -8,6 +8,7 @@ const {
   verifyToken,
   isAdmin,
   isFacultyOrAdmin,
+  isHod,
 } = require("../middleware/authMiddleware");
 
 // =====================================================
@@ -31,6 +32,51 @@ router.get(
     res.status(500).json({
       success: false,
       message: "Failed to fetch faculty",
+      error: error.message,
+    });
+  }
+});
+
+// =====================================================
+// GET MY DEPARTMENT FACULTY
+//
+// The HOD sees only their own department. The value is
+// read from the token rather than the query string, so
+// it cannot be widened to another department.
+// =====================================================
+
+router.get(
+  "/department/mine",
+  verifyToken,
+  isHod,
+  async (req, res) => {
+  try {
+    const departmentName = String(
+      req.user.department || ""
+    ).trim();
+
+    if (!departmentName) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Your account has no department set. Contact the admin.",
+      });
+    }
+
+    const faculty = await User.find({
+      role: "faculty",
+      department: departmentName,
+    })
+      .select("-password")
+      .sort({ createdAt: -1 });
+
+    res.json(faculty);
+  } catch (error) {
+    console.error("Get Department Faculty Error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch department faculty",
       error: error.message,
     });
   }
@@ -98,6 +144,7 @@ router.post(
       experience,
       year,
       phone,
+      isHod,
     } = req.body;
 const facultyPassword = password || "Faculty@123";
     if (
@@ -157,6 +204,10 @@ const facultyPassword = password || "Faculty@123";
       experience: experience.trim(),
       year: year || "",
       phone: phone || "",
+
+      // Marks this account as Head of Department
+      isHod: isHod === true,
+
       isActive: true,
     });
 
@@ -201,6 +252,7 @@ router.put(
       year,
       phone,
       isActive,
+      isHod,
     } = req.body;
 
     const faculty = await User.findOne({
@@ -289,6 +341,12 @@ router.put(
 
     if (isActive !== undefined) {
       faculty.isActive = isActive;
+    }
+
+    // Promote or demote this account as Head of
+    // Department. Only an admin reaches this route.
+    if (isHod !== undefined) {
+      faculty.isHod = isHod === true;
     }
 
     // -----------------------------------------

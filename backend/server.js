@@ -29,6 +29,7 @@ const facultySubjectRoutes = require("./routes/facultySubjectRoutes");
 const feeRoutes = require("./routes/feeRoutes");
 const libraryRoutes = require("./routes/libraryRoutes");
 const requestRoutes = require("./routes/requestRoutes");
+const facultyRequestRoutes = require("./routes/facultyRequestRoutes");
 // Initialize Express
 const app = express();
 
@@ -84,6 +85,13 @@ app.use("/api/library", libraryRoutes);
 
 // Leave / Bonafide requests
 app.use("/api/requests", requestRoutes);
+
+// Faculty leave / permission requests, approved by the HOD
+app.use(
+  "/api/faculty-requests",
+  facultyRequestRoutes
+);
+
 // =========================
 // 404 Route
 // =========================

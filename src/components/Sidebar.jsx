@@ -22,6 +22,9 @@ import {
   FaChartBar,
   FaUserTie,
   FaFileSignature,
+  FaUserCog,
+  FaClipboardList,
+  FaHourglassHalf,
 } from "react-icons/fa";
 
 import "./Sidebar.css";
@@ -156,9 +159,61 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       path: "/faculty/library",
     },
     {
+      title: "My Leave",
+      icon: <FaHourglassHalf />,
+      path: "/faculty/myleave",
+    },
+    {
       title: "Approvals",
       icon: <FaFileSignature />,
       path: "/faculty/requests",
+    },
+    {
+      title: "Profile",
+      icon: <FaUserTie />,
+      path: "/faculty/profile",
+    },
+    {
+      title: "Settings",
+      icon: <FaCog />,
+      path: "/settings",
+    },
+  ];
+
+
+  // =====================================================
+  // HEAD OF DEPARTMENT MENU
+  //
+  // The HOD is a faculty member first, so the HOD menu
+  // starts from the faculty menu and swaps the entries
+  // that an HOD does differently.
+  // =====================================================
+
+  const hodMenuItems = [
+    {
+      title: "HOD Dashboard",
+      icon: <FaUserCog />,
+      path: "/hod-dashboard",
+    },
+    {
+      title: "Faculty Approvals",
+      icon: <FaClipboardList />,
+      path: "/hod/faculty-requests",
+    },
+    {
+      title: "Student Approvals",
+      icon: <FaFileSignature />,
+      path: "/hod/student-requests",
+    },
+    {
+      title: "My Department",
+      icon: <FaBuilding />,
+      path: "/hod/department",
+    },
+    {
+      title: "My Leave",
+      icon: <FaHourglassHalf />,
+      path: "/faculty/myleave",
     },
     {
       title: "Profile",
@@ -240,11 +295,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   // SELECT MENU BASED ON ROLE
   // =====================================================
 
+  // An HOD is a faculty member with the isHod flag, so
+  // the role check comes first and isHod refines it.
   const menuItems =
     user?.role === "admin"
       ? adminMenuItems
       : user?.role === "faculty"
-      ? facultyMenuItems
+      ? user?.isHod
+        ? hodMenuItems
+        : facultyMenuItems
       : studentMenuItems;
 
 

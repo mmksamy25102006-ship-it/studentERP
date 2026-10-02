@@ -1379,6 +1379,65 @@
     font-size: 9px;
 }
 
+.form-group .form-hint {
+
+    color:
+        var(--faculty-muted);
+
+    font-size: 10px;
+
+    line-height: 1.45;
+}
+
+
+/* =========================================================
+   HEAD OF DEPARTMENT CHECKBOX
+   ========================================================= */
+
+.checkbox-label {
+
+    display: flex !important;
+
+    align-items: center;
+
+    gap: 9px;
+
+    cursor: pointer;
+
+    text-transform: none;
+
+    letter-spacing: 0;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    color:
+        var(--faculty-text);
+}
+
+.checkbox-label input[type="checkbox"] {
+
+    width: 17px;
+
+    height: 17px;
+
+    flex-shrink: 0;
+
+    accent-color:
+        var(--faculty-blue);
+
+    cursor: pointer;
+}
+
+.checkbox-label svg {
+
+    color:
+        var(--faculty-blue);
+
+    font-size: 15px;
+}
+
 .faculty-page .input-error {
 
     border-color:

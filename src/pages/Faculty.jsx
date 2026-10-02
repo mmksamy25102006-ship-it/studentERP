@@ -14,6 +14,7 @@ import {
   FaBriefcase,
   FaClock,
   FaIdCard,
+  FaUserTie,
 } from "react-icons/fa";
 
 import "./Faculty.css";
@@ -30,6 +31,7 @@ const emptyForm = {
   designation: "",
   experience: "",
   email: "",
+  isHod: false,
 };
 
 // =====================================================
@@ -131,6 +133,7 @@ const Faculty = () => {
       designation: "",
       experience: "",
       email: "",
+      isHod: false,
     });
 
     setErrors({});
@@ -152,6 +155,7 @@ const Faculty = () => {
       designation: item.designation || "",
       experience: item.experience || "",
       email: item.email || "",
+      isHod: item.isHod === true,
     });
 
     setErrors({});
@@ -180,11 +184,11 @@ const Faculty = () => {
   // =====================================================
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, checked, type } = e.target;
 
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
 
     if (errors[name]) {
@@ -265,6 +269,7 @@ const Faculty = () => {
             department: formData.department,
             designation: formData.designation,
             experience: formData.experience.trim(),
+            isHod: formData.isHod === true,
           }
         );
 
@@ -306,6 +311,7 @@ const Faculty = () => {
             designation: formData.designation,
             experience:
               formData.experience.trim(),
+            isHod: formData.isHod === true,
           }
         );
 
@@ -1036,6 +1042,35 @@ const Faculty = () => {
                       {errors.email}
                     </small>
                   )}
+
+                </div>
+
+                {/* HEAD OF DEPARTMENT
+                    The HOD signs in through the faculty
+                    login. This flag unlocks the HOD
+                    pages and approval rights on top of
+                    the normal faculty ones. */}
+
+                <div className="form-group">
+
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      name="isHod"
+                      checked={formData.isHod}
+                      onChange={handleChange}
+                    />
+
+                    <FaUserTie />
+
+                    Head of Department (HOD)
+                  </label>
+
+                  <small className="form-hint">
+                    Grants the HOD dashboard, department
+                    list and approval rights for faculty
+                    leave and permission
+                  </small>
 
                 </div>
 

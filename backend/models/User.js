@@ -80,6 +80,20 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
 
+    // -----------------------------------------
+    // HEAD OF DEPARTMENT
+    //
+    // The HOD is still a faculty member and logs in
+    // through the faculty login. This flag is what
+    // unlocks the HOD pages and the HOD approval
+    // rights on top of the normal faculty ones.
+    // -----------------------------------------
+
+    isHod: {
+      type: Boolean,
+      default: false,
+    },
+
     experience: {
       type: String,
       default: "",

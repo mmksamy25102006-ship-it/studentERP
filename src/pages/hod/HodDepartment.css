@@ -1,0 +1,482 @@
+/* =========================================================
+   HOD DEPARTMENT FACULTY LIST
+   LIGHT + DARK THEME
+   ========================================================= */
+
+.hd-page {
+    min-height: 100vh;
+
+    padding: 30px;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(8, 145, 178, 0.08),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #f4f7fc 0%,
+            #eef3fb 100%
+        );
+
+    color: #1e293b;
+}
+
+
+/* =========================================================
+   SPIN / LOADING
+   ========================================================= */
+
+.hd-spin {
+    animation: hdSpin 1s linear infinite;
+}
+
+@keyframes hdSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.hd-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    min-height: 260px;
+
+    color: #64748b;
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.hd-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    flex-wrap: wrap;
+    gap: 16px;
+
+    margin-bottom: 25px;
+}
+
+.hd-header h1 {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    margin: 0;
+
+    color: #172554;
+
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.hd-header h1 svg {
+    width: 34px;
+    height: 34px;
+
+    padding: 8px;
+
+    box-sizing: content-box;
+
+    border-radius: 12px;
+
+    color: #0891b2;
+
+    background: rgba(8, 145, 178, 0.10);
+}
+
+.hd-header p {
+    margin: 8px 0 0 47px;
+
+    color: #64748b;
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.hd-search {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    min-width: 280px;
+
+    padding: 11px 15px;
+
+    background: rgba(255, 255, 255, 0.9);
+
+    border: 1px solid rgba(148, 163, 184, 0.22);
+
+    border-radius: 12px;
+
+    color: #64748b;
+}
+
+.hd-search:focus-within {
+    border-color: #0891b2;
+
+    box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.12);
+}
+
+.hd-search input {
+    flex: 1;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: #1e293b;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   NOTICE
+   ========================================================= */
+
+.hd-notice {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 20px;
+
+    padding: 13px 17px;
+
+    border-radius: 12px;
+
+    color: #0e7490;
+
+    background: #ecfeff;
+
+    border: 1px solid #a5f3fc;
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.hd-notice.error {
+    color: #b91c1c;
+
+    background: #fef2f2;
+
+    border-color: #fecaca;
+}
+
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
+.hd-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    min-height: 260px;
+
+    color: #64748b;
+
+    text-align: center;
+}
+
+.hd-empty svg {
+    font-size: 42px;
+
+    color: #cbd5e1;
+}
+
+.hd-empty span {
+    font-size: 16px;
+    font-weight: 600;
+
+    color: #475569;
+}
+
+.hd-empty small {
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.hd-grid {
+    display: grid;
+
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+
+    gap: 16px;
+}
+
+.hd-card {
+    padding: 18px;
+
+    background: rgba(255, 255, 255, 0.92);
+
+    border: 1px solid rgba(148, 163, 184, 0.18);
+
+    border-radius: 16px;
+
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.hd-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.10);
+}
+
+.hd-card-top {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    margin-bottom: 16px;
+}
+
+.hd-avatar {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 13px;
+
+    background: linear-gradient(
+        135deg,
+        #0891b2,
+        #0e7490
+    );
+
+    color: #ffffff;
+
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.hd-card-heading {
+    flex: 1;
+    min-width: 0;
+}
+
+.hd-card-heading strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #172554;
+
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.hd-card-heading span {
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+.hd-badge {
+    flex-shrink: 0;
+
+    padding: 4px 10px;
+
+    border-radius: 999px;
+
+    background: rgba(139, 92, 246, 0.12);
+
+    color: #6d28d9;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+}
+
+
+/* =========================================================
+   CARD DETAILS
+   ========================================================= */
+
+.hd-card-details {
+    display: grid;
+
+    gap: 11px;
+}
+
+.hd-card-details > div {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.hd-card-details span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    color: #64748b;
+
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.hd-card-details strong {
+    color: #334155;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   FOOTER COUNT
+   ========================================================= */
+
+.hd-count {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    margin-top: 20px;
+
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   DARK THEME
+   ========================================================= */
+
+.dark-theme .hd-page {
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(8, 145, 178, 0.12),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #0f172a 0%,
+            #131c31 100%
+        );
+
+    color: #e2e8f0;
+}
+
+.dark-theme .hd-header h1,
+.dark-theme .hd-card-heading strong {
+    color: #f1f5f9;
+}
+
+.dark-theme .hd-header p,
+.dark-theme .hd-card-heading span,
+.dark-theme .hd-count,
+.dark-theme .hd-loading {
+    color: #94a3b8;
+}
+
+.dark-theme .hd-search {
+    background: rgba(30, 41, 59, 0.9);
+
+    border-color: rgba(148, 163, 184, 0.20);
+
+    color: #94a3b8;
+}
+
+.dark-theme .hd-search:focus-within {
+    border-color: #22d3ee;
+}
+
+.dark-theme .hd-search input {
+    color: #e2e8f0;
+}
+
+.dark-theme .hd-card {
+    background: rgba(30, 41, 59, 0.85);
+
+    border-color: rgba(148, 163, 184, 0.15);
+}
+
+.dark-theme .hd-card:hover {
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+}
+
+.dark-theme .hd-card-details strong {
+    color: #cbd5e1;
+}
+
+.dark-theme .hd-badge {
+    background: rgba(139, 92, 246, 0.20);
+
+    color: #c4b5fd;
+}
+
+.dark-theme .hd-empty span {
+    color: #cbd5e1;
+}
+
+.dark-theme .hd-empty small {
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .hd-page {
+        padding: 20px 15px;
+    }
+
+    .hd-header h1 {
+        font-size: 24px;
+    }
+
+    .hd-header p {
+        margin-left: 0;
+    }
+
+    .hd-search {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .hd-grid {
+        grid-template-columns: 1fr;
+    }
+}

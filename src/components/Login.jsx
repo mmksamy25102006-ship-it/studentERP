@@ -73,11 +73,14 @@ const Login = () => {
 
       alert("Login Successful");
 
-      // Redirect based on role
+      // Redirect based on role. A Head of Department signs
+      // in as faculty but lands on the HOD dashboard.
       if (user.role === "student") {
         navigate("/dashboard");
       } else if (user.role === "faculty") {
-        navigate("/faculty-dashboard");
+        navigate(
+          user.isHod ? "/hod-dashboard" : "/faculty-dashboard"
+        );
       } else if (user.role === "admin") {
         navigate("/admin-dashboard");
       } else {

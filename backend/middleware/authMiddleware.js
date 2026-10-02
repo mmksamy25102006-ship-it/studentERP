@@ -185,12 +185,34 @@ const isFacultyOrAdmin = (req, res, next) => {
   next();
 };
 
+// Head of Department Only
+//
+// The HOD is a faculty member with the isHod flag set, so
+// this must run after verifyToken. An admin can also read
+// the HOD pages for support purposes.
+const isHod = (req, res, next) => {
+  const isHead =
+    req.user.role === "faculty" &&
+    req.user.isHod === true;
+
+  if (!isHead && req.user.role !== "admin") {
+    return res.status(403).json({
+      success: false,
+      message:
+        "Head of Department access only.",
+    });
+  }
+
+  next();
+};
+
 module.exports = {
   verifyToken,
   isAdmin,
   isFaculty,
   isStudent,
   isFacultyOrAdmin,
+  isHod,
   ownsStudent,
   ownsFaculty,
   normaliseId,

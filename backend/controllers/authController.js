@@ -228,6 +228,10 @@ const login = async (req, res) => {
         studentId: user.studentId || null,
         facultyId: user.facultyId || null,
 
+        // Lets the frontend show HOD pages to a
+        // faculty member who heads a department
+        isHod: !!user.isHod,
+
         department: user.department || "",
         year: user.year || "",
         phone: user.phone || "",

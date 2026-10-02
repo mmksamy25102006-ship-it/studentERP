@@ -46,6 +46,15 @@ import FacultyNotification from "./pages/faculty/FacultyNotification";
 import FacultyProfile from "./pages/FacultyProfile";
 import FacultyLibrary from "./pages/faculty/FacultyLibrary";
 import FacultyRequests from "./pages/faculty/FacultyRequests";
+import FacultyLeave from "./pages/faculty/FacultyLeave";
+
+// Head of Department
+// The HOD is a faculty member with the isHod flag, so
+// these sit next to the faculty pages.
+import HodDashboard from "./pages/hod/HodDashboard";
+import HodFacultyRequests from "./pages/hod/HodFacultyRequests";
+import HodStudentRequests from "./pages/hod/HodStudentRequests";
+import HodDepartment from "./pages/hod/HodDepartment";
 
 // Admin
 import Department from "./pages/admin/Department";
@@ -59,6 +68,38 @@ import { NotificationProvider } from "./context/NotificationContext";
 
 // CSS
 import "./index.css";
+
+
+// =====================================================
+// HOD ONLY
+//
+// The backend already rejects non HOD calls on the HOD
+// endpoints. This guard only stops the page from
+// rendering for the wrong role, so the user is sent
+// back to their own dashboard instead of an error
+// screen.
+// =====================================================
+
+function HodOnly({ children }) {
+  const { user } = useAuth();
+
+  if (user?.isHod) {
+    return children;
+  }
+
+  return (
+    <Navigate
+      to={
+        user?.role === "admin"
+          ? "/admin-dashboard"
+          : user?.role === "faculty"
+            ? "/faculty-dashboard"
+            : "/dashboard"
+      }
+      replace
+    />
+  );
+}
 
 
 // =====================================================
@@ -332,6 +373,51 @@ function DashboardLayout() {
               element={<FacultyRequests />}
             />
 
+            <Route
+              path="/faculty/myleave"
+              element={<FacultyLeave />}
+            />
+
+            {/* =========================================
+                HEAD OF DEPARTMENT
+            ========================================= */}
+
+            <Route
+              path="/hod-dashboard"
+              element={
+                <HodOnly>
+                  <HodDashboard />
+                </HodOnly>
+              }
+            />
+
+            <Route
+              path="/hod/faculty-requests"
+              element={
+                <HodOnly>
+                  <HodFacultyRequests />
+                </HodOnly>
+              }
+            />
+
+            <Route
+              path="/hod/student-requests"
+              element={
+                <HodOnly>
+                  <HodStudentRequests />
+                </HodOnly>
+              }
+            />
+
+            <Route
+              path="/hod/department"
+              element={
+                <HodOnly>
+                  <HodDepartment />
+                </HodOnly>
+              }
+            />
+
             {/* =========================================
                 DEFAULT
             ========================================= */}
@@ -346,7 +432,11 @@ function DashboardLayout() {
                   />
                 ) : user?.role === "faculty" ? (
                   <Navigate
-                    to="/faculty-dashboard"
+                    to={
+                      user?.isHod
+                        ? "/hod-dashboard"
+                        : "/faculty-dashboard"
+                    }
                     replace
                   />
                 ) : user?.role === "student" ? (

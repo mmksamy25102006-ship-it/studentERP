@@ -59,6 +59,11 @@ export const AuthProvider = ({ children }) => {
       studentId: userData.studentId || null,
       facultyId: userData.facultyId || null,
 
+      // Head of Department flag. The HOD signs in through
+      // the faculty login, so this is what unlocks the HOD
+      // pages and approval rights.
+      isHod: userData.isHod === true,
+
       department: userData.department || "",
       year: userData.year || "",
       phone: userData.phone || "",
