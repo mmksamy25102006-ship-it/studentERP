@@ -81,9 +81,25 @@ const isStudent = (req, res, next) => {
   next();
 };
 
+// Faculty or Admin Only
+const isFacultyOrAdmin = (req, res, next) => {
+  if (
+    req.user.role !== "faculty" &&
+    req.user.role !== "admin"
+  ) {
+    return res.status(403).json({
+      success: false,
+      message: "Faculty access only.",
+    });
+  }
+
+  next();
+};
+
 module.exports = {
   verifyToken,
   isAdmin,
   isFaculty,
   isStudent,
+  isFacultyOrAdmin,
 };

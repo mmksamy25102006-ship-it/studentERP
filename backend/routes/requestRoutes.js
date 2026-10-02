@@ -1,3 +1,5 @@
+// backend/routes/requestRoutes.js
+
 const express = require("express");
 
 const {
@@ -9,27 +11,79 @@ const {
   cancelRequest,
 } = require("../controllers/requestController");
 
+const {
+  verifyToken,
+  isFaculty,
+  isStudent,
+  isFacultyOrAdmin,
+} = require("../middleware/authMiddleware");
+
 const router = express.Router();
 
 // =====================================================
-// STATIC / NESTED ROUTES
-// Registered before "/:id" so they are not swallowed
-// by the parameter route.
+// Every route requires a valid JWT token.
+// Student data is taken from the token, never from the
+// request body, so a caller cannot act as someone else.
 // =====================================================
 
-router.get("/stats", getRequestStats);
-router.get("/student/:studentId", getStudentRequests);
+// -----------------------------------------
+// FACULTY VIEW
+// -----------------------------------------
 
-// Faculty views all requests
-router.get("/", getRequests);
+// Static routes first so "/stats" is not matched by "/:id"
+router.get(
+  "/stats",
+  verifyToken,
+  isFacultyOrAdmin,
+  getRequestStats
+);
 
-// Student applies
-router.post("/", createRequest);
+// A student may only read their own list.
+// The controller compares against req.user.studentId.
+router.get(
+  "/student/:studentId",
+  verifyToken,
+  getStudentRequests
+);
 
-// Faculty decision
-router.put("/:id/status", updateRequestStatus);
+router.get(
+  "/",
+  verifyToken,
+  isFacultyOrAdmin,
+  getRequests
+);
 
-// Student withdraws
-router.patch("/:id/cancel", cancelRequest);
+// -----------------------------------------
+// STUDENT APPLY
+// -----------------------------------------
+
+router.post(
+  "/",
+  verifyToken,
+  isStudent,
+  createRequest
+);
+
+// -----------------------------------------
+// FACULTY DECISION
+// -----------------------------------------
+
+router.put(
+  "/:id/status",
+  verifyToken,
+  isFaculty,
+  updateRequestStatus
+);
+
+// -----------------------------------------
+// STUDENT WITHDRAW
+// -----------------------------------------
+
+router.patch(
+  "/:id/cancel",
+  verifyToken,
+  isStudent,
+  cancelRequest
+);
 
 module.exports = router;

@@ -2,6 +2,18 @@
 
 const StudentRequest = require("../models/StudentRequest");
 
+// Student IDs are stored uppercase in this collection.
+// The User model keeps whatever case the user typed,
+// so every comparison has to normalise both sides.
+const normaliseId = (value) =>
+  String(value || "")
+    .trim()
+    .toUpperCase();
+
+// Resolve the student ID of the logged-in user.
+const currentStudentId = (req) =>
+  normaliseId(req.user?.studentId);
+
 // Build a certificate number like BON/2026/STU001/0007
 const buildCertificateNumber = async (studentId) => {
   const year = new Date().getFullYear();
@@ -19,19 +31,31 @@ const buildCertificateNumber = async (studentId) => {
 // GET REQUESTS FOR A STUDENT
 const getStudentRequests = async (req, res) => {
   try {
-    const studentId = String(req.params.studentId)
-      .trim()
-      .toUpperCase();
+    const requestedId = normaliseId(req.params.studentId);
+    const loggedInId = currentStudentId(req);
 
-    if (!studentId) {
+    if (!requestedId) {
       return res.status(400).json({
         success: false,
         message: "Student ID is required",
       });
     }
 
+    // A student can only read their own requests.
+    // Faculty and admin may read any student's list.
+    const isPrivileged =
+      req.user.role === "faculty" ||
+      req.user.role === "admin";
+
+    if (!isPrivileged && requestedId !== loggedInId) {
+      return res.status(403).json({
+        success: false,
+        message: "You can only view your own requests",
+      });
+    }
+
     const requests = await StudentRequest.find({
-      studentId,
+      studentId: requestedId,
     }).sort({ createdAt: -1 });
 
     res.status(200).json({
@@ -135,10 +159,6 @@ const createRequest = async (req, res) => {
   try {
     const {
       type,
-      studentId,
-      studentName,
-      department,
-      year,
       leaveType,
       fromDate,
       toDate,
@@ -147,11 +167,24 @@ const createRequest = async (req, res) => {
       reason,
     } = req.body;
 
-    if (!type || !studentId || !reason) {
+    // The student ID and name always come from the
+    // signed-in user, never from the request body,
+    // so nobody can file a request as another student.
+    const cleanStudentId = currentStudentId(req);
+
+    if (!cleanStudentId) {
       return res.status(400).json({
         success: false,
         message:
-          "Request type, student ID and reason are required",
+          "Your account has no student ID. Contact the admin.",
+      });
+    }
+
+    if (!type || !reason) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Request type and reason are required",
       });
     }
 
@@ -162,11 +195,7 @@ const createRequest = async (req, res) => {
       });
     }
 
-    const cleanStudentId = String(studentId)
-      .trim()
-      .toUpperCase();
-
-    const trimmedReason = reason.trim();
+    const trimmedReason = String(reason).trim();
 
     if (trimmedReason.length < 10) {
       return res.status(400).json({
@@ -249,9 +278,9 @@ const createRequest = async (req, res) => {
     const request = await StudentRequest.create({
       type,
       studentId: cleanStudentId,
-      studentName: studentName || "",
-      department: department || "",
-      year: year || "",
+      studentName: req.user.name || "",
+      department: req.user.department || "",
+      year: req.user.year || "",
       leaveType:
         type === "leave"
           ? leaveType || "Casual Leave"
@@ -288,12 +317,13 @@ const createRequest = async (req, res) => {
 const updateRequestStatus = async (req, res) => {
   try {
     const { id } = req.params;
-    const {
-      status,
-      facultyRemark,
-      facultyId,
-      facultyName,
-    } = req.body;
+    const { status, facultyRemark } = req.body;
+
+    // Faculty identity comes from the token so the
+    // approval record cannot be forged in the body.
+    const facultyId =
+      req.user.facultyId || req.user._id?.toString() || "";
+    const facultyName = req.user.name || "";
 
     if (!status || !["approved", "rejected"].includes(status)) {
       return res.status(400).json({
@@ -332,9 +362,11 @@ const updateRequestStatus = async (req, res) => {
     }
 
     request.status = status;
-    request.facultyRemark = (facultyRemark || "").trim();
-    request.actionedBy = facultyId || "";
-    request.actionedByName = facultyName || "";
+    request.facultyRemark = String(
+      facultyRemark || ""
+    ).trim();
+    request.actionedBy = facultyId;
+    request.actionedByName = facultyName;
     request.actionedAt = new Date();
 
     // Issue the certificate number once approved
@@ -369,7 +401,6 @@ const updateRequestStatus = async (req, res) => {
 const cancelRequest = async (req, res) => {
   try {
     const { id } = req.params;
-    const { studentId } = req.query;
 
     const request = await StudentRequest.findById(id);
 
@@ -380,16 +411,23 @@ const cancelRequest = async (req, res) => {
       });
     }
 
-    // A student can only cancel their own request
-    if (
-      studentId &&
-      request.studentId !==
-        String(studentId).trim().toUpperCase()
-    ) {
-      return res.status(403).json({
+    // Ownership is checked against the token on every
+    // call. It is never skipped, so a student cannot
+    // cancel somebody else's request.
+    const loggedInId = currentStudentId(req);
+
+    if (!loggedInId) {
+      return res.status(400).json({
         success: false,
         message:
-          "You can only cancel your own request",
+          "Your account has no student ID. Contact the admin.",
+      });
+    }
+
+    if (normaliseId(request.studentId) !== loggedInId) {
+      return res.status(403).json({
+        success: false,
+        message: "You can only cancel your own request",
       });
     }
 

@@ -183,12 +183,10 @@ const Requests = () => {
     setSaving(true);
 
     try {
+      // Student identity is read from the JWT on the
+      // server, so it is not sent from the browser.
       await API.post("/requests", {
         type: form.type,
-        studentId,
-        studentName: user?.name || "",
-        department: user?.department || "",
-        year: user?.year || "",
         leaveType: form.leaveType,
         fromDate: form.fromDate,
         toDate: form.toDate,
@@ -240,11 +238,7 @@ const Requests = () => {
     setSaving(true);
 
     try {
-      await API.patch(
-        `/requests/${request._id}/cancel`,
-        null,
-        { params: { studentId } }
-      );
+      await API.patch(`/requests/${request._id}/cancel`);
 
       notify("Request cancelled");
 

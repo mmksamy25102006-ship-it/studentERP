@@ -25,7 +25,6 @@ import {
 } from "react-icons/fa";
 
 import API from "./../../api";
-import useAuth from "./../../hooks/useAuth";
 import { formatDate } from "./../../utils/format";
 
 import "./FacultyRequests.css";
@@ -33,8 +32,6 @@ import "./FacultyRequests.css";
 const PAGE_SIZE = 8;
 
 const FacultyRequests = () => {
-  const { user } = useAuth();
-
   const [requests, setRequests] = useState([]);
   const [stats, setStats] = useState({
     total: 0,
@@ -117,10 +114,15 @@ const FacultyRequests = () => {
     } catch (error) {
       console.error("Faculty Requests Error:", error);
 
-      notify(
-        "Failed to load requests. Make sure the backend is deployed.",
-        "error"
-      );
+      // A 403 means the signed-in account is not
+      // faculty. That is a permissions problem, not a
+      // deployment problem, so it gets its own message.
+      const loadError =
+        error.response?.status === 403
+          ? "This account does not have faculty access."
+          : "Failed to load requests. Make sure the backend is deployed.";
+
+      notify(loadError, "error");
     } finally {
       setLoading(false);
     }
@@ -169,11 +171,11 @@ const FacultyRequests = () => {
     setWorking(true);
 
     try {
+      // Faculty identity is read from the JWT on the
+      // server, so it is not sent from the browser.
       await API.put(`/requests/${request._id}/status`, {
         status,
         facultyRemark: trimmedRemark,
-        facultyId: user?.facultyId || user?.id || "",
-        facultyName: user?.name || "",
       });
 
       notify(
