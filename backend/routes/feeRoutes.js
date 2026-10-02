@@ -53,7 +53,6 @@ router.get("/", verifyToken, async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch fees",
-      error: error.message,
     });
   }
 });
@@ -147,7 +146,6 @@ router.post(
     res.status(500).json({
       success: false,
       message: "Failed to create fee",
-      error: error.message,
     });
   }
 });
@@ -236,7 +234,6 @@ router.put(
     res.status(500).json({
       success: false,
       message: "Failed to update fee",
-      error: error.message,
     });
   }
 });
@@ -272,7 +269,6 @@ router.delete(
     res.status(500).json({
       success: false,
       message: "Failed to delete fee",
-      error: error.message,
     });
   }
 });

@@ -79,7 +79,6 @@ const getBooks = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch books",
-      error: error.message,
     });
   }
 };
@@ -99,7 +98,6 @@ const getCategories = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch categories",
-      error: error.message,
     });
   }
 };
@@ -126,7 +124,6 @@ const getBookById = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch book",
-      error: error.message,
     });
   }
 };
@@ -200,7 +197,6 @@ const createBook = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to add book",
-      error: error.message,
     });
   }
 };
@@ -313,7 +309,6 @@ const updateBook = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to update book",
-      error: error.message,
     });
   }
 };
@@ -357,7 +352,6 @@ const deleteBook = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to delete book",
-      error: error.message,
     });
   }
 };
@@ -435,7 +429,6 @@ const issueBook = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to issue book",
-      error: error.message,
     });
   }
 };
@@ -503,7 +496,6 @@ const returnBook = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to return book",
-      error: error.message,
     });
   }
 };
@@ -547,7 +539,6 @@ const getIssues = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch issues",
-      error: error.message,
     });
   }
 };
@@ -593,7 +584,6 @@ const getStudentIssues = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch student issues",
-      error: error.message,
     });
   }
 };
@@ -683,7 +673,6 @@ const reserveBook = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to reserve book",
-      error: error.message,
     });
   }
 };
@@ -721,7 +710,6 @@ const cancelReservation = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to cancel reservation",
-      error: error.message,
     });
   }
 };
@@ -778,7 +766,6 @@ const getReservations = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch reservations",
-      error: error.message,
     });
   }
 };

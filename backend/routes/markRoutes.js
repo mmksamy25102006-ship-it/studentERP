@@ -60,7 +60,6 @@ router.get(
     res.status(500).json({
       success: false,
       message: "Failed to fetch marks",
-      error: error.message,
     });
   }
 });
@@ -101,7 +100,6 @@ router.get(
     res.status(500).json({
       success: false,
       message: "Failed to fetch student marks",
-      error: error.message,
     });
   }
 });
@@ -138,7 +136,6 @@ router.get(
     res.status(500).json({
       success: false,
       message: "Failed to fetch semester marks",
-      error: error.message,
     });
   }
 });
@@ -520,7 +517,6 @@ router.put(
     res.status(500).json({
       success: false,
       message: "Failed to update marks",
-      error: error.message,
     });
   }
 });
@@ -637,7 +633,6 @@ router.delete(
     res.status(500).json({
       success: false,
       message: "Failed to delete marks",
-      error: error.message,
     });
   }
 });

@@ -68,7 +68,6 @@ const getStudentRequests = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch student requests",
-      error: error.message,
     });
   }
 };
@@ -114,7 +113,6 @@ const getRequests = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch requests",
-      error: error.message,
     });
   }
 };
@@ -149,7 +147,6 @@ const getRequestStats = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch request statistics",
-      error: error.message,
     });
   }
 };
@@ -308,7 +305,6 @@ const createRequest = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to submit request",
-      error: error.message,
     });
   }
 }
@@ -427,7 +423,6 @@ const updateRequestStatus = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to update request",
-      error: error.message,
     });
   }
 };
@@ -490,7 +485,6 @@ const cancelRequest = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to cancel request",
-      error: error.message,
     });
   }
 };

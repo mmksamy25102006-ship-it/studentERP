@@ -47,7 +47,6 @@ const getMyRequests = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch faculty requests",
-      error: error.message,
     });
   }
 };
@@ -148,7 +147,6 @@ const getFacultyRequests = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch faculty requests",
-      error: error.message,
     });
   }
 };
@@ -242,7 +240,6 @@ const getFacultyRequestStats = async (req, res) => {
       success: false,
       message:
         "Failed to fetch faculty request statistics",
-      error: error.message,
     });
   }
 };
@@ -402,7 +399,6 @@ const createFacultyRequest = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to submit request",
-      error: error.message,
     });
   }
 };
@@ -522,7 +518,6 @@ const updateFacultyRequestStatus = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to update request",
-      error: error.message,
     });
   }
 };
@@ -586,7 +581,6 @@ const cancelFacultyRequest = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to cancel request",
-      error: error.message,
     });
   }
 };

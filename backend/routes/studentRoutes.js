@@ -24,7 +24,6 @@ router.get(
 
     res.status(500).json({
       message: "Failed to fetch students",
-      error: error.message,
     });
   }
 });
@@ -64,7 +63,6 @@ router.get(
 
     res.status(500).json({
       message: "Failed to fetch student",
-      error: error.message,
     });
   }
 });
@@ -156,7 +154,6 @@ router.post(
 
     res.status(500).json({
       message: "Failed to add student",
-      error: error.message,
     });
   }
 });
@@ -207,7 +204,6 @@ router.put(
 
     res.status(500).json({
       message: "Failed to update student",
-      error: error.message,
     });
   }
 });
@@ -235,7 +231,6 @@ router.delete(
 
     res.status(500).json({
       message: "Failed to delete student",
-      error: error.message,
     });
   }
 });

@@ -47,7 +47,6 @@ router.get(
     res.status(500).json({
       success: false,
       message: "Failed to fetch faculty subjects",
-      error: error.message,
     });
   }
 });
@@ -80,7 +79,6 @@ router.get(
     res.status(500).json({
       success: false,
       message: "Failed to fetch faculty subject assignments",
-      error: error.message,
     });
   }
 });
@@ -143,7 +141,6 @@ router.post(
     res.status(500).json({
       success: false,
       message: "Failed to assign subject",
-      error: error.message,
     });
   }
 });
@@ -181,7 +178,6 @@ router.delete(
     res.status(500).json({
       success: false,
       message: "Failed to delete assignment",
-      error: error.message,
     });
   }
 });

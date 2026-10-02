@@ -29,7 +29,6 @@ const getStudentAssignments = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch student assignments",
-      error: error.message,
     });
   }
 };
@@ -62,7 +61,6 @@ const getFacultyAssignments = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch faculty assignments",
-      error: error.message,
     });
   }
 };
@@ -127,7 +125,6 @@ const createAssignment = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to create assignment",
-      error: error.message,
     });
   }
 };
@@ -183,7 +180,6 @@ const deleteAssignment = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to delete assignment",
-      error: error.message,
     });
   }
 };

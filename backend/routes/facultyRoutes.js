@@ -63,7 +63,6 @@ router.get(
     res.status(500).json({
       success: false,
       message: "Failed to fetch faculty",
-      error: error.message,
     });
   }
 });
@@ -108,7 +107,6 @@ router.get(
     res.status(500).json({
       success: false,
       message: "Failed to fetch department faculty",
-      error: error.message,
     });
   }
 });
@@ -150,7 +148,6 @@ router.get(
     res.status(500).json({
       success: false,
       message: "Failed to fetch faculty",
-      error: error.message,
     });
   }
 });
@@ -276,7 +273,6 @@ router.post(
     res.status(500).json({
       success: false,
       message: "Failed to create faculty",
-      error: error.message,
     });
   }
 });
@@ -424,7 +420,6 @@ router.put(
     res.status(500).json({
       success: false,
       message: "Failed to update faculty",
-      error: error.message,
     });
   }
 });
@@ -463,7 +458,6 @@ router.delete(
     res.status(500).json({
       success: false,
       message: "Failed to delete faculty",
-      error: error.message,
     });
   }
 });

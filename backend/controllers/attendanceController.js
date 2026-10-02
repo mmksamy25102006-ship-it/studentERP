@@ -28,7 +28,6 @@ const getAllAttendance = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Unable to load attendance.",
-      error: error.message,
     });
   }
 };
@@ -81,7 +80,6 @@ const getStudentAttendance = async (
       success: false,
       message:
         "Unable to load student attendance.",
-      error: error.message,
     });
   }
 };
@@ -324,7 +322,6 @@ const createAttendance = async (
       success: false,
       message:
         "Unable to save attendance.",
-      error: error.message,
     });
   }
 };
