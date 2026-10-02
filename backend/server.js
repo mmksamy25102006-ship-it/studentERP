@@ -55,7 +55,10 @@ app.get("/api/test-deployment", (req, res) => {
   res.json({
     success: true,
     message: "Latest StudentERP backend is running",
-    version: "16f7617",
+    version:
+      process.env.RENDER_GIT_COMMIT ||
+      process.env.COMMIT_REF ||
+      "local",
   });
 });
 
