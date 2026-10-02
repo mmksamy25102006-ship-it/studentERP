@@ -1,6 +1,7 @@
 // backend/controllers/facultyRequestController.js
 
 const FacultyRequest = require("../models/FacultyRequest");
+const User = require("../models/User");
 
 // Faculty IDs are stored uppercase in this collection.
 // The User model keeps whatever case the user typed,
@@ -54,7 +55,13 @@ const getMyRequests = async (req, res) => {
 // GET ALL REQUESTS FOR HOD REVIEW
 const getFacultyRequests = async (req, res) => {
   try {
-    const { status, type, search, department } = req.query;
+    const {
+      status,
+      type,
+      search,
+      department,
+      hodOnly,
+    } = req.query;
 
     const filter = {};
 
@@ -94,6 +101,27 @@ const getFacultyRequests = async (req, res) => {
       filter.department = String(department).trim();
     }
 
+    // The admin is the countersigner for HOD leave, since an
+    // HOD may not action their own request. The admin queue
+    // defaults to those requests only, so ordinary faculty
+    // leave still routes through the department HOD and the
+    // admin does not rubber stamp it as well.
+    if (
+      req.user.role === "admin" &&
+      hodOnly === "true"
+    ) {
+      const heads = await User.find({
+        role: "faculty",
+        isHod: true,
+      }).select("facultyId");
+
+      const headIds = heads
+        .map((head) => normaliseId(head.facultyId))
+        .filter(Boolean);
+
+      filter.facultyId = { $in: headIds };
+    }
+
     if (search) {
       const escaped = String(search)
         .trim()
@@ -128,6 +156,8 @@ const getFacultyRequests = async (req, res) => {
 // GET REQUEST STATISTICS FOR THE DEPARTMENT
 const getFacultyRequestStats = async (req, res) => {
   try {
+    const { hodOnly } = req.query;
+
     const filter = {};
 
     if (
@@ -149,6 +179,24 @@ const getFacultyRequestStats = async (req, res) => {
       }
 
       filter.department = departmentName;
+    }
+
+    // Matches the list so the admin cards and the table
+    // count the same set.
+    if (
+      req.user.role === "admin" &&
+      hodOnly === "true"
+    ) {
+      const heads = await User.find({
+        role: "faculty",
+        isHod: true,
+      }).select("facultyId");
+
+      const headIds = heads
+        .map((head) => normaliseId(head.facultyId))
+        .filter(Boolean);
+
+      filter.facultyId = { $in: headIds };
     }
 
     const [total, pending, approved, rejected, leave, permission] =

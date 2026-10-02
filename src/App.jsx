@@ -83,18 +83,20 @@ import "./index.css";
 function HodOnly({ children }) {
   const { user } = useAuth();
 
-  if (user?.isHod) {
+  // An admin is admitted because an HOD cannot approve
+  // their own leave, which leaves the admin as the only
+  // countersigner. The isHod middleware on the server
+  // already permits this.
+  if (user?.isHod || user?.role === "admin") {
     return children;
   }
 
   return (
     <Navigate
       to={
-        user?.role === "admin"
-          ? "/admin-dashboard"
-          : user?.role === "faculty"
-            ? "/faculty-dashboard"
-            : "/dashboard"
+        user?.role === "faculty"
+          ? "/faculty-dashboard"
+          : "/dashboard"
       }
       replace
     />

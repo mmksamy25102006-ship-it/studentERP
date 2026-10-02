@@ -183,6 +183,18 @@
 }
 
 
+/* The HOD leave queue added a fifth card, so the wide
+   layout needs five tracks rather than wrapping one card
+   onto a row of its own. */
+
+@media (min-width: 1201px) {
+    .dashboard-cards {
+        grid-template-columns:
+            repeat(5, 1fr);
+    }
+}
+
+
 .card {
     position: relative;
 
@@ -411,6 +423,70 @@
 
 .fees-card .card-decoration {
     background: #8b5cf6;
+}
+
+
+/* =========================================================
+   HOD LEAVE QUEUE
+========================================================= */
+
+.hod-leave-card {
+    border-top: 4px solid #0ea5e9;
+    cursor: pointer;
+}
+
+.hod-leave-card .icon {
+    background: #e0f2fe;
+    color: #0284c7;
+}
+
+.hod-leave-card h2 {
+    color: #0369a1;
+}
+
+.hod-leave-card .card-decoration {
+    background: #0ea5e9;
+}
+
+.hod-leave-card:focus-visible {
+    outline: 3px solid #0ea5e9;
+    outline-offset: 3px;
+}
+
+
+/* Only flagged when there is work waiting, so a clear
+   queue does not shout at the admin every morning. */
+
+.hod-leave-pending {
+    border-top-color: #ef4444;
+}
+
+.hod-leave-pending .icon {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.hod-leave-pending h2 {
+    color: #b91c1c;
+}
+
+.hod-leave-pending .card-decoration {
+    background: #ef4444;
+}
+
+.card-hint {
+    display: inline-block;
+
+    margin-top: 6px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 0.4px;
+
+    text-transform: uppercase;
+
+    color: #b91c1c;
 }
 
 

@@ -42,6 +42,11 @@ const PAGE_SIZE = 8;
 const HodFacultyRequests = () => {
   const { user } = useAuth();
 
+  // An admin countersigns HOD leave, since an HOD may not
+  // approve their own request and there is no second HOD
+  // for them to hand it to.
+  const isAdmin = user?.role === "admin";
+
   const [requests, setRequests] = useState([]);
   const [stats, setStats] = useState({
     total: 0,
@@ -107,9 +112,21 @@ const HodFacultyRequests = () => {
         params.search = search.trim();
       }
 
+      // The admin queue is HOD leave only, so the countersign
+      // does not quietly take over the department HOD's work.
+      if (isAdmin) {
+        params.hodOnly = "true";
+      }
+
+      const statsParams = isAdmin
+        ? { hodOnly: "true" }
+        : undefined;
+
       const [listResponse, statsResponse] = await Promise.all([
         API.get("/faculty-requests", { params }),
-        API.get("/faculty-requests/stats"),
+        API.get("/faculty-requests/stats", {
+          params: statsParams,
+        }),
       ]);
 
       setRequests(listResponse.data?.requests || []);
@@ -128,7 +145,9 @@ const HodFacultyRequests = () => {
 
       notify(
         error.response?.status === 403
-          ? "This account does not have Head of Department access."
+          ? isAdmin
+            ? "This account cannot review faculty leave."
+            : "This account does not have Head of Department access."
           : error.response?.data?.message ||
             "Failed to load requests. Make sure the backend is deployed.",
         "error"
@@ -136,7 +155,7 @@ const HodFacultyRequests = () => {
     } finally {
       setLoading(false);
     }
-  }, [tab, statusFilter, search]);
+  }, [tab, statusFilter, search, isAdmin]);
 
   useEffect(() => {
     load();
@@ -304,8 +323,9 @@ const HodFacultyRequests = () => {
         </h1>
 
         <p>
-          Review leave and permission requests from faculty
-          members in your department
+          {isAdmin
+            ? "Review leave and permission requests from every faculty member, including HOD leave that needs countersigning"
+            : "Review leave and permission requests from faculty members in your department"}
         </p>
       </div>
 

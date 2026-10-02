@@ -19,6 +19,37 @@ require("dotenv").config();
 
 const User = require("./models/User");
 
+// Atlas is reached through an SRV record. Some networks,
+// usually a router or an ISP resolver, answer SRV queries
+// with ECONNREFUSED even though everything else resolves,
+// which surfaces as a confusing connection error. When that
+// happens the lookup is retried against public resolvers.
+const FALLBACK_DNS = ["1.1.1.1", "8.8.8.8"];
+
+async function connect() {
+  try {
+    return await mongoose.connect(process.env.MONGO_URI);
+  } catch (error) {
+    const isDnsFailure =
+      error.code === "querySrv" ||
+      error.code === "ECONNREFUSED" ||
+      error.code === "ENOTFOUND";
+
+    if (!isDnsFailure) {
+      throw error;
+    }
+
+    console.log(
+      "The system resolver could not look up the Atlas SRV record."
+    );
+    console.log("Retrying with public resolvers " + FALLBACK_DNS.join(", "));
+
+    require("dns").setServers(FALLBACK_DNS);
+
+    return mongoose.connect(process.env.MONGO_URI);
+  }
+}
+
 const HOD = {
   name: "Dr. Anita Sharma",
   email: "hod@gmail.com",
@@ -35,7 +66,7 @@ const HOD = {
 
 async function createHod() {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    await connect();
 
     const email = HOD.email.toLowerCase().trim();
 

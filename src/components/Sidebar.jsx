@@ -76,6 +76,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       path: "/adminfaculty",
     },
     {
+      // An HOD may not approve their own leave, so the
+      // admin is the countersigner. The backend already
+      // lets the admin past the isHod guard.
+      title: "Faculty Leave",
+      icon: <FaFileSignature />,
+      path: "/hod/faculty-requests",
+    },
+    {
       title: "Departments",
       icon: <FaBuilding />,
       path: "/admin/departments",

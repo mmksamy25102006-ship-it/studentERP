@@ -6,15 +6,29 @@ import {
   FaMoneyBillWave,
   FaUniversity,
   FaBell,
+  FaFileSignature,
 } from "react-icons/fa";
+
+import { useNavigate } from "react-router-dom";
+
+import API from "./../api";
 
 import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
+
   const [students, setStudents] = useState([]);
   const [faculty, setFaculty] = useState([]);
   const [courses, setCourses] = useState([]);
   const [fees, setFees] = useState([]);
+
+  // HOD leave that needs an admin countersignature. An HOD
+  // may not approve their own request, so this is the admin's
+  // only queue. hodOnly keeps it off ordinary faculty leave,
+  // which the department HOD handles.
+  const [hodLeavePending, setHodLeavePending] = useState(null);
+
 
   /* =========================
         LOAD DATA
@@ -47,6 +61,35 @@ const AdminDashboard = () => {
     return () => {
       window.removeEventListener("storage", loadData);
     };
+  }, []);
+
+
+  /* =========================
+        HOD LEAVE QUEUE
+  ========================= */
+
+  useEffect(() => {
+    const loadHodLeave = async () => {
+      try {
+        // The stats route already reports a pending count,
+        // so it needs no status filter. hodOnly scopes it to
+        // the HOD leave the admin has to countersign.
+        const { data } = await API.get(
+          "/faculty-requests/stats",
+          { params: { hodOnly: "true" } }
+        );
+
+        setHodLeavePending(
+          Number(data?.stats?.pending ?? 0)
+        );
+      } catch {
+        // Older backend or network failure. Stay quiet
+        // rather than showing a wrong number as fact.
+        setHodLeavePending(null);
+      }
+    };
+
+    loadHodLeave();
   }, []);
 
 
@@ -88,6 +131,19 @@ const AdminDashboard = () => {
       value: `₹${totalFees.toLocaleString("en-IN")}`,
       icon: <FaMoneyBillWave />,
       className: "fees-card",
+    },
+    {
+      title: "HOD Leave Pending",
+      value:
+        hodLeavePending === null
+          ? "-"
+          : hodLeavePending,
+      icon: <FaFileSignature />,
+      className: `hod-leave-card ${
+        hodLeavePending > 0 ? "hod-leave-pending" : ""
+      }`,
+      hint: "Needs your approval",
+      onClick: () => navigate("/hod/faculty-requests"),
     },
   ];
 
@@ -155,6 +211,26 @@ const AdminDashboard = () => {
           <div
             className={`card ${card.className}`}
             key={index}
+            onClick={card.onClick}
+            role={
+              card.onClick ? "button" : undefined
+            }
+            tabIndex={
+              card.onClick ? 0 : undefined
+            }
+            onKeyDown={
+              card.onClick
+                ? (event) => {
+                    if (
+                      event.key === "Enter" ||
+                      event.key === " "
+                    ) {
+                      event.preventDefault();
+                      card.onClick();
+                    }
+                  }
+                : undefined
+            }
           >
 
             <div className="card-decoration"></div>
@@ -172,6 +248,12 @@ const AdminDashboard = () => {
               <p>
                 {card.title}
               </p>
+
+              {card.hint && (
+                <span className="card-hint">
+                  {card.hint}
+                </span>
+              )}
 
             </div>
 
