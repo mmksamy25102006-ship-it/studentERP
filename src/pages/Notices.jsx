@@ -4,7 +4,7 @@ import {
   FaCalendarAlt,
   FaSearch,
 } from "react-icons/fa";
-import axios from "axios";
+import API from "./../api";
 import "./Notices.css";
 
 const Notices = () => {
@@ -18,9 +18,7 @@ const Notices = () => {
 
   const fetchNotifications = async () => {
     try {
-      const res = await axios.get(
-        "https://studenterp-5wuj.onrender.com/api/notifications"
-      );
+      const res = await API.get("/notifications");
 
       setNotices(res.data);
     } catch (err) {

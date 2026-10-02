@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import API from "./../../api";
 import "./FacultyNotification.css";
 
 function FacultyNotification() {
@@ -16,8 +16,8 @@ function FacultyNotification() {
 
         try {
 
-            await axios.post(
-                "https://studenterp-5wuj.onrender.com/api/notifications",
+            await API.post(
+                "/notifications",
                 {
                     title,
                     message,

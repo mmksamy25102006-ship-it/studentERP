@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import API from "./../api";
 import "./Notification.css";
 
 function StudentNotification() {
@@ -11,9 +11,7 @@ function StudentNotification() {
 
   const loadNotifications = async () => {
     try {
-      const res = await axios.get(
-        "https://studenterp-5wuj.onrender.com/api/notifications"
-      );
+      const res = await API.get("/notifications");
 
       setNotifications(res.data);
     } catch (error) {
