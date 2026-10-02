@@ -106,8 +106,14 @@ router.get(
   async (req, res) => {
   try {
 
+    // Own notifications PLUS legacy ones created before
+    // the facultyId attribution existed (blank/missing),
+    // so previously sent notices still show up here.
     const notifications = await Notification.find({
-      facultyId: String(req.params.facultyId).trim(),
+      $or: [
+        { facultyId: String(req.params.facultyId).trim() },
+        { facultyId: { $in: ["", null] } },
+      ],
     }).sort({ createdAt: -1 });
 
     res.json(notifications);

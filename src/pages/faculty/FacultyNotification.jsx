@@ -213,6 +213,26 @@ function FacultyNotification() {
         });
     };
 
+    /* ==========================================
+       OWNERSHIP CHECK
+       Legacy notices (pre-attribution) have no
+       facultyId, so they show but without the
+       edit/delete action buttons.
+    ========================================== */
+
+    const isOwned = (notif) => {
+        const notifFacultyId = notif.facultyId;
+
+        if (!notifFacultyId || !facultyId) {
+            return false;
+        }
+
+        return (
+            String(notifFacultyId).trim() ===
+            String(facultyId).trim()
+        );
+    };
+
     return (
 
         <div className="notification-container">
@@ -307,25 +327,27 @@ function FacultyNotification() {
                                         {notif.title}
                                     </span>
 
-                                    <div className="my-notification-actions">
-                                        <button
-                                            className="my-notification-edit"
-                                            onClick={() => startEdit(notif)}
-                                            disabled={deletingId === (notif._id || notif.id)}
-                                            title="Edit notification"
-                                        >
-                                            <FaEdit />
-                                        </button>
+                                    {isOwned(notif) && (
+                                        <div className="my-notification-actions">
+                                            <button
+                                                className="my-notification-edit"
+                                                onClick={() => startEdit(notif)}
+                                                disabled={deletingId === (notif._id || notif.id)}
+                                                title="Edit notification"
+                                            >
+                                                <FaEdit />
+                                            </button>
 
-                                        <button
-                                            className="my-notification-delete"
-                                            onClick={() => deleteNotification(notif._id || notif.id)}
-                                            disabled={deletingId === (notif._id || notif.id)}
-                                            title="Delete notification"
-                                        >
-                                            <FaTrash />
-                                        </button>
-                                    </div>
+                                            <button
+                                                className="my-notification-delete"
+                                                onClick={() => deleteNotification(notif._id || notif.id)}
+                                                disabled={deletingId === (notif._id || notif.id)}
+                                                title="Delete notification"
+                                            >
+                                                <FaTrash />
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
 
                                 <p className="my-notification-message">
