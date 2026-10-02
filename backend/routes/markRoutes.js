@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Mark = require("../models/Mark");
 const FacultySubject = require("../models/FacultySubject");
+const Student = require("../models/Student");
 
 
 const {
@@ -159,13 +160,6 @@ router.put(
   async (req, res) => {
       try {
     const { rollNo } = req.params;
-
-    console.log("=================================");
-    console.log("UPDATE MARKS REQUEST");
-    console.log("Roll No:", rollNo);
-    console.log("Body:", JSON.stringify(req.body, null, 2));
-    console.log("Authenticated User:", req.user);
-    console.log("=================================");
 
     const {
       name,
@@ -545,6 +539,82 @@ router.delete(
   async (req, res) => {
   try {
     const { rollNo } = req.params;
+
+    // ---------------------------------------------------
+    // DEPARTMENT SCOPING
+    //
+    // Deletion removes every semester for that student, so
+    // it is the most destructive marks operation and must
+    // be limited to the faculty's own department. The
+    // department is read from the token, never the body.
+    // ---------------------------------------------------
+
+    const facultyId = req.user?.facultyId;
+    const facultyDepartment = String(
+      req.user.department || ""
+    ).trim().toLowerCase();
+
+    if (!facultyId) {
+      return res.status(401).json({
+        success: false,
+        message:
+          "Unauthorized. Logged-in faculty information not found.",
+      });
+    }
+
+    if (!facultyDepartment) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "Your account has no department. Contact the admin.",
+      });
+    }
+
+    // Verify the faculty is actually assigned to this
+    // department before any deletion takes place.
+    const hasAssignment =
+      await FacultySubject.exists({
+        facultyId: String(facultyId).trim(),
+        isActive: true,
+        department: {
+          $regex: new RegExp(
+            "^" + facultyDepartment.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "$",
+            "i"
+          ),
+        },
+      });
+
+    if (!hasAssignment) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "You are not assigned to any subject in this department.",
+      });
+    }
+
+    // The mark record itself has no department field, so
+    // the student record is used to confirm the target
+    // belongs to the faculty's department.
+    const student = await Student.findOne({
+      studentId: rollNo.trim(),
+    });
+
+    if (student) {
+      const studentDepartment = String(
+        student.department || ""
+      ).trim().toLowerCase();
+
+      if (
+        studentDepartment &&
+        studentDepartment !== facultyDepartment
+      ) {
+        return res.status(403).json({
+          success: false,
+          message:
+            "You can only delete marks for students in your own department",
+        });
+      }
+    }
 
     const deleted = await Mark.deleteMany({
       rollNo: rollNo.trim(),

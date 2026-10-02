@@ -11,6 +11,37 @@ const {
   isHod,
 } = require("../middleware/authMiddleware");
 
+// Produces a 12 character password with at least one from
+// each class: upper, lower, digit and special. Used when
+// the admin creates a faculty account without a password.
+const randomFacultyPassword = () => {
+  const pools = [
+    "ABCDEFGHJKLMNPQRSTUVWXYZ",
+    "abcdefghijkmnpqrstuvwxyz",
+    "23456789",
+    "!@#$%",
+  ];
+
+  const all = pools.join("");
+
+  const pick = (set) =>
+    set[Math.floor(Math.random() * set.length)];
+
+  const password = Array.from({ length: 12 }).fill(null);
+
+  // Guarantee one character from each class...
+  pools.forEach((pool, index) => {
+    password[index] = pick(pool);
+  });
+
+  // ...then fill the rest from the full alphabet.
+  for (let i = pools.length; i < password.length; i++) {
+    password[i] = pick(all);
+  }
+
+  return password.join("");
+};
+
 // =====================================================
 // GET ALL FACULTY
 // =====================================================
@@ -146,7 +177,7 @@ router.post(
       phone,
       isHod,
     } = req.body;
-const facultyPassword = password || "Faculty@123";
+
     if (
       !name ||
       !email ||
@@ -189,8 +220,20 @@ const facultyPassword = password || "Faculty@123";
       });
     }
 
+    // The previous default of "Faculty@123" was a known
+    // value, the same for every account, and it is not in
+    // this codebase's seed data. A guessed faculty email
+    // plus that well-known password would sign straight in.
+    // If the admin does not supply a password, generate a
+    // random one and hand it back once in the response so
+    // they can pass it to the faculty member.
+    const generatedPassword =
+      !password || !String(password).trim()
+        ? randomFacultyPassword()
+        : String(password).trim();
+
     // Hash password
-    const hashedPassword = await bcrypt.hash(facultyPassword, 10);
+    const hashedPassword = await bcrypt.hash(generatedPassword, 10);
 
     // Create faculty
     const faculty = await User.create({
@@ -219,6 +262,13 @@ const facultyPassword = password || "Faculty@123";
       success: true,
       message: "Faculty created successfully",
       faculty: facultyResponse,
+
+      // Only ever returned once, at creation time, and only
+      // when the admin did not supply a password. It is
+      // deliberately absent on every read/update call.
+      ...(generatedPassword
+        ? { temporaryPassword: generatedPassword }
+        : {}),
     });
   } catch (error) {
     console.error("Create Faculty Error:", error);

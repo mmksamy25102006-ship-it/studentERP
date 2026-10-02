@@ -50,8 +50,6 @@ const Login = () => {
     try {
       setLoading(true);
 
-      console.log(formData);
-
       const response = await axios.post(
         "https://studenterp-5wuj.onrender.com/api/auth/login",
         formData
@@ -120,14 +118,25 @@ const Login = () => {
           </div>
 
           <h1>
-            student<span>ERB</span>
+            {formData.role === "student" && (
+              <>
+                Student
+                <span>ERP</span>
+              </>
+            )}
+            {formData.role === "faculty" && (
+              <>
+                Faculty
+                <span>ERP</span>
+              </>
+            )}
+            {formData.role === "admin" && (
+              <>
+                Admin
+                <span>ERP</span>
+              </>
+            )}
           </h1>
-
-          <p>
-            AI STUDENT ASSISTANT · BRIGHT HORIZON
-            <br />
-            INSTITUTE OF TECHNOLOGY
-          </p>
 
         </div>
 

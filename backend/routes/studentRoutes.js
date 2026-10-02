@@ -75,9 +75,6 @@ router.post(
   isAdmin,
   async (req, res) => {
   try {
-    console.log("POST /api/students");
-    console.log("Received data:", req.body);
-
     let {
       studentId,
       name,

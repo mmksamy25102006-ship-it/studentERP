@@ -105,6 +105,71 @@ function HodOnly({ children }) {
 
 
 // =====================================================
+// ROLE GUARDS
+//
+// DashboardLayout only checks that someone is signed in,
+// not which role they have. Without these wrappers a
+// student could navigate straight to /adminstudents,
+// /adminfaculty, /faculty/marks and so on. The page would
+// render and any new API query would fail on the backend's
+// role check, but the layout and admin UI should not even
+// appear for the wrong role. Each wrapper bounces the user
+// to the landing page of their own role instead.
+// =====================================================
+
+function RequireRole({ roles, children }) {
+  const { user } = useAuth();
+
+  if (user && roles.includes(user.role)) {
+    return children;
+  }
+
+  const fallback =
+    user?.role === "admin"
+      ? "/admin-dashboard"
+      : user?.role === "faculty"
+        ? user?.isHod
+          ? "/hod-dashboard"
+          : "/faculty-dashboard"
+        : user?.role === "student"
+          ? "/dashboard"
+          : "/";
+
+  return <Navigate to={fallback} replace />;
+}
+
+function AdminOnly({ children }) {
+  return <RequireRole roles={["admin"]}>{children}</RequireRole>;
+}
+
+function FacultyOnly({ children }) {
+  // The HOD is a faculty member, so "faculty" covers both.
+  return (
+    <RequireRole roles={["faculty"]}>{children}</RequireRole>
+  );
+}
+
+function StudentOnly({ children }) {
+  return (
+    <RequireRole roles={["student"]}>{children}</RequireRole>
+  );
+}
+
+// Any signed-in user may open a profile page reached from
+// a QR code. It just must not be open to the anonymous
+// public, which is what the current route does.
+function RequireAuth({ children }) {
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated) {
+    return children;
+  }
+
+  return <Navigate to="/" replace />;
+}
+
+
+// =====================================================
 // DASHBOARD LAYOUT
 // =====================================================
 
@@ -206,52 +271,99 @@ function DashboardLayout() {
 
             <Route
               path="/dashboard"
-              element={<Dashboard />}
+              element={
+                <StudentOnly>
+                  <Dashboard />
+                </StudentOnly>
+              }
             />
-<Route path="/profile" element={<Profile />} />
+<Route
+              path="/profile"
+              element={
+                <StudentOnly>
+                  <Profile />
+                </StudentOnly>
+              }
+            />
             <Route
               path="/attendance"
-              element={<Attendance />}
+              element={
+                <StudentOnly>
+                  <Attendance />
+                </StudentOnly>
+              }
             />
 
             <Route
               path="/marks"
-              element={<Marks />}
+              element={
+                <StudentOnly>
+                  <Marks />
+                </StudentOnly>
+              }
             />
 
             <Route
               path="/assignments"
-              element={<Assignments />}
+              element={
+                <StudentOnly>
+                  <Assignments />
+                </StudentOnly>
+              }
             />
 
             <Route
               path="/prediction"
-              element={<Prediction />}
+              element={
+                <StudentOnly>
+                  <Prediction />
+                </StudentOnly>
+              }
             />
 
             <Route
               path="/studenttimetable"
-              element={<TimetablePage />}
+              element={
+                <StudentOnly>
+                  <TimetablePage />
+                </StudentOnly>
+              }
             />
 
             <Route
               path="/fees"
-              element={<Fees />}
+              element={
+                <StudentOnly>
+                  <Fees />
+                </StudentOnly>
+              }
             />
 
             <Route
               path="/library"
-              element={<Library />}
+              element={
+                <StudentOnly>
+                  <Library />
+                </StudentOnly>
+              }
             />
 
             <Route
               path="/notices"
-              element={<Notices />}
+              element={
+                <StudentOnly>
+                  <Notices />
+                </StudentOnly>
+              }
             />
 
             <Route
               path="/requests"
-              element={<Requests />}
+              element={
+                <StudentOnly>
+                  <Requests />
+                </StudentOnly>
+              }
             />
 
             {/* =========================================
@@ -274,12 +386,20 @@ function DashboardLayout() {
 
             <Route
               path="/faculty/timetable"
-              element={<FacultyTimetable />}
+              element={
+                <FacultyOnly>
+                  <FacultyTimetable />
+                </FacultyOnly>
+              }
             />
 
             <Route
               path="/faculty/notices"
-              element={<FacultyNotification />}
+              element={
+                <FacultyOnly>
+                  <FacultyNotification />
+                </FacultyOnly>
+              }
             />
 
             {/* =========================================
@@ -288,47 +408,83 @@ function DashboardLayout() {
 
             <Route
               path="/adminexams"
-              element={<Exams />}
+              element={
+                <AdminOnly>
+                  <Exams />
+                </AdminOnly>
+              }
             />
 
             <Route
               path="/admin-dashboard"
-              element={<AdminDashboard />}
+              element={
+                <AdminOnly>
+                  <AdminDashboard />
+                </AdminOnly>
+              }
             />
 
             <Route
               path="/admin/departments"
-              element={<Department />}
+              element={
+                <AdminOnly>
+                  <Department />
+                </AdminOnly>
+              }
             />
 
             <Route
               path="/admin/results"
-              element={<Result />}
+              element={
+                <AdminOnly>
+                  <Result />
+                </AdminOnly>
+              }
             />
 
             <Route
               path="/admin/fees"
-              element={<AdminFees />}
+              element={
+                <AdminOnly>
+                  <AdminFees />
+                </AdminOnly>
+              }
             />
 
             <Route
               path="/adminstudents"
-              element={<Students />}
+              element={
+                <AdminOnly>
+                  <Students />
+                </AdminOnly>
+              }
             />
 
             <Route
               path="/adminfaculty"
-              element={<Faculty />}
+              element={
+                <AdminOnly>
+                  <Faculty />
+                </AdminOnly>
+              }
             />
 
             <Route
               path="/admincourses"
-              element={<Courses />}
+              element={
+                <AdminOnly>
+                  <Courses />
+                </AdminOnly>
+              }
             />
 
             <Route
               path="/adminreports"
-              element={<Reports />}
+              element={
+                <AdminOnly>
+                  <Reports />
+                </AdminOnly>
+              }
             />
 
             {/* =========================================
@@ -337,47 +493,83 @@ function DashboardLayout() {
 
             <Route
               path="/faculty-dashboard"
-              element={<FacultyDashboard />}
+              element={
+                <FacultyOnly>
+                  <FacultyDashboard />
+                </FacultyOnly>
+              }
             />
 
             <Route
               path="/faculty/classes"
-              element={<MyClasses />}
+              element={
+                <FacultyOnly>
+                  <MyClasses />
+                </FacultyOnly>
+              }
             />
 
             <Route
               path="/faculty/attendance"
-              element={<FacultyAttendance />}
+              element={
+                <FacultyOnly>
+                  <FacultyAttendance />
+                </FacultyOnly>
+              }
             />
 
             <Route
               path="/faculty/marks"
-              element={<FacultyMarks />}
+              element={
+                <FacultyOnly>
+                  <FacultyMarks />
+                </FacultyOnly>
+              }
             />
 
             <Route
               path="/faculty/assignments"
-              element={<FacultyAssignments />}
+              element={
+                <FacultyOnly>
+                  <FacultyAssignments />
+                </FacultyOnly>
+              }
             />
 
             <Route
               path="/faculty/profile"
-              element={<FacultyProfile />}
+              element={
+                <FacultyOnly>
+                  <FacultyProfile />
+                </FacultyOnly>
+              }
             />
 
             <Route
               path="/faculty/library"
-              element={<FacultyLibrary />}
+              element={
+                <FacultyOnly>
+                  <FacultyLibrary />
+                </FacultyOnly>
+              }
             />
 
             <Route
               path="/faculty/requests"
-              element={<FacultyRequests />}
+              element={
+                <FacultyOnly>
+                  <FacultyRequests />
+                </FacultyOnly>
+              }
             />
 
             <Route
               path="/faculty/myleave"
-              element={<FacultyLeave />}
+              element={
+                <FacultyOnly>
+                  <FacultyLeave />
+                </FacultyOnly>
+              }
             />
 
             {/* =========================================
@@ -494,9 +686,13 @@ function App() {
                 element={<AdminLogin />}
               />
               <Route
-  path="/student/:studentId"
-  element={<StudentProfile />}
-/>
+                path="/student/:studentId"
+                element={
+                  <RequireAuth>
+                    <StudentProfile />
+                  </RequireAuth>
+                }
+              />
               {/* =========================================
                   DASHBOARD LAYOUT
               ========================================= */}

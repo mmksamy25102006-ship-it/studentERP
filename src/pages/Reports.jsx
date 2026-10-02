@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaChartBar,
   FaFilePdf,
@@ -16,23 +16,58 @@ import jsPDF from "jspdf";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
+import API from "./../api";
+
 import "./Reports.css";
 
 
 const Reports = () => {
 
+  const [students, setStudents] = useState([]);
+  const [faculty, setFaculty] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [fees, setFees] = useState([]);
 
-  const students =
-    JSON.parse(localStorage.getItem("students")) || [];
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [studentRes, facultyRes, feeRes] =
+          await Promise.all([
+            API.get("/students"),
+            API.get("/faculty"),
+            API.get("/fees"),
+          ]);
 
-  const faculty =
-    JSON.parse(localStorage.getItem("faculty")) || [];
+        setStudents(
+          Array.isArray(studentRes.data)
+            ? studentRes.data
+            : []
+        );
 
-  const courses =
-    JSON.parse(localStorage.getItem("courses")) || [];
+        setFaculty(
+          Array.isArray(facultyRes.data)
+            ? facultyRes.data
+            : []
+        );
 
-  const fees =
-    JSON.parse(localStorage.getItem("fees")) || [];
+        setFees(
+          Array.isArray(feeRes.data?.fees)
+            ? feeRes.data.fees
+            : []
+        );
+
+        // No Course collection exists in the backend yet.
+        setCourses([]);
+      } catch {
+        setStudents([]);
+        setFaculty([]);
+        setCourses([]);
+        setFees([]);
+      }
+    };
+
+    loadData();
+  }, []);
 
 
   const totalFees = fees.reduce(

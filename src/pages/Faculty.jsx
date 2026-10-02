@@ -332,9 +332,21 @@ const Faculty = () => {
           formattedFaculty,
         ]);
 
+        // When no password was supplied, the backend
+        // generates a random one and returns it exactly
+        // once. Show it to the admin so they can hand it
+        // to the faculty member. When a password was set,
+        // nothing extra is returned.
+        const generatedPassword =
+          response.data?.temporaryPassword;
+
         alert(
-          "Faculty added successfully\n\n" +
-            "Default login password: Faculty@123"
+          generatedPassword
+            ? "Faculty added successfully\n\n" +
+                "Temporary login password: " +
+                generatedPassword +
+                "\nShare this with the faculty member."
+            : "Faculty added successfully"
         );
       }
 

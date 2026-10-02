@@ -37,7 +37,31 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors());
+
+// CORS is restricted to the deployed frontend and local
+// development. A fully open Origin header lets any website
+// send state-changing requests authenticated with a stolen
+// token.
+const allowedOrigins = [
+  "https://mmksamy25102006-ship-it.github.io",
+  "http://localhost:5173",
+  "http://localhost:3000",
+];
+
+app.use(
+  cors({
+    origin(origin, callback) {
+      // Non-browser clients (curl, Postman, the Render
+      // health check) send no Origin header and are allowed.
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

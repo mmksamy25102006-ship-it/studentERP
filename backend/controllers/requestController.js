@@ -342,6 +342,41 @@ const updateRequestStatus = async (req, res) => {
       });
     }
 
+    // Faculty may only action requests from their own
+    // department. The department is read from the token,
+    // never from the body, so it cannot be widened. A
+    // faculty member without a department cannot action
+    // any request, which is safer than silently allowing
+    // cross-department decisions.
+    const facultyDepartment = String(
+      req.user.department || ""
+    ).trim().toLowerCase();
+
+    const requestDepartment = String(
+      request.department || ""
+    ).trim().toLowerCase();
+
+    if (req.user.role === "faculty") {
+      if (!facultyDepartment) {
+        return res.status(403).json({
+          success: false,
+          message:
+            "Your account has no department. Contact the admin.",
+        });
+      }
+
+      if (
+        requestDepartment &&
+        requestDepartment !== facultyDepartment
+      ) {
+        return res.status(403).json({
+          success: false,
+          message:
+            "You can only action requests from your own department",
+        });
+      }
+    }
+
     if (request.status !== "pending") {
       return res.status(400).json({
         success: false,

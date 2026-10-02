@@ -35,32 +35,51 @@ const AdminDashboard = () => {
   ========================= */
 
   useEffect(() => {
-    const loadData = () => {
-      const studentData =
-        JSON.parse(localStorage.getItem("students")) || [];
+    const loadData = async () => {
+      try {
+        const [studentRes, facultyRes, feeRes] =
+          await Promise.all([
+            API.get("/students"),
+            API.get("/faculty"),
+            API.get("/fees"),
+          ]);
 
-      const facultyData =
-        JSON.parse(localStorage.getItem("faculty")) || [];
+        // /students returns a bare array.
+        setStudents(
+          Array.isArray(studentRes.data)
+            ? studentRes.data
+            : []
+        );
 
-      const courseData =
-        JSON.parse(localStorage.getItem("courses")) || [];
+        // /faculty returns a bare array.
+        setFaculty(
+          Array.isArray(facultyRes.data)
+            ? facultyRes.data
+            : []
+        );
 
-      const feeData =
-        JSON.parse(localStorage.getItem("fees")) || [];
+        // /fees returns { success, fees }.
+        setFees(
+          Array.isArray(feeRes.data?.fees)
+            ? feeRes.data.fees
+            : []
+        );
 
-      setStudents(studentData);
-      setFaculty(facultyData);
-      setCourses(courseData);
-      setFees(feeData);
+        // The backend has no Course collection yet, so the
+        // Courses card stays at zero rather than reading
+        // stale localStorage.
+        setCourses([]);
+      } catch {
+        // Backend unavailable. Keep the dashboard usable
+        // with empty states instead of crashing.
+        setStudents([]);
+        setFaculty([]);
+        setCourses([]);
+        setFees([]);
+      }
     };
 
     loadData();
-
-    window.addEventListener("storage", loadData);
-
-    return () => {
-      window.removeEventListener("storage", loadData);
-    };
   }, []);
 
 

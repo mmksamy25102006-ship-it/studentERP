@@ -104,7 +104,8 @@ const AdminLogin = () => {
           </div>
 
           <h1>
-            student<span>ERB</span>
+            Admin
+            <span>ERP</span>
           </h1>
 
           <p>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
-import axios from "axios";
+import API from "./../api";
 
 import {
   FaQrcode,
@@ -60,16 +60,6 @@ const QRCodeCard = () => {
         =====================================================
         */
 
-        console.log(
-          "QR STUDENT ID:",
-          studentId
-        );
-
-        console.log(
-          "LOCAL STORAGE:",
-          { ...localStorage }
-        );
-
         if (!studentId) {
           console.error(
             "No student ID found in localStorage."
@@ -85,15 +75,10 @@ const QRCodeCard = () => {
         =====================================================
         */
 
-        const response = await axios.get(
-          `https://studenterp-5wuj.onrender.com/api/students/${encodeURIComponent(
+        const response = await API.get(
+          `/students/${encodeURIComponent(
             studentId
           )}`
-        );
-
-        console.log(
-          "QR STUDENT RESPONSE:",
-          response.data
         );
 
         setStudent(

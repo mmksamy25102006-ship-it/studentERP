@@ -131,7 +131,6 @@ const register = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Server Error",
-      error: error.message,
     });
   }
 };
@@ -142,8 +141,6 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    console.log("Request Body:", req.body);
-
     const { email, password, role } = req.body;
 
     // Validate input
@@ -154,21 +151,22 @@ const login = async (req, res) => {
       });
     }
 
-    console.log("Email:", email);
-    console.log("Role:", role);
-
-    // Find user by email + role
+    // Find user by email + role.
+    //
+    // A missing user and a wrong password return the SAME
+    // status and message. If they differed, an attacker could
+    // enumerate which emails exist on the system and then
+    // brute force only those accounts. The single generic
+    // response removes that oracle.
     const user = await User.findOne({
       email: email.toLowerCase().trim(),
       role,
     });
 
-    console.log("User:", user);
-
     if (!user) {
-      return res.status(404).json({
+      return res.status(401).json({
         success: false,
-        message: "User not found",
+        message: "Invalid email or password",
       });
     }
 
@@ -186,12 +184,10 @@ const login = async (req, res) => {
       user.password
     );
 
-    console.log("Password Match:", isPasswordCorrect);
-
     if (!isPasswordCorrect) {
       return res.status(401).json({
         success: false,
-        message: "Invalid password",
+        message: "Invalid email or password",
       });
     }
 
@@ -244,7 +240,6 @@ const login = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Server Error",
-      error: error.message,
     });
   }
 };

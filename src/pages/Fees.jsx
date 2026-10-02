@@ -49,8 +49,6 @@ const Fees = () => {
 
         const studentId = getStudentId();
 
-        console.log("Logged-in Student ID:", studentId);
-
         const response = await API.get("/fees");
 
         const allFees = response.data?.fees || [];
@@ -126,6 +124,22 @@ const Fees = () => {
     const semester = fee.semester || "N/A";
     const status = fee.status || "Paid";
 
+    // Receipt fields are written into a new HTML document,
+    // so any value coming from the database must be escaped
+    // first. Otherwise a name such as
+    // '<img src=x onerror=...>' would execute as markup.
+    const escapeHTML = (value) =>
+      String(value ?? "").replace(
+        /[&<>"']/g,
+        (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[char]
+      );
+
     /*
       Try to find a payment date from common possible fields.
       If your backend uses another field, the receipt will simply
@@ -176,7 +190,7 @@ const Fees = () => {
         />
 
         <title>
-          Fee Receipt - ${regNo}
+          Fee Receipt - ${escapeHTML(regNo)}
         </title>
 
         <style>
@@ -567,7 +581,7 @@ const Fees = () => {
             </div>
 
             <div class="receipt-number">
-              Receipt No: ${receiptNumber}
+              Receipt No: ${escapeHTML(receiptNumber)}
             </div>
 
           </div>
@@ -581,7 +595,7 @@ const Fees = () => {
               </span>
 
               <span class="info-value">
-                ${studentName}
+                ${escapeHTML(studentName)}
               </span>
             </div>
 
@@ -592,7 +606,7 @@ const Fees = () => {
               </span>
 
               <span class="info-value">
-                ${regNo}
+                ${escapeHTML(regNo)}
               </span>
             </div>
 
@@ -603,7 +617,7 @@ const Fees = () => {
               </span>
 
               <span class="info-value">
-                ${department}
+                ${escapeHTML(department)}
               </span>
             </div>
 
@@ -614,7 +628,7 @@ const Fees = () => {
               </span>
 
               <span class="info-value">
-                ${semester}
+                ${escapeHTML(semester)}
               </span>
             </div>
 
@@ -686,7 +700,7 @@ const Fees = () => {
             </span>
 
             <span class="status-value">
-              ${status}
+              ${escapeHTML(status)}
             </span>
 
           </div>
@@ -713,7 +727,7 @@ const Fees = () => {
             <div class="footer-item">
               Registration No.
               <strong>
-                ${regNo}
+                ${escapeHTML(regNo)}
               </strong>
             </div>
 

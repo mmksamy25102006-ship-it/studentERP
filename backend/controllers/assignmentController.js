@@ -75,10 +75,16 @@ const createAssignment = async (req, res) => {
       subject,
       description,
       dueDate,
-      facultyId,
-      facultyName,
       studentIds,
     } = req.body;
+
+    // Faculty identity comes from the token. The body may
+    // still carry a facultyId from older clients, but it is
+    // never trusted: a caller could otherwise create an
+    // assignment attributed to somebody else.
+    const facultyId =
+      req.user.facultyId || req.user._id?.toString() || "";
+    const facultyName = req.user.name || "";
 
     if (
       !title ||
@@ -138,14 +144,34 @@ const deleteAssignment = async (req, res) => {
       });
     }
 
-    const assignment = await Assignment.findByIdAndDelete(id);
+    const existing = await Assignment.findById(id);
 
-    if (!assignment) {
+    if (!existing) {
       return res.status(404).json({
         success: false,
         message: "Assignment not found",
       });
     }
+
+    // Only the faculty who created the assignment may
+    // delete it. The owner is compared against the token
+    // identity, so another faculty member cannot remove a
+    // colleague's assignment.
+    const facultyId =
+      req.user.facultyId || req.user._id?.toString() || "";
+
+    if (
+      String(existing.facultyId || "").trim() !==
+        String(facultyId).trim()
+    ) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "You can only delete assignments you created",
+      });
+    }
+
+    await Assignment.findByIdAndDelete(id);
 
     res.status(200).json({
       success: true,
