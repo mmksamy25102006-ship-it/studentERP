@@ -64,6 +64,9 @@ import AdminFees from "./pages/admin/Fees";
 // Context
 import { ThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./context/AuthContext";
+
+import { NotificationPreferencesProvider } from "./context/NotificationPreferencesContext";
+
 import { NotificationProvider } from "./context/NotificationContext";
 
 // CSS
@@ -666,6 +669,11 @@ function App() {
 
       <AuthProvider>
 
+        {/* Must sit above NotificationProvider, which
+            reads the master switch and the category
+            filters when polling for notices. */}
+        <NotificationPreferencesProvider>
+
         <NotificationProvider>
 
 <BrowserRouter basename="/studentERP">
@@ -707,6 +715,8 @@ function App() {
           </BrowserRouter>
 
         </NotificationProvider>
+
+        </NotificationPreferencesProvider>
 
       </AuthProvider>
 

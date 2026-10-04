@@ -1,5 +1,21 @@
 const mongoose = require("mongoose");
 
+// Areas of the ERP a notice belongs to. Students pick which
+// of these they want alerts for on the Settings page, so a
+// notice has to say which area it concerns.
+//
+// Kept in sync with NOTIFICATION_CATEGORIES in
+// src/context/NotificationPreferencesContext.jsx
+const VALID_CATEGORIES = [
+  "notices",
+  "attendance",
+  "marks",
+  "fees",
+  "assignments",
+  "requests",
+  "library",
+];
+
 const NotificationSchema = new mongoose.Schema(
   {
     title: {
@@ -35,6 +51,16 @@ const NotificationSchema = new mongoose.Schema(
       default: "info",
     },
 
+    // Which area of the ERP this notice is about. Drives
+    // the per-category switches in Settings > Notifications.
+    // Optional so every notice created before this field
+    // existed keeps working, defaulting to "notices".
+    category: {
+      type: String,
+      enum: VALID_CATEGORIES,
+      default: "notices",
+    },
+
     // Used for automatic unread notification count
     read: {
       type: Boolean,
@@ -46,4 +72,11 @@ const NotificationSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Notification", NotificationSchema);
+const Notification = mongoose.model(
+  "Notification",
+  NotificationSchema
+);
+
+Notification.VALID_CATEGORIES = VALID_CATEGORIES;
+
+module.exports = Notification;

@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import API from "./../../api";
 import { useAuth } from "../../context/AuthContext";
+import {
+    NOTIFICATION_CATEGORIES,
+} from "../../context/NotificationPreferencesContext";
 import { FaTrash, FaPaperPlane, FaBell, FaEdit } from "react-icons/fa";
 import "./FacultyNotification.css";
 
@@ -10,6 +13,11 @@ function FacultyNotification() {
 
     const [title, setTitle] = useState("");
     const [message, setMessage] = useState("");
+
+    // Which area of the ERP the notice is about. Students
+    // choose their own per-area alerts in Settings, so the
+    // sender has to say what this notice concerns.
+    const [category, setCategory] = useState("notices");
 
     const [notifications, setNotifications] = useState([]);
     const [sending, setSending] = useState(false);
@@ -100,6 +108,7 @@ function FacultyNotification() {
                     {
                         title,
                         message,
+                        category,
                     }
                 );
             } else {
@@ -108,6 +117,7 @@ function FacultyNotification() {
                     {
                         title,
                         message,
+                        category,
                     }
                 );
             }
@@ -149,6 +159,7 @@ function FacultyNotification() {
         setEditingId(notif._id || notif.id);
         setTitle(notif.title);
         setMessage(notif.message);
+        setCategory(notif.category || "notices");
         setError("");
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
@@ -161,6 +172,7 @@ function FacultyNotification() {
         setEditingId(null);
         setTitle("");
         setMessage("");
+        setCategory("notices");
     };
 
     /* ==========================================
@@ -257,6 +269,20 @@ function FacultyNotification() {
                         visible to students immediately.
                     </div>
                 )}
+
+                <select
+                    value={category}
+                    onChange={(e)=>setCategory(e.target.value)}
+                >
+                    {NOTIFICATION_CATEGORIES.map((item) => (
+                        <option
+                            key={item.key}
+                            value={item.key}
+                        >
+                            {item.label}
+                        </option>
+                    ))}
+                </select>
 
                 <input
                     type="text"

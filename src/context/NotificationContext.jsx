@@ -2,10 +2,13 @@ import React, {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 
 import { useAuth } from "./AuthContext";
+
+import { useNotificationPreferences } from "./NotificationPreferencesContext";
 
 import API from "./../api";
 
@@ -32,9 +35,31 @@ export const NotificationProvider = ({ children }) => {
 
   const { isAuthenticated } = useAuth();
 
+  /*
+  ========================================
+  NOTIFICATION PREFERENCES
+
+  The Settings > Notifications manager writes these.
+  "notificationsEnabled" used to be the only flag and
+  nothing ever read it back, so the master switch is now
+  taken from the preferences store.
+  ========================================
+  */
+
+  const { preferences, notify } =
+    useNotificationPreferences();
+
   const [notifications, setNotifications] = useState([]);
 
   const [loading, setLoading] = useState(true);
+
+  /*
+  Ids already alerted, so the 30 second poll returning the
+  same unread notice does not fire another alert on every
+  tick.
+  */
+
+  const alertedIdsRef = useRef(new Set());
 
 
   // ========================================
@@ -48,6 +73,33 @@ export const NotificationProvider = ({ children }) => {
       const response = await API.get("/notifications");
 
       setNotifications(response.data);
+
+      /*
+      Raise alerts for anything unread that has not been
+      announced yet. `notify` applies the channel, sound
+      and category rules from Settings.
+      */
+
+      const fresh = (Array.isArray(response.data)
+        ? response.data
+        : []
+      ).filter((item) => {
+        if (item.read !== false) {
+          return false;
+        }
+
+        if (alertedIdsRef.current.has(item._id)) {
+          return false;
+        }
+
+        alertedIdsRef.current.add(item._id);
+
+        return true;
+      });
+
+      if (fresh.length > 0) {
+        notify(fresh);
+      }
 
     } catch (error) {
 
@@ -85,6 +137,19 @@ export const NotificationProvider = ({ children }) => {
       return;
     }
 
+    // The master switch in Settings > Notifications.
+    // While it is off, hold no data and stop polling so
+    // the app is not hitting the endpoint for something
+    // the user muted.
+    if (!preferences.enabled) {
+      setNotifications([]);
+      setLoading(false);
+
+      alertedIdsRef.current.clear();
+
+      return;
+    }
+
     // Fetch immediately
     fetchNotifications();
 
@@ -100,7 +165,7 @@ export const NotificationProvider = ({ children }) => {
     // Cleanup interval
     return () => clearInterval(interval);
 
-  }, [isAuthenticated]);
+  }, [isAuthenticated, preferences.enabled, notify]);
 
 
   // ========================================

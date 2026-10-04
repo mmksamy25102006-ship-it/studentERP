@@ -1,0 +1,1019 @@
+/* =========================================================
+   DIGITAL ID CARD
+   Modal shell + printable card
+
+   NOTE: everything inside `.idc-card` is rendered by
+   html2canvas when the user saves a PNG or PDF, so that
+   block deliberately avoids `backdrop-filter`, CSS
+   variables, `filter` and `oklch()` colours. Stick to
+   plain hex/rgba and simple gradients there or the
+   exported image comes out blank.
+========================================================= */
+
+
+/* =========================================================
+   OVERLAY
+========================================================= */
+
+.idc-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 10000;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    background: rgba(2, 6, 23, 0.78);
+
+    backdrop-filter: blur(10px);
+
+    -webkit-backdrop-filter: blur(10px);
+
+    animation: idc-fade 0.2s ease;
+}
+
+
+@keyframes idc-fade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   SHELL
+========================================================= */
+
+.idc-shell {
+    width: 480px;
+
+    max-width: 100%;
+
+    max-height: calc(100vh - 40px);
+
+    overflow-y: auto;
+
+    box-sizing: border-box;
+
+    padding: 20px;
+
+    border-radius: 20px;
+
+    border: 1px solid rgba(148, 163, 184, 0.18);
+
+    background: linear-gradient(
+        150deg,
+        rgba(20, 28, 48, 0.97),
+        rgba(12, 17, 32, 0.98)
+    );
+
+    box-shadow: 0 32px 90px rgba(0, 0, 0, 0.6);
+
+    animation: idc-rise 0.24s ease;
+}
+
+
+@keyframes idc-rise {
+    from {
+        opacity: 0;
+
+        transform: translateY(14px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* =========================================================
+   SHELL HEADER
+========================================================= */
+
+.idc-shell-header {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 14px;
+
+    margin-bottom: 18px;
+}
+
+
+.idc-shell-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    min-width: 0;
+}
+
+
+.idc-shell-title > svg {
+    flex: 0 0 auto;
+
+    font-size: 22px;
+
+    color: #60a5fa;
+}
+
+
+.idc-shell-title h2 {
+    margin: 0;
+
+    font-size: 19px;
+
+    line-height: 1.25;
+
+    font-weight: 700;
+
+    color: #f8fafc;
+}
+
+
+.idc-shell-title p {
+    margin: 3px 0 0;
+
+    font-size: 12.5px;
+
+    line-height: 1.4;
+
+    color: #94a3b8;
+}
+
+
+.idc-close {
+    flex: 0 0 auto;
+
+    width: 32px;
+
+    height: 32px;
+
+    padding: 0;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(148, 163, 184, 0.2);
+
+    background: rgba(255, 255, 255, 0.06);
+
+    color: #cbd5e1;
+
+    font-size: 22px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+
+.idc-close:hover {
+    background: rgba(255, 255, 255, 0.13);
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+.idc-body {
+    width: 100%;
+}
+
+
+/* =========================================================
+   LOADING / ERROR STATES
+========================================================= */
+
+.idc-state {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    padding: 46px 20px;
+
+    border-radius: 14px;
+
+    border: 1px dashed rgba(148, 163, 184, 0.22);
+
+    background: rgba(255, 255, 255, 0.025);
+
+    text-align: center;
+}
+
+
+.idc-state > svg {
+    font-size: 26px;
+
+    color: #60a5fa;
+}
+
+
+.idc-state p {
+    margin: 0;
+
+    max-width: 280px;
+
+    font-size: 13.5px;
+
+    line-height: 1.55;
+
+    color: #94a3b8;
+}
+
+
+.idc-state-error > svg {
+    color: #fbbf24;
+}
+
+
+.idc-spinner {
+    animation: idc-spin 0.9s linear infinite;
+}
+
+
+@keyframes idc-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+.idc-retry {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    height: 34px;
+
+    padding: 0 16px;
+
+    border-radius: 9px;
+
+    border: 1px solid rgba(96, 165, 250, 0.45);
+
+    background: rgba(37, 99, 235, 0.18);
+
+    color: #dbeafe;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+
+.idc-retry:hover {
+    background: rgba(37, 99, 235, 0.3);
+}
+
+
+/* =========================================================
+   THE CARD
+   Keep this block html2canvas safe.
+========================================================= */
+
+.idc-card {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 16px;
+
+    border-radius: 16px;
+
+    border: 1px solid rgba(96, 165, 250, 0.35);
+
+    background: linear-gradient(
+        145deg,
+        #10203c 0%,
+        #131a34 55%,
+        #1c1740 100%
+    );
+
+    color: #ffffff;
+
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* ---------- top strip ---------- */
+
+.idc-topbar {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding-bottom: 10px;
+
+    margin-bottom: 14px;
+
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+
+.idc-brand {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    font-size: 14.5px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.4px;
+
+    color: #ffffff;
+}
+
+
+.idc-brand svg {
+    font-size: 14px;
+
+    color: #60a5fa;
+}
+
+
+.idc-brand-sub {
+    flex: 1 1 auto;
+
+    font-size: 10.5px;
+
+    line-height: 1.3;
+
+    color: #8fa3c8;
+
+    overflow: hidden;
+}
+
+
+.idc-card-type {
+    flex: 0 0 auto;
+
+    padding: 4px 9px;
+
+    border-radius: 20px;
+
+    background: rgba(96, 165, 250, 0.16);
+
+    border: 1px solid rgba(96, 165, 250, 0.35);
+
+    font-size: 9.5px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.4px;
+
+    text-transform: uppercase;
+
+    color: #bfdbfe;
+
+    white-space: nowrap;
+}
+
+
+/* ---------- main row ---------- */
+
+.idc-main {
+    display: flex;
+
+    gap: 14px;
+
+    align-items: flex-start;
+}
+
+
+/* ---------- identity block ---------- */
+
+.idc-identity {
+    flex: 0 0 118px;
+
+    width: 118px;
+
+    text-align: center;
+}
+
+
+.idc-photo {
+    position: relative;
+
+    width: 90px;
+
+    height: 108px;
+
+    margin: 0 auto 10px;
+
+    border-radius: 10px;
+
+    border: 2px solid rgba(147, 197, 253, 0.55);
+
+    background: rgba(255, 255, 255, 0.07);
+
+    overflow: hidden;
+}
+
+
+.idc-photo img {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+.idc-photo > span {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 100%;
+
+    height: 100%;
+
+    font-size: 30px;
+
+    font-weight: 700;
+
+    color: #bfdbfe;
+}
+
+
+.idc-verified {
+    position: absolute;
+
+    right: -1px;
+
+    bottom: -1px;
+
+    width: 20px;
+
+    height: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50% 0 8px 0;
+
+    background: #0b1220;
+
+    color: #34d399;
+
+    font-size: 14px;
+}
+
+
+.idc-name {
+    margin: 0;
+
+    font-size: 15px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+
+    color: #ffffff;
+
+    word-break: break-word;
+}
+
+
+.idc-designation {
+    margin: 5px 0 8px;
+
+    font-size: 10.5px;
+
+    line-height: 1.4;
+
+    color: #a5b6d8;
+
+    word-break: break-word;
+}
+
+
+.idc-status {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 3px 9px;
+
+    border-radius: 20px;
+
+    background: rgba(16, 185, 129, 0.15);
+
+    border: 1px solid rgba(52, 211, 153, 0.4);
+
+    font-size: 9.5px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.3px;
+
+    text-transform: uppercase;
+
+    color: #6ee7b7;
+}
+
+
+/* ---------- data panel ---------- */
+
+.idc-panel {
+    flex: 1 1 auto;
+
+    min-width: 0;
+
+    display: flex;
+
+    gap: 12px;
+
+    align-items: flex-start;
+}
+
+
+.idc-grid {
+    flex: 1 1 auto;
+
+    min-width: 0;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 7px;
+}
+
+
+.idc-field {
+    min-width: 0;
+
+    padding: 6px 8px;
+
+    border-radius: 7px;
+
+    background: rgba(255, 255, 255, 0.05);
+
+    border: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+
+.idc-field-wide {
+    grid-column: span 2;
+}
+
+
+.idc-field span {
+    display: flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+    margin-bottom: 3px;
+
+    font-size: 8.5px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.6px;
+
+    text-transform: uppercase;
+
+    color: #8296bd;
+}
+
+
+.idc-field span svg {
+    font-size: 9px;
+
+    color: #60a5fa;
+}
+
+
+.idc-field strong {
+    display: block;
+
+    font-size: 11.5px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+
+    color: #f1f5f9;
+
+    word-break: break-word;
+}
+
+
+/* ---------- QR ---------- */
+
+.idc-qr {
+    flex: 0 0 auto;
+
+    width: 116px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 8px;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+}
+
+
+.idc-qr svg {
+    display: block;
+}
+
+
+.idc-qr-caption {
+    width: 100%;
+
+    text-align: center;
+}
+
+
+.idc-qr-caption span {
+    display: block;
+
+    font-size: 8.5px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.3px;
+
+    color: #1e293b;
+}
+
+
+.idc-qr-caption strong {
+    display: block;
+
+    margin-top: 2px;
+
+    font-size: 7.5px;
+
+    font-weight: 500;
+
+    color: #64748b;
+}
+
+
+/* ---------- bottom strip ---------- */
+
+.idc-footer {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-top: 12px;
+
+    padding-top: 9px;
+
+    border-top: 1px solid rgba(148, 163, 184, 0.2);
+
+    font-size: 9px;
+
+    line-height: 1.4;
+
+    color: #8296bd;
+}
+
+
+.idc-footer-id {
+    flex: 0 0 auto;
+
+    padding: 3px 8px;
+
+    border-radius: 5px;
+
+    background: rgba(255, 255, 255, 0.07);
+
+    border: 1px solid rgba(148, 163, 184, 0.18);
+
+    font-weight: 700;
+
+    letter-spacing: 0.6px;
+
+    color: #cbd5e1;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.idc-actions {
+    display: flex;
+
+    gap: 9px;
+
+    margin-top: 16px;
+}
+
+
+.idc-action-btn {
+    flex: 1 1 0;
+
+    min-width: 0;
+
+    height: 38px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 0 10px;
+
+    border-radius: 10px;
+
+    border: 1px solid rgba(148, 163, 184, 0.2);
+
+    background: rgba(255, 255, 255, 0.05);
+
+    color: #dbeafe;
+
+    font-size: 12.5px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.idc-action-btn:hover:not(:disabled) {
+    background: rgba(37, 99, 235, 0.22);
+
+    border-color: rgba(96, 165, 250, 0.5);
+
+    transform: translateY(-1px);
+}
+
+
+.idc-action-btn:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   LIGHT THEME
+========================================================= */
+
+.light-theme .idc-shell,
+[data-theme="light"] .idc-shell {
+    background: #ffffff;
+
+    border: 1px solid #d9e0ea;
+
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
+}
+
+
+.light-theme .idc-shell-title h2,
+[data-theme="light"] .idc-shell-title h2 {
+    color: #172554;
+}
+
+
+.light-theme .idc-shell-title p,
+[data-theme="light"] .idc-shell-title p {
+    color: #64748b;
+}
+
+
+.light-theme .idc-shell-title > svg,
+[data-theme="light"] .idc-shell-title > svg {
+    color: #2563eb;
+}
+
+
+.light-theme .idc-close,
+[data-theme="light"] .idc-close {
+    background: #f1f5f9;
+
+    border: 1px solid #cbd5e1;
+
+    color: #334155;
+}
+
+
+.light-theme .idc-close:hover,
+[data-theme="light"] .idc-close:hover {
+    background: #e2e8f0;
+
+    color: #0f172a;
+}
+
+
+.light-theme .idc-state,
+[data-theme="light"] .idc-state {
+    background: #f8fafc;
+
+    border-color: #cbd5e1;
+}
+
+
+.light-theme .idc-state p,
+[data-theme="light"] .idc-state p {
+    color: #64748b;
+}
+
+
+.light-theme .idc-action-btn,
+[data-theme="light"] .idc-action-btn {
+    background: #f8fafc;
+
+    border: 1px solid #cbd5e1;
+
+    color: #1e293b;
+}
+
+
+.light-theme .idc-action-btn:hover:not(:disabled),
+[data-theme="light"] .idc-action-btn:hover:not(:disabled) {
+    background: #eef4ff;
+
+    border-color: #2563eb;
+
+    color: #1d4ed8;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 560px) {
+    .idc-overlay {
+        padding: 12px;
+    }
+
+    .idc-shell {
+        padding: 16px;
+
+        border-radius: 16px;
+
+        max-height: calc(100vh - 24px);
+    }
+
+    .idc-shell-title h2 {
+        font-size: 17px;
+    }
+
+    .idc-main {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .idc-identity {
+        flex: 0 0 auto;
+
+        width: 100%;
+    }
+
+    .idc-photo {
+        width: 78px;
+
+        height: 94px;
+    }
+
+    .idc-panel {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .idc-qr {
+        width: 100%;
+
+        flex-direction: row;
+
+        justify-content: center;
+
+        gap: 14px;
+    }
+
+    .idc-qr-caption {
+        width: auto;
+
+        text-align: left;
+    }
+
+    .idc-brand-sub {
+        display: none;
+    }
+
+    .idc-actions {
+        flex-wrap: wrap;
+    }
+
+    .idc-action-btn {
+        flex: 1 1 100%;
+    }
+}
+
+
+/* =========================================================
+   PRINT
+   Print only the card, drop the modal chrome.
+========================================================= */
+
+@media print {
+    body * {
+        visibility: hidden !important;
+    }
+
+    .idc-card,
+    .idc-card * {
+        visibility: visible !important;
+    }
+
+    .idc-card {
+        position: fixed;
+
+        left: 0;
+
+        top: 0;
+
+        width: 100%;
+
+        border: none;
+    }
+
+    .idc-shell-header,
+    .idc-actions,
+    .idc-overlay {
+        display: none !important;
+    }
+}

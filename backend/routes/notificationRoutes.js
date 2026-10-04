@@ -27,6 +27,7 @@ router.post(
       title,
       message,
       type,
+      category,
     } = req.body;
 
     if (!title || !String(title).trim() || !message || !String(message).trim()) {
@@ -41,6 +42,14 @@ router.post(
       type: ["info", "success", "warning", "danger"].includes(type)
         ? type
         : "info",
+
+      // Drives the per-category switches in
+      // Settings > Notifications. Unknown values fall back
+      // to "notices" so a bad payload cannot fail the post.
+      category: Notification.VALID_CATEGORIES.includes(category)
+        ? category
+        : "notices",
+
       read: false,
 
       // Attribution always comes from the token. Nothing in
@@ -321,6 +330,7 @@ router.put(
       title,
       message,
       type,
+      category,
     } = req.body;
 
     if (!title || !String(title).trim() || !message || !String(message).trim()) {
@@ -337,6 +347,13 @@ router.put(
         type: ["info", "success", "warning", "danger"].includes(type)
           ? type
           : notification.type || "info",
+
+        // Keep the existing category when the edit request
+        // does not send one, so editing the text of a notice
+        // does not silently reset its area.
+        category: Notification.VALID_CATEGORIES.includes(category)
+          ? category
+          : notification.category || "notices",
       },
       {
         new: true,

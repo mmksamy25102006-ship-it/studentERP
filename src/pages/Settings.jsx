@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -11,12 +11,20 @@ import {
   FaIdCard,
   FaBell,
   FaSignOutAlt,
-  FaTimes,
-  FaCheck,
 } from "react-icons/fa";
 
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
+
+import useNotification from "../hooks/useNotification";
+
+import {
+  NOTIFICATION_CATEGORIES,
+  useNotificationPreferences,
+} from "../context/NotificationPreferencesContext";
+
+import DigitalIdCard from "../components/DigitalIdCard";
+import NotificationsManager from "../components/NotificationsManager";
 
 import "./Settings.css";
 
@@ -35,9 +43,19 @@ const Settings = ({
   const { user, logout } = useAuth();
 
   const {
-    theme,
+    darkMode,
     toggleTheme,
   } = useTheme();
+
+  const { unreadCount } = useNotification();
+
+  const { preferences } = useNotificationPreferences();
+
+  const enabledCategoryCount =
+    NOTIFICATION_CATEGORIES.filter(
+      (category) =>
+        preferences.categories[category.key]
+    ).length;
 
 
   // =====================================================
@@ -52,13 +70,6 @@ const Settings = ({
 
   const [showNotifications, setShowNotifications] =
     useState(false);
-
-  const [notifications, setNotifications] =
-    useState(
-      localStorage.getItem(
-        "notificationsEnabled"
-      ) !== "false"
-    );
 
 
   // =====================================================
@@ -150,24 +161,6 @@ const Settings = ({
 
 
   // =====================================================
-  // NOTIFICATION TOGGLE
-  // =====================================================
-
-  const handleNotificationToggle = () => {
-
-    const newValue = !notifications;
-
-    setNotifications(newValue);
-
-    localStorage.setItem(
-      "notificationsEnabled",
-      String(newValue)
-    );
-
-  };
-
-
-  // =====================================================
   // LOGOUT
   // =====================================================
 
@@ -192,41 +185,36 @@ const Settings = ({
 
 
   // =====================================================
-  // USER ROLE
+  // CLOSE MODALS ON ESCAPE
   // =====================================================
 
-  const getRoleName = () => {
+  useEffect(() => {
 
-    if (!user?.role) {
-      return "Student";
-    }
+    const handleEscape = (event) => {
 
-    return (
-      user.role.charAt(0).toUpperCase() +
-      user.role.slice(1)
+      if (event.key !== "Escape") {
+        return;
+      }
+
+      setShowIdCard(false);
+
+      setShowNotifications(false);
+
+    };
+
+    document.addEventListener(
+      "keydown",
+      handleEscape
     );
 
-  };
+    return () => {
+      document.removeEventListener(
+        "keydown",
+        handleEscape
+      );
+    };
 
-
-  // =====================================================
-  // USER INITIALS
-  // =====================================================
-
-  const getInitials = () => {
-
-    if (!user?.name) {
-      return "U";
-    }
-
-    return user.name
-      .split(" ")
-      .map((word) => word[0])
-      .join("")
-      .substring(0, 2)
-      .toUpperCase();
-
-  };
+  }, []);
 
 
   // =====================================================
@@ -298,7 +286,7 @@ const Settings = ({
               onClick={toggleTheme}
             >
 
-              {theme === "dark" ? (
+              {darkMode ? (
                 <FaMoon />
               ) : (
                 <FaSun />
@@ -469,7 +457,9 @@ const Settings = ({
               </h3>
 
               <p>
-                Manage alert preferences
+                {preferences.enabled
+                  ? `Alerting on ${enabledCategoryCount} of ${NOTIFICATION_CATEGORIES.length} areas`
+                  : "All alerts are muted"}
               </p>
 
             </div>
@@ -477,7 +467,7 @@ const Settings = ({
 
             <button
               type="button"
-              className="setting-btn"
+              className="setting-btn setting-btn-notifications"
               onClick={() =>
                 setShowNotifications(true)
               }
@@ -488,6 +478,12 @@ const Settings = ({
               <span>
                 Manage
               </span>
+
+              {unreadCount > 0 && (
+                <b className="setting-btn-badge">
+                  {unreadCount}
+                </b>
+              )}
 
             </button>
 
@@ -540,268 +536,27 @@ const Settings = ({
 
       {showIdCard && (
 
-        <div
-          className="settings-modal-overlay"
-          onClick={() =>
+        <DigitalIdCard
+          user={user}
+          onClose={() =>
             setShowIdCard(false)
           }
-        >
-
-          <div
-            className="digital-id-card"
-            onClick={(e) =>
-              e.stopPropagation()
-            }
-          >
-
-
-            {/* Close */}
-
-            <button
-              type="button"
-              className="modal-close"
-              onClick={() =>
-                setShowIdCard(false)
-              }
-            >
-
-              <FaTimes />
-
-            </button>
-
-
-            {/* ID Header */}
-
-            <div className="id-header">
-
-              <div className="id-logo">
-                N
-              </div>
-
-              <div>
-
-                <h2>
-                  NEXUS ERP
-                </h2>
-
-                <p>
-                  Digital Identity Card
-                </p>
-
-              </div>
-
-            </div>
-
-
-            {/* Avatar */}
-
-            <div className="id-avatar">
-
-              {getInitials()}
-
-            </div>
-
-
-            {/* Name */}
-
-            <h3 className="id-name">
-
-              {user?.name || "User"}
-
-            </h3>
-
-
-            {/* Role */}
-
-            <span className="id-role">
-
-              {getRoleName()}
-
-            </span>
-
-
-            {/* Details */}
-
-            <div className="id-details">
-
-              <div>
-
-                <span>
-                  ID
-                </span>
-
-                <strong>
-                  {user?.id || "N/A"}
-                </strong>
-
-              </div>
-
-
-              <div>
-
-                <span>
-                  Email
-                </span>
-
-                <strong>
-                  {user?.email || "N/A"}
-                </strong>
-
-              </div>
-
-            </div>
-
-
-            {/* QR */}
-
-            <div className="fake-qr">
-
-              <div className="qr-pattern">
-                NEXUS
-              </div>
-
-              <small>
-                Scan to verify identity
-              </small>
-
-            </div>
-
-          </div>
-
-        </div>
+        />
 
       )}
 
 
       {/* =====================================================
-          NOTIFICATION MODAL
+          NOTIFICATION MANAGER
       ===================================================== */}
 
       {showNotifications && (
 
-        <div
-          className="settings-modal-overlay"
-          onClick={() =>
+        <NotificationsManager
+          onClose={() =>
             setShowNotifications(false)
           }
-        >
-
-          <div
-            className="notification-modal"
-            onClick={(e) =>
-              e.stopPropagation()
-            }
-          >
-
-
-            {/* Close */}
-
-            <button
-              type="button"
-              className="modal-close"
-              onClick={() =>
-                setShowNotifications(false)
-              }
-            >
-
-              <FaTimes />
-
-            </button>
-
-
-            {/* Title */}
-
-            <div className="modal-title">
-
-              <FaBell />
-
-              <div>
-
-                <h2>
-                  Notifications
-                </h2>
-
-                <p>
-                  Manage your notification preferences
-                </p>
-
-              </div>
-
-            </div>
-
-
-            {/* Notification Option */}
-
-            <div className="notification-option">
-
-              <div>
-
-                <h3>
-                  Enable Notifications
-                </h3>
-
-                <p>
-                  Receive important ERP alerts and updates
-                </p>
-
-              </div>
-
-
-              <button
-                type="button"
-                className={`switch ${
-                  notifications
-                    ? "active"
-                    : ""
-                }`}
-                onClick={
-                  handleNotificationToggle
-                }
-              >
-
-                <span></span>
-
-              </button>
-
-            </div>
-
-
-            {/* Status */}
-
-            <div className="notification-status">
-
-              {notifications ? (
-                <>
-                  <FaCheck />
-
-                  Notifications are enabled
-                </>
-              ) : (
-                <>
-                  <FaTimes />
-
-                  Notifications are disabled
-                </>
-              )}
-
-            </div>
-
-
-            {/* Done */}
-
-            <button
-              type="button"
-              className="modal-done-btn"
-              onClick={() =>
-                setShowNotifications(false)
-              }
-            >
-              Done
-            </button>
-
-          </div>
-
-        </div>
+        />
 
       )}
 
