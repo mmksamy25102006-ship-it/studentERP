@@ -269,8 +269,8 @@ function FacultyNotification() {
                         visible to students immediately.
                     </div>
                 )}
-
-                <select
+<div className="selector-content">
+                <select 
                     value={category}
                     onChange={(e)=>setCategory(e.target.value)}
                 >
@@ -283,7 +283,7 @@ function FacultyNotification() {
                         </option>
                     ))}
                 </select>
-
+</div>
                 <input
                     type="text"
                     placeholder="Notification Title"
