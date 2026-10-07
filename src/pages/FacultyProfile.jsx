@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import {
   FaChalkboardTeacher,
   FaIdCard,
@@ -11,86 +10,128 @@ import {
   FaClock,
   FaCheckCircle,
   FaExclamationCircle,
+  FaPen,
+  FaSave,
+  FaTimes,
 } from "react-icons/fa";
+
+import API from "./../api";
+import { useAuth } from "./../context/AuthContext";
 
 import "./FacultyProfile.css";
 
-const API_URL = "https://studenterp-5wuj.onrender.com/api";
-
 const FacultyProfile = () => {
+  const { user, loading: authLoading, updateUser } =
+    useAuth();
+
   const [faculty, setFaculty] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Only these three are editable. Faculty ID, department,
+  // designation and email come from the college office, so
+  // the form does not offer them and the server ignores
+  // anything else it is handed.
+  const [editing, setEditing] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    experience: "",
+  });
+
+  const [saving, setSaving] = useState(false);
+  const [notice, setNotice] = useState("");
+  const [noticeType, setNoticeType] = useState("success");
+
   useEffect(() => {
+    // The identity comes from the login session, so wait for
+    // AuthContext to finish restoring it before looking for
+    // an ID. Reading storage during that window is how the
+    // page ended up loading somebody else's record.
+    if (authLoading) {
+      return;
+    }
+
     const facultyError = (message) => {
       setFaculty(null);
       setError(message);
+      setLoading(false);
     };
 
     const fetchProfile = async () => {
       try {
-        // Faculty identity from auth storage
-        let facultyId =
-          localStorage.getItem("facultyId") || "";
-
-        if (!facultyId) {
-          try {
-            const savedUser = JSON.parse(
-              localStorage.getItem("user") || "{}"
-            );
-
-            facultyId = savedUser.facultyId || "";
-          } catch {
-            facultyError("Unable to read saved login data");
-            return;
-          }
-        }
-
-        if (!facultyId) {
-          facultyError("No faculty ID found for this login");
-          return;
-        }
-
         let facultyData = null;
 
-        // Primary: dedicated faculty profile endpoint
+        // 1. The signed-in account, identified by the token.
+        //
+        //    A facultyId is only a lookup key, not an
+        //    identity: two accounts have shared one before,
+        //    and the page then rendered somebody else
+        //    entirely. The token always names the right row,
+        //    even when the id in storage is stale or empty.
         try {
-          const response = await axios.get(
-            `${API_URL}/faculty/${encodeURIComponent(facultyId)}`
-          );
+          const response = await API.get("/auth/profile");
 
-          facultyData = response.data?.faculty || null;
-        } catch (endpointError) {
+          facultyData = response.data?.user || null;
+        } catch (profileError) {
           console.error(
-            "Faculty Profile Endpoint Error:",
-            endpointError
+            "Auth Profile Error:",
+            profileError
           );
         }
 
-        // Fallback: match inside the faculty list
+        // 2. Fallback for a session saved before this page
+        //    switched over: resolve the stored facultyId.
         if (!facultyData) {
-          const listResponse = await axios.get(
-            `${API_URL}/faculty`
-          );
+          const facultyId =
+            user?.facultyId ||
+            localStorage.getItem("facultyId") ||
+            "";
 
-          const list = Array.isArray(listResponse.data)
-            ? listResponse.data
-            : listResponse.data?.faculty || [];
+          if (facultyId) {
+            // Dedicated faculty profile endpoint
+            try {
+              const response = await API.get(
+                `/faculty/${encodeURIComponent(facultyId)}`
+              );
 
-          const target = String(facultyId).toLowerCase();
+              facultyData = response.data?.faculty || null;
+            } catch (endpointError) {
+              console.error(
+                "Faculty Profile Endpoint Error:",
+                endpointError
+              );
+            }
 
-          facultyData =
-            list.find(
-              (item) =>
-                String(item.facultyId || "")
-                  .toLowerCase() === target
-            ) || null;
+            // Last resort: match inside the faculty list
+            if (!facultyData) {
+              const listResponse = await API.get(
+                "/faculty"
+              );
+
+              const list = Array.isArray(
+                listResponse.data
+              )
+                ? listResponse.data
+                : listResponse.data?.faculty || [];
+
+              const target = String(
+                facultyId
+              ).toLowerCase();
+
+              facultyData =
+                list.find(
+                  (item) =>
+                    String(item.facultyId || "")
+                      .toLowerCase() === target
+                ) || null;
+            }
+          }
         }
 
         if (!facultyData) {
           facultyError(
-            "Faculty profile not found for this ID"
+            "Unable to identify the signed-in account. Sign out and sign in again."
           );
 
           return;
@@ -98,21 +139,117 @@ const FacultyProfile = () => {
 
         setFaculty(facultyData);
         setError("");
+        setLoading(false);
       } catch (fetchError) {
-        console.error("Faculty Profile Error:", fetchError);
+        console.error(
+          "Faculty Profile Error:",
+          fetchError
+        );
 
         facultyError(
           "Unable to load your faculty information"
         );
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchProfile();
-  }, []);
+  }, [authLoading, user?.facultyId]);
 
-  if (loading) {
+  // ===================================================
+  // EDITING
+  // ===================================================
+
+  const startEdit = () => {
+    setForm({
+      name: faculty?.name || "",
+      phone: faculty?.phone || "",
+      experience: faculty?.experience || "",
+    });
+
+    setNotice("");
+    setEditing(true);
+  };
+
+  const cancelEdit = () => {
+    setEditing(false);
+    setNotice("");
+    setNoticeType("success");
+  };
+
+  const onField = (field) => (event) => {
+    const value = event.target.value;
+
+    setForm((current) => ({
+      ...current,
+      [field]: value,
+    }));
+
+    if (noticeType === "error" && value.trim()) {
+      setNotice("");
+      setNoticeType("success");
+    }
+  };
+
+  const saveProfile = async (event) => {
+    event.preventDefault();
+
+    const name = form.name.trim();
+
+    if (!name) {
+      setNoticeType("error");
+      setNotice("Full name is required");
+      return;
+    }
+
+    setSaving(true);
+
+    try {
+      const response = await API.put("/faculty/me", {
+        name,
+        phone: form.phone.trim(),
+        experience: form.experience.trim(),
+      });
+
+      const saved = response.data?.faculty || {};
+
+      setFaculty((current) => ({
+        ...current,
+        ...saved,
+      }));
+
+      setEditing(false);
+      setNoticeType("success");
+      setNotice(
+        response.data?.message || "Profile updated"
+      );
+
+      // Keep the sidebar and header in step without a
+      // re-login.
+      updateUser({
+        name: saved.name || name,
+        phone: saved.phone ?? form.phone.trim(),
+      });
+    } catch (saveError) {
+      console.error(
+        "Faculty Profile Save Error:",
+        saveError
+      );
+
+      setNoticeType("error");
+      setNotice(
+        saveError.response?.data?.message ||
+          "Unable to save your changes"
+      );
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // ===================================================
+  // RENDER
+  // ===================================================
+
+  if (loading || authLoading) {
     return (
       <div className="faculty-profile-page">
         <div className="faculty-profile-loading">
@@ -149,7 +286,9 @@ const FacultyProfile = () => {
         </div>
 
         <div className="faculty-profile-main-info">
-          <h1>{faculty.name}</h1>
+          <h1>
+            {editing ? form.name || faculty.name : faculty.name}
+          </h1>
 
           <p>
             <FaIdCard />
@@ -171,7 +310,40 @@ const FacultyProfile = () => {
           </div>
         </div>
 
+        {!editing && (
+          <button
+            type="button"
+            className="faculty-profile-edit-btn"
+            onClick={startEdit}
+          >
+            <FaPen />
+            Edit Profile
+          </button>
+        )}
+
       </div>
+
+      {notice && (
+        <div
+          className={`faculty-profile-notice ${noticeType}`}
+        >
+          {noticeType === "error" ? (
+            <FaExclamationCircle />
+          ) : (
+            <FaCheckCircle />
+          )}
+
+          <span>{notice}</span>
+
+          <button
+            type="button"
+            aria-label="Dismiss"
+            onClick={() => setNotice("")}
+          >
+            <FaTimes />
+          </button>
+        </div>
+      )}
 
       {/* INFORMATION */}
       <div className="faculty-profile-content">
@@ -180,104 +352,174 @@ const FacultyProfile = () => {
 
           <div className="faculty-section-title">
             <FaIdCard />
-            <h2>Faculty Information</h2>
+            <h2>
+              {editing
+                ? "Edit Profile"
+                : "Faculty Information"}
+            </h2>
           </div>
 
-          <div className="faculty-profile-grid">
-
-            <div className="faculty-profile-info-card">
-              <FaIdCard />
-
-              <div>
-                <span>Faculty ID</span>
-                <strong>
-                  {faculty.facultyId || "Not Provided"}
-                </strong>
-              </div>
-            </div>
-
-            <div className="faculty-profile-info-card">
-              <FaUserTie />
-
-              <div>
+          {editing ? (
+            <form
+              className="faculty-profile-form"
+              onSubmit={saveProfile}
+            >
+              <label>
                 <span>Full Name</span>
-                <strong>
-                  {faculty.name || "Not Provided"}
-                </strong>
-              </div>
-            </div>
+                <input
+                  type="text"
+                  value={form.name}
+                  onChange={onField("name")}
+                  placeholder="Your full name"
+                  disabled={saving}
+                />
+              </label>
 
-            <div className="faculty-profile-info-card">
-              <FaGraduationCap />
-
-              <div>
-                <span>Department</span>
-                <strong>
-                  {faculty.department || "Not Provided"}
-                </strong>
-              </div>
-            </div>
-
-            <div className="faculty-profile-info-card">
-              <FaBriefcase />
-
-              <div>
-                <span>Designation</span>
-                <strong>
-                  {faculty.designation || "Not Provided"}
-                </strong>
-              </div>
-            </div>
-
-            <div className="faculty-profile-info-card">
-              <FaClock />
-
-              <div>
-                <span>Experience</span>
-                <strong>
-                  {faculty.experience || "Not Provided"}
-                </strong>
-              </div>
-            </div>
-
-            <div className="faculty-profile-info-card">
-              <FaEnvelope />
-
-              <div>
-                <span>Email</span>
-                <strong>
-                  {faculty.email || "Not Provided"}
-                </strong>
-              </div>
-            </div>
-
-            <div className="faculty-profile-info-card">
-              <FaPhone />
-
-              <div>
+              <label>
                 <span>Phone</span>
-                <strong>
-                  {faculty.phone || "Not Provided"}
-                </strong>
+                <input
+                  type="tel"
+                  value={form.phone}
+                  onChange={onField("phone")}
+                  placeholder="Contact number"
+                  disabled={saving}
+                />
+              </label>
+
+              <label>
+                <span>Experience</span>
+                <input
+                  type="text"
+                  value={form.experience}
+                  onChange={onField("experience")}
+                  placeholder="e.g. 8 years"
+                  disabled={saving}
+                />
+              </label>
+
+              <p className="faculty-profile-form-note">
+                Faculty ID, department, designation and
+                email are issued by the college office and
+                cannot be changed here.
+              </p>
+
+              <div className="faculty-profile-form-actions">
+                <button
+                  type="button"
+                  className="faculty-profile-cancel-btn"
+                  onClick={cancelEdit}
+                  disabled={saving}
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  className="faculty-profile-save-btn"
+                  disabled={saving}
+                >
+                  <FaSave />
+                  {saving ? "Saving..." : "Save Changes"}
+                </button>
               </div>
-            </div>
+            </form>
+          ) : (
+            <div className="faculty-profile-grid">
 
-            <div className="faculty-profile-info-card">
-              {isActive ? (
-                <FaCheckCircle />
-              ) : (
-                <FaExclamationCircle />
-              )}
+              <div className="faculty-profile-info-card">
+                <FaIdCard />
 
-              <div>
-                <span>Account Status</span>
-                <strong>
-                  {isActive ? "Active" : "Inactive"}
-                </strong>
+                <div>
+                  <span>Faculty ID</span>
+                  <strong>
+                    {faculty.facultyId || "Not Provided"}
+                  </strong>
+                </div>
               </div>
-            </div>
 
-          </div>
+              <div className="faculty-profile-info-card">
+                <FaUserTie />
+
+                <div>
+                  <span>Full Name</span>
+                  <strong>
+                    {faculty.name || "Not Provided"}
+                  </strong>
+                </div>
+              </div>
+
+              <div className="faculty-profile-info-card">
+                <FaGraduationCap />
+
+                <div>
+                  <span>Department</span>
+                  <strong>
+                    {faculty.department || "Not Provided"}
+                  </strong>
+                </div>
+              </div>
+
+              <div className="faculty-profile-info-card">
+                <FaBriefcase />
+
+                <div>
+                  <span>Designation</span>
+                  <strong>
+                    {faculty.designation || "Not Provided"}
+                  </strong>
+                </div>
+              </div>
+
+              <div className="faculty-profile-info-card">
+                <FaClock />
+
+                <div>
+                  <span>Experience</span>
+                  <strong>
+                    {faculty.experience || "Not Provided"}
+                  </strong>
+                </div>
+              </div>
+
+              <div className="faculty-profile-info-card">
+                <FaEnvelope />
+
+                <div>
+                  <span>Email</span>
+                  <strong>
+                    {faculty.email || "Not Provided"}
+                  </strong>
+                </div>
+              </div>
+
+              <div className="faculty-profile-info-card">
+                <FaPhone />
+
+                <div>
+                  <span>Phone</span>
+                  <strong>
+                    {faculty.phone || "Not Provided"}
+                  </strong>
+                </div>
+              </div>
+
+              <div className="faculty-profile-info-card">
+                {isActive ? (
+                  <FaCheckCircle />
+                ) : (
+                  <FaExclamationCircle />
+                )}
+
+                <div>
+                  <span>Account Status</span>
+                  <strong>
+                    {isActive ? "Active" : "Inactive"}
+                  </strong>
+                </div>
+              </div>
+
+            </div>
+          )}
 
         </div>
 

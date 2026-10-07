@@ -111,6 +111,32 @@ export const AuthProvider = ({ children }) => {
   };
 
   // =========================================
+  // Patch the signed-in user after a profile save
+  // =========================================
+  //
+  // The sidebar and header read name/phone off `user`, so a
+  // field changed on the profile page would stay stale until
+  // the next login without this. Only the stored copy is
+  // patched; the authority for it is the server response.
+  const updateUser = (patch) => {
+    setUser((current) => {
+      if (!current) {
+        return current;
+      }
+
+      const next = { ...current, ...patch };
+
+      localStorage.setItem("user", JSON.stringify(next));
+
+      if (next.facultyId) {
+        localStorage.setItem("facultyId", next.facultyId);
+      }
+
+      return next;
+    });
+  };
+
+  // =========================================
   // Logout Function
   // =========================================
   const logout = () => {
@@ -140,6 +166,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         login,
         logout,
+        updateUser,
         isAuthenticated,
       }}
     >

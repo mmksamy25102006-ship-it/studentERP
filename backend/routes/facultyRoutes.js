@@ -283,6 +283,82 @@ router.post(
 });
 
 // =====================================================
+// UPDATE MY OWN PROFILE
+//
+// A faculty member may correct their own contact details.
+// Everything that defines who they are inside the college
+// - faculty ID, email, department, designation and the
+// isHod / isPrincipal flags - stays behind the admin route
+// below, so none of those fields are read here.
+//
+// Registered ahead of PUT /:id on purpose: Express matches
+// in declaration order and "me" would otherwise be read as
+// an id and rejected by isAdmin.
+// =====================================================
+
+router.put(
+  "/me",
+  verifyToken,
+  isFacultyOrAdmin,
+  async (req, res) => {
+  try {
+    const faculty = await User.findOne({
+      _id: req.user._id,
+      role: "faculty",
+    });
+
+    if (!faculty) {
+      return res.status(403).json({
+        success: false,
+        message: "Faculty access only.",
+      });
+    }
+
+    const { name, phone, experience } = req.body;
+
+    if (name !== undefined) {
+      const cleanName = String(name).trim();
+
+      if (!cleanName) {
+        return res.status(400).json({
+          success: false,
+          message: "Name cannot be empty",
+        });
+      }
+
+      faculty.name = cleanName;
+    }
+
+    if (phone !== undefined) {
+      faculty.phone = String(phone).trim();
+    }
+
+    if (experience !== undefined) {
+      faculty.experience = String(experience).trim();
+    }
+
+    await faculty.save();
+
+    const facultyResponse = faculty.toObject();
+
+    delete facultyResponse.password;
+
+    res.json({
+      success: true,
+      message: "Profile updated successfully",
+      faculty: facultyResponse,
+    });
+  } catch (error) {
+    console.error("Update Own Profile Error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to update profile",
+    });
+  }
+});
+
+// =====================================================
 // UPDATE FACULTY
 // =====================================================
 

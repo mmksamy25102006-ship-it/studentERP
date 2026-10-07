@@ -32,6 +32,10 @@ import {
 import API from "./../../api";
 import useAuth from "./../../hooks/useAuth";
 import { formatDate } from "./../../utils/format";
+import {
+  loadFacultyRoles,
+  resolveRequesterRole,
+} from "./../../utils/facultyRoles";
 
 // The fr-* classes are defined once in the faculty
 // requests stylesheet and shared with this page.
@@ -80,6 +84,11 @@ const HodFacultyRequests = () => {
 
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("success");
+
+  // facultyId -> "principal" | "hod" | "faculty", resolved
+  // from the faculty list. Fills in requests the live
+  // backend has not annotated with requesterRole yet.
+  const [facultyRoles, setFacultyRoles] = useState({});
 
   // ===================================================
   // NOTICE
@@ -172,6 +181,20 @@ const HodFacultyRequests = () => {
   useEffect(() => {
     setPage(1);
   }, [tab, statusFilter, search]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    loadFacultyRoles().then((roles) => {
+      if (!cancelled) {
+        setFacultyRoles(roles);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // ===================================================
   // APPROVE / REJECT
@@ -314,6 +337,155 @@ const HodFacultyRequests = () => {
   };
 
   // ===================================================
+  // WHO FILED IT, AND WHO MAY ACT ON IT
+  // ===================================================
+
+  // The request only carries a facultyId, so the backend
+  // resolves it to a role and returns requesterRole. Until a
+  // backend with that annotation is live, the faculty list
+  // fills the same job. Unknown ids still default to
+  // "faculty", the safer of the two defaults: it hides an
+  // approval button rather than inventing one.
+  const requesterRole = (request) =>
+    resolveRequesterRole(request, facultyRoles);
+
+  const getRoleBadge = (request) => {
+    const role = requesterRole(request);
+
+    if (role === "principal") {
+      return (
+        <span className="fr-role principal">
+          Principal
+        </span>
+      );
+    }
+
+    if (role === "hod") {
+      return <span className="fr-role hod">HOD</span>;
+    }
+
+    return (
+      <span className="fr-role faculty">Faculty</span>
+    );
+  };
+
+  // Mirrors the three rules the server enforces in
+  // updateFacultyRequestStatus, so the button is missing
+  // instead of failing after the click.
+  const canAction = (request) => {
+    if (request.status !== "pending") {
+      return false;
+    }
+
+    if (isOwnRequest(request)) {
+      return false;
+    }
+
+    const role = requesterRole(request);
+
+    // Nothing in the faculty line sits above the principal,
+    // so their own leave is settled by the admin.
+    if (role === "principal") {
+      return isAdmin;
+    }
+
+    // HOD leave is countersigned by the principal alone.
+    if (role === "hod") {
+      return isPrincipal;
+    }
+
+    // Ordinary faculty leave stays with the department HOD,
+    // so the principal reads those rows and nothing more.
+    if (isPrincipal) {
+      return false;
+    }
+
+    return true;
+  };
+
+  const blockedReason = (request) => {
+    if (isOwnRequest(request)) {
+      return "You cannot approve your own request";
+    }
+
+    const role = requesterRole(request);
+
+    if (role === "principal") {
+      return "Leave filed by the principal is handled by the admin";
+    }
+
+    if (role === "hod") {
+      return "HOD leave can only be approved by the principal";
+    }
+
+    if (isPrincipal) {
+      return "Faculty leave is approved by the department HOD";
+    }
+
+    return "";
+  };
+
+  const blockedLabel = (request) => {
+    const role = requesterRole(request);
+
+    if (role === "principal") {
+      return "Admin only";
+    }
+
+    if (role === "hod") {
+      return "Principal only";
+    }
+
+    return "View only";
+  };
+
+  const openReview = (request) => {
+    setSelected(request);
+    setRemark(request.hodRemark || "");
+    setRemarkError("");
+  };
+
+  // One place decides what the Action cell renders, so a
+  // row the server would reject never offers a button.
+  const rowAction = (request) => {
+    if (request.status === "pending") {
+      if (isOwnRequest(request)) {
+        return (
+          <span
+            className="fr-review-btn disabled"
+            title="You cannot approve your own request"
+          >
+            <FaExclamationTriangle />
+            Your request
+          </span>
+        );
+      }
+
+      if (!canAction(request)) {
+        return (
+          <span
+            className="fr-review-btn disabled"
+            title={blockedReason(request)}
+          >
+            <FaExclamationTriangle />
+            {blockedLabel(request)}
+          </span>
+        );
+      }
+    }
+
+    return (
+      <button
+        className="fr-review-btn"
+        onClick={() => openReview(request)}
+      >
+        <FaEye />
+        Review
+      </button>
+    );
+  };
+
+  // ===================================================
   // RENDER
   // ===================================================
 
@@ -332,9 +504,9 @@ const HodFacultyRequests = () => {
 
         <p>
           {isPrincipal
-            ? "Review leave and permission requests from every faculty member across all departments, including HOD leave that needs countersigning"
+            ? "See every leave and permission request across all departments. You countersign HOD leave; the rest is yours to read while the department HOD decides"
             : isAdmin
-              ? "Review leave and permission requests from every faculty member, including HOD leave that needs countersigning"
+              ? "See every leave and permission request across all departments. HOD leave is countersigned by the principal"
               : "Review leave and permission requests from faculty members in your department"}
         </p>
       </div>
@@ -516,6 +688,7 @@ const HodFacultyRequests = () => {
             <thead>
               <tr>
                 <th>Faculty</th>
+                <th>Role</th>
                 <th>Type</th>
                 <th>Details</th>
                 <th>Applied On</th>
@@ -551,6 +724,8 @@ const HodFacultyRequests = () => {
                       </div>
                     </div>
                   </td>
+
+                  <td>{getRoleBadge(request)}</td>
 
                   <td>
                     <span
@@ -607,30 +782,7 @@ const HodFacultyRequests = () => {
                     {getStatusBadge(request.status)}
                   </td>
 
-                  <td>
-                    {request.status === "pending" &&
-                    isOwnRequest(request) ? (
-                      <span
-                        className="fr-review-btn disabled"
-                        title="You cannot approve your own request"
-                      >
-                        <FaExclamationTriangle />
-                        Your request
-                      </span>
-                    ) : (
-                      <button
-                        className="fr-review-btn"
-                        onClick={() => {
-                          setSelected(request);
-                          setRemark(request.hodRemark || "");
-                          setRemarkError("");
-                        }}
-                      >
-                        <FaEye />
-                        Review
-                      </button>
-                    )}
-                  </td>
+                  <td>{rowAction(request)}</td>
 
                 </tr>
               ))}
@@ -731,6 +883,11 @@ const HodFacultyRequests = () => {
               </div>
 
               <div className="fr-modal-detail">
+                <span>Role</span>
+                <strong>{getRoleBadge(selected)}</strong>
+              </div>
+
+              <div className="fr-modal-detail">
                 <span>Department</span>
                 <strong>
                   {selected.department || "-"}
@@ -787,7 +944,8 @@ const HodFacultyRequests = () => {
                 HOD REMARK
             ----------------------------------------- */}
 
-            {selected.status === "pending" ? (
+            {selected.status === "pending" &&
+            canAction(selected) ? (
               <div className="fr-remark-field">
                 <label>
                   HOD Remark{" "}
@@ -814,6 +972,15 @@ const HodFacultyRequests = () => {
                     {remarkError}
                   </small>
                 )}
+              </div>
+            ) : selected.status === "pending" ? (
+              <div className="fr-final-remark">
+                <span>
+                  <FaExclamationTriangle />
+                  Not yours to approve
+                </span>
+
+                <p>{blockedReason(selected)}</p>
               </div>
             ) : (
               selected.hodRemark && (
@@ -842,7 +1009,8 @@ const HodFacultyRequests = () => {
                 ACTIONS
             ----------------------------------------- */}
 
-            {selected.status === "pending" ? (
+            {selected.status === "pending" &&
+            canAction(selected) ? (
               <div className="fr-modal-actions">
 
                 <button

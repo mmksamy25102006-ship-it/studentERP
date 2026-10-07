@@ -587,6 +587,54 @@
 }
 
 
+/* Who filed the request.
+   The principal signs HOD leave and only HOD leave, so the
+   queue has to say at a glance which rows are actionable
+   and which are there to be read. */
+
+.fr-role {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    padding: 4px 9px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+
+    white-space: nowrap;
+}
+
+.fr-role.principal {
+    color: #5b21b6;
+
+    background: #f5f3ff;
+
+    border: 1px solid #ddd6fe;
+}
+
+.fr-role.hod {
+    color: #0369a1;
+
+    background: #f0f9ff;
+
+    border: 1px solid #bae6fd;
+}
+
+.fr-role.faculty {
+    color: #475569;
+
+    background: #f8fafc;
+
+    border: 1px solid #e2e8f0;
+}
+
+
 /* Review button */
 
 .fr-review-btn {

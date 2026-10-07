@@ -240,6 +240,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   // flag, so the personal pages stay on the /faculty paths
   // they already share. Only the two pages that belong to
   // the office itself are new.
+  //
+  // The shared entries keep the same relative order as the
+  // faculty menu - Timetable, Notices, Library, My Leave -
+  // so nothing jumps position just because of the office.
+  // My Classes, Attendance, Marks and Assignments are left
+  // out: teaching pages are not the principal's work.
   // =====================================================
 
   const principalMenuItems = [
@@ -254,24 +260,24 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       path: "/principal/leave-approvals",
     },
     {
-      title: "Notices",
-      icon: <FaBullhorn />,
-      path: "/faculty/notices",
-    },
-    {
       title: "Timetable",
       icon: <FaCalendarAlt />,
       path: "/faculty/timetable",
     },
     {
-      title: "My Leave",
-      icon: <FaHourglassHalf />,
-      path: "/faculty/myleave",
+      title: "Notices",
+      icon: <FaBullhorn />,
+      path: "/faculty/notices",
     },
     {
       title: "Library",
       icon: <FaBook />,
       path: "/faculty/library",
+    },
+    {
+      title: "My Leave",
+      icon: <FaHourglassHalf />,
+      path: "/faculty/myleave",
     },
     {
       title: "Profile",

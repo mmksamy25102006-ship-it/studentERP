@@ -267,6 +267,257 @@
 
 
 /* =========================================================
+   EDITING
+   ========================================================= */
+
+/* Sits at the far end of the header row. Deliberately
+   small: it is an action, not part of the heading. */
+
+.faculty-profile-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  /* A bare `button` rule in another stylesheet used to
+     force every button to full width. */
+  width: auto;
+
+  flex-shrink: 0;
+
+  margin-left: auto;
+
+  padding: 7px 13px;
+
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 8px;
+
+  background: rgba(255, 255, 255, 0.16);
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 12.5px;
+  font-weight: 600;
+
+  line-height: 1.2;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.faculty-profile-edit-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+
+/* Success / error banner above the card */
+
+.faculty-profile-notice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-top: 25px;
+
+  padding: 14px 18px;
+
+  border-radius: 12px;
+
+  font-size: 14.5px;
+  font-weight: 600;
+}
+
+.faculty-profile-notice.success {
+  color: #15803d;
+  background: #dcfce7;
+  border: 1px solid #bbf7d0;
+}
+
+.faculty-profile-notice.error {
+  color: #b91c1c;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+}
+
+.faculty-profile-notice span {
+  flex: 1;
+  min-width: 0;
+}
+
+.faculty-profile-notice button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: auto;
+
+  padding: 4px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: inherit;
+
+  cursor: pointer;
+
+  opacity: 0.7;
+}
+
+.faculty-profile-notice button:hover {
+  opacity: 1;
+}
+
+
+/* The form replaces the read-only grid while editing */
+
+.faculty-profile-form {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+.faculty-profile-form label {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+
+  min-width: 0;
+}
+
+.faculty-profile-form label:first-child {
+  grid-column: 1 / -1;
+}
+
+.faculty-profile-form label span {
+  font-size: 13px;
+
+  color: #64748b;
+}
+
+.faculty-profile-form input {
+  width: 100%;
+
+  padding: 12px 14px;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #0f172a;
+
+  font-family: inherit;
+
+  font-size: 15px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.faculty-profile-form input:focus {
+  outline: none;
+
+  border-color: #0f766e;
+
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+}
+
+.faculty-profile-form input:disabled {
+  opacity: 0.6;
+}
+
+
+/* Why some fields are missing */
+
+.faculty-profile-form-note {
+  grid-column: 1 / -1;
+
+  margin: 0;
+
+  font-size: 13px;
+
+  color: #64748b;
+}
+
+
+.faculty-profile-form-actions {
+  grid-column: 1 / -1;
+
+  display: flex;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  padding-top: 4px;
+}
+
+.faculty-profile-save-btn,
+.faculty-profile-cancel-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  width: auto;
+
+  padding: 11px 20px;
+
+  border-radius: 10px;
+
+  font-family: inherit;
+
+  font-size: 14.5px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.faculty-profile-save-btn {
+  border: 1px solid #0f766e;
+
+  background: #0f766e;
+
+  color: #ffffff;
+}
+
+.faculty-profile-save-btn:hover:not(:disabled) {
+  background: #115e59;
+  border-color: #115e59;
+}
+
+.faculty-profile-cancel-btn {
+  border: 1px solid #cbd5e1;
+
+  background: #ffffff;
+
+  color: #475569;
+}
+
+.faculty-profile-cancel-btn:hover:not(:disabled) {
+  background: #f1f5f9;
+}
+
+.faculty-profile-save-btn:disabled,
+.faculty-profile-cancel-btn:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.65;
+}
+
+
+/* =========================================================
    DARK THEME
    ========================================================= */
 
@@ -358,6 +609,45 @@ body.dark .faculty-profile-page,
 }
 
 
+/* Form labels */
+
+.dark-theme .faculty-profile-form label span,
+.dark-theme .faculty-profile-form-note,
+[data-theme="dark"] .faculty-profile-form label span,
+[data-theme="dark"] .faculty-profile-form-note {
+  color: #94a3b8;
+}
+
+
+/* Inputs */
+
+.dark-theme .faculty-profile-form input,
+[data-theme="dark"] .faculty-profile-form input {
+  background: #1e293b;
+
+  border-color: #334155;
+
+  color: #f8fafc;
+}
+
+
+/* Secondary action */
+
+.dark-theme .faculty-profile-cancel-btn,
+[data-theme="dark"] .faculty-profile-cancel-btn {
+  background: #1e293b;
+
+  border-color: #334155;
+
+  color: #cbd5e1;
+}
+
+.dark-theme .faculty-profile-cancel-btn:hover:not(:disabled),
+[data-theme="dark"] .faculty-profile-cancel-btn:hover:not(:disabled) {
+  background: #273449;
+}
+
+
 /* =========================================================
    LOADING / ERROR
    ========================================================= */
@@ -438,5 +728,24 @@ body.dark .faculty-profile-page,
 
   .faculty-profile-info-card {
     padding: 16px;
+  }
+
+  .faculty-profile-edit-btn {
+    margin-left: 0;
+  }
+
+  .faculty-profile-form {
+    grid-template-columns: 1fr;
+  }
+
+  .faculty-profile-form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .faculty-profile-save-btn,
+  .faculty-profile-cancel-btn {
+    justify-content: center;
+
+    width: 100%;
   }
 }

@@ -14,6 +14,14 @@
 // would make the admin's faculty form refuse to save the
 // account (department is required there).
 //
+// The faculty ID deliberately sits outside the FAC00N
+// sequence. Seeding the principal as FAC002 collided with a
+// faculty member who already held it, and every lookup that
+// matches on facultyId - the profile page above all - then
+// resolves to the wrong person. PRIN01 also survives the
+// admin form's next-ID generator, which parses digits after
+// a FAC prefix and ignores anything else.
+//
 // Run with: node seedPrincipal.js
 
 const mongoose = require("mongoose");
@@ -58,7 +66,7 @@ const PRINCIPAL = {
   email: "principal@gmail.com",
   password: process.env.PRINCIPAL_SEED_PASSWORD || "Principal@12345",
   role: "faculty",
-  facultyId: "FAC002",
+  facultyId: "PRIN01",
   department: "Computer Science",
   designation: "Principal",
   experience: "20 years",
@@ -73,6 +81,30 @@ async function createPrincipal() {
     const email = PRINCIPAL.email.toLowerCase().trim();
 
     const existing = await User.findOne({ email });
+
+    // Every profile lookup resolves a faculty ID to a
+    // person, so a duplicate hands the principal somebody
+    // else's record. Fail loudly instead of seeding one.
+    const idFilter = { facultyId: PRINCIPAL.facultyId };
+
+    if (existing) {
+      idFilter._id = { $ne: existing._id };
+    }
+
+    const idHolder = await User.findOne(idFilter);
+
+    if (idHolder) {
+      console.error(
+        "Cannot seed: faculty ID " +
+          PRINCIPAL.facultyId +
+          " already belongs to " +
+          idHolder.email +
+          "."
+      );
+
+      await mongoose.disconnect();
+      process.exit(1);
+    }
 
     if (existing) {
       // Repairs an account that was seeded earlier without

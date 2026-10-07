@@ -11,6 +11,8 @@ import {
 import { useNavigate } from "react-router-dom";
 
 import API from "./../../api";
+import { useAuth } from "./../../context/AuthContext";
+import { resolveRequesterRole } from "./../../utils/facultyRoles";
 
 // The admin layout is role agnostic once the class names are
 // ignored, so it is shared rather than copied. Nothing here
@@ -19,19 +21,60 @@ import "./../AdminDashboard.css";
 
 const PrincipalDashboard = () => {
   const navigate = useNavigate();
+  const { user, loading } = useAuth();
 
   const [students, setStudents] = useState([]);
   const [faculty, setFaculty] = useState([]);
   const [fees, setFees] = useState([]);
 
-  // Every faculty leave awaiting a decision, HOD leave
-  // included. Unlike the admin, whose queue is narrowed to
-  // HOD leave only, the principal is shown the lot.
+  // Every pending request except the principal's own. Their
+  // own leave cannot be approved by them, so it would only
+  // ever be a dead row here; it stays visible on the
+  // approvals page, marked "Your request".
   const [leavePending, setLeavePending] = useState(null);
 
   const [pendingRequests, setPendingRequests] = useState(
     []
   );
+
+  const ownId = String(
+    user?.facultyId || ""
+  )
+    .trim()
+    .toUpperCase();
+
+  // The row's role comes from the backend when it annotates
+  // the request; until then the faculty list fetched for the
+  // cards settles it. HOD leave is the only kind this portal
+  // approves, so the table has to name which rows are HOD
+  // leave.
+  const requesterRoleMap = {};
+  faculty.forEach((member) => {
+    const key = String(member.facultyId || "")
+      .trim()
+      .toUpperCase();
+
+    if (key) {
+      requesterRoleMap[key] = member.isPrincipal
+        ? "principal"
+        : member.isHod
+          ? "hod"
+          : "faculty";
+    }
+  });
+
+  const roleLabel = (request) => {
+    const role = resolveRequesterRole(
+      request,
+      requesterRoleMap
+    );
+
+    return role === "principal"
+      ? "Principal"
+      : role === "hod"
+        ? "HOD"
+        : "Faculty";
+  };
 
 
   /* =========================
@@ -86,37 +129,41 @@ const PrincipalDashboard = () => {
   ========================= */
 
   useEffect(() => {
+    // Wait for AuthContext so ownId is settled and the
+    // list is filtered exactly once.
+    if (loading) {
+      return;
+    }
+
     const loadLeave = async () => {
       try {
-        // No hodOnly: the principal's queue is the whole
-        // college, and the stats route already reports a
-        // pending count so no status filter is needed there.
-        const [statsRes, listRes] = await Promise.all([
-          API.get("/faculty-requests/stats"),
-          API.get("/faculty-requests", {
-            params: { status: "pending" },
-          }),
-        ]);
+        const listRes = await API.get("/faculty-requests", {
+          params: { status: "pending" },
+        });
 
-        setLeavePending(
-          Number(statsRes.data?.stats?.pending ?? 0)
+        const all = Array.isArray(listRes.data?.requests)
+          ? listRes.data.requests
+          : [];
+
+        const others = all.filter(
+          (request) =>
+            String(request.facultyId || "")
+              .trim()
+              .toUpperCase() !== ownId
         );
 
-        setPendingRequests(
-          Array.isArray(listRes.data?.requests)
-            ? listRes.data.requests
-            : []
-        );
+        // One source for both the card and the table so the
+        // number above and the rows below can never disagree.
+        setLeavePending(others.length);
+        setPendingRequests(others);
       } catch {
-        // Older backend or network failure. Stay quiet
-        // rather than showing a wrong number as fact.
         setLeavePending(null);
         setPendingRequests([]);
       }
     };
 
     loadLeave();
-  }, []);
+  }, [loading, ownId]);
 
 
   /* =========================
@@ -160,7 +207,7 @@ const PrincipalDashboard = () => {
       className: `hod-leave-card ${
         leavePending > 0 ? "hod-leave-pending" : ""
       }`,
-      hint: "Needs your approval",
+      hint: "Open the approval queue",
       onClick: () => navigate("/principal/leave-approvals"),
     },
   ];
@@ -310,6 +357,7 @@ const PrincipalDashboard = () => {
               <thead>
                 <tr>
                   <th>Faculty</th>
+                  <th>Role</th>
                   <th>Type</th>
                   <th>Period</th>
                   <th>Department</th>
@@ -332,6 +380,10 @@ const PrincipalDashboard = () => {
                           {request.facultyName ||
                             request.facultyId ||
                             "-"}
+                        </td>
+
+                        <td>
+                          {roleLabel(request)}
                         </td>
 
                         <td>
@@ -363,7 +415,7 @@ const PrincipalDashboard = () => {
                   <tr>
 
                     <td
-                      colSpan="4"
+                      colSpan="5"
                       className="empty-state"
                     >
                       No pending leave requests

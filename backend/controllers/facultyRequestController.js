@@ -15,6 +15,85 @@ const normaliseId = (value) =>
 const currentFacultyId = (req) =>
   normaliseId(req.user?.facultyId);
 
+// An anchored, case insensitive match for one faculty ID,
+// with the value escaped so a stray regex character in an
+// id cannot widen the search.
+const requesterPattern = (facultyId) =>
+  new RegExp(
+    `^${normaliseId(facultyId).replace(
+      /[.*+?^${}()|[\]\\]/g,
+      "\\$&"
+    )}$`,
+    "i"
+  );
+
+// A request only stores the denormalised facultyId of whoever
+// filed it, so whether that person is a head of department has
+// to be read from the users collection. The principal's queue
+// turns on the answer: HOD leave is the only kind they act on.
+//
+// Returns a Map of normalised facultyId -> "principal" |
+// "hod" | "faculty".
+const requesterRoles = async (requests) => {
+  const ids = [
+    ...new Set(
+      requests
+        .map((request) => normaliseId(request.facultyId))
+        .filter(Boolean)
+    ),
+  ];
+
+  const roles = new Map();
+
+  if (ids.length === 0) {
+    return roles;
+  }
+
+  // User.facultyId keeps whatever case it was typed with,
+  // while the request collection stores it uppercase, so
+  // each id is matched case insensitively.
+  const patterns = ids.map((id) => requesterPattern(id));
+
+  const users = await User.find({
+    role: "faculty",
+    facultyId: { $in: patterns },
+  }).select("facultyId isHod isPrincipal");
+
+  users.forEach((user) => {
+    const key = normaliseId(user.facultyId);
+
+    if (roles.has(key)) {
+      return;
+    }
+
+    roles.set(
+      key,
+      user.isPrincipal
+        ? "principal"
+        : user.isHod
+          ? "hod"
+          : "faculty"
+    );
+  });
+
+  return roles;
+};
+
+// Resolve one requester, or null when the account behind a
+// facultyId no longer exists.
+const findRequester = async (facultyId) => {
+  const key = normaliseId(facultyId);
+
+  if (!key) {
+    return null;
+  }
+
+  return User.findOne({
+    role: "faculty",
+    facultyId: requesterPattern(key),
+  }).select("facultyId isHod isPrincipal name");
+};
+
 // GET REQUESTS FILED BY THE SIGNED-IN FACULTY
 const getMyRequests = async (req, res) => {
   try {
@@ -145,9 +224,22 @@ const getFacultyRequests = async (req, res) => {
       createdAt: -1,
     });
 
+    // The approval page has to say whether each row came
+    // from an HOD or an ordinary faculty member, because the
+    // principal only signs off the former.
+    const roles = await requesterRoles(requests);
+
     res.status(200).json({
       success: true,
-      requests,
+      requests: requests.map((request) => {
+        const plain = request.toObject();
+
+        plain.requesterRole =
+          roles.get(normaliseId(request.facultyId)) ||
+          "faculty";
+
+        return plain;
+      }),
     });
   } catch (error) {
     console.error("Get Faculty Requests Error:", error);
@@ -479,6 +571,53 @@ const updateFacultyRequestStatus = async (req, res) => {
     const isPrincipal =
       req.user.role === "faculty" &&
       req.user.isPrincipal === true;
+
+    // Only the users collection knows whether the submitter
+    // is a head of department, and the two rules below turn
+    // entirely on it.
+    const requester = await findRequester(
+      request.facultyId
+    );
+
+    const requesterIsHod = requester?.isHod === true;
+
+    // The principal does not sit under a head of
+    // department, so there is nobody in the faculty line
+    // who may clear their leave. Only the admin does.
+    if (
+      requester?.isPrincipal === true &&
+      req.user.role !== "admin"
+    ) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "Leave filed by the principal is handled by the admin",
+      });
+    }
+
+    // HOD leave sits above a department, so only the
+    // principal countersigns it. A department HOD must not
+    // clear a colleague head's request, and the admin queue
+    // for it has moved to the principal as well.
+    if (requesterIsHod && !isPrincipal) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "HOD leave can only be approved by the principal",
+      });
+    }
+
+    // The principal reviews the whole college but signs only
+    // HOD leave. Ordinary faculty leave stays with the
+    // department HOD, so those rows are theirs to read and
+    // nobody else's to act on from this account.
+    if (isPrincipal && !requesterIsHod) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "The principal only approves HOD leave. Faculty leave stays with the department HOD.",
+      });
+    }
 
     if (
       !isPrincipal &&
