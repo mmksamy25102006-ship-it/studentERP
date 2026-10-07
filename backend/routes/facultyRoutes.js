@@ -173,6 +173,7 @@ router.post(
       year,
       phone,
       isHod,
+      isPrincipal,
     } = req.body;
 
     if (
@@ -248,6 +249,10 @@ router.post(
       // Marks this account as Head of Department
       isHod: isHod === true,
 
+      // Marks this account as the Principal. Same pattern
+      // as isHod: a flag on a faculty login, no new role.
+      isPrincipal: isPrincipal === true,
+
       isActive: true,
     });
 
@@ -299,6 +304,7 @@ router.put(
       phone,
       isActive,
       isHod,
+      isPrincipal,
     } = req.body;
 
     const faculty = await User.findOne({
@@ -393,6 +399,13 @@ router.put(
     // Department. Only an admin reaches this route.
     if (isHod !== undefined) {
       faculty.isHod = isHod === true;
+    }
+
+    // Same for the Principal. Leaving the field out of the
+    // body leaves the flag alone, so an edit that does not
+    // touch it cannot quietly demote the principal.
+    if (isPrincipal !== undefined) {
+      faculty.isPrincipal = isPrincipal === true;
     }
 
     // -----------------------------------------

@@ -183,18 +183,6 @@
 }
 
 
-/* The HOD leave queue added a fifth card, so the wide
-   layout needs five tracks rather than wrapping one card
-   onto a row of its own. */
-
-@media (min-width: 1201px) {
-    .dashboard-cards {
-        grid-template-columns:
-            repeat(5, 1fr);
-    }
-}
-
-
 .card {
     position: relative;
 

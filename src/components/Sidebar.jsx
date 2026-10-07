@@ -25,6 +25,7 @@ import {
   FaUserCog,
   FaClipboardList,
   FaHourglassHalf,
+  FaUniversity,
 } from "react-icons/fa";
 
 import "./Sidebar.css";
@@ -76,14 +77,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       path: "/adminfaculty",
     },
     {
-      // An HOD may not approve their own leave, so the
-      // admin is the countersigner. The backend already
-      // lets the admin past the isHod guard.
-      title: "Faculty Leave",
-      icon: <FaFileSignature />,
-      path: "/hod/faculty-requests",
-    },
-    {
+      // Leave approval for staff lives with the principal
+      // now, not here. The admin keeps no queue of its own
+      // and still reaches /hod/faculty-requests by URL if
+      // it has to countersign the principal's own request.
       title: "Departments",
       icon: <FaBuilding />,
       path: "/admin/departments",
@@ -237,6 +234,59 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
 
   // =====================================================
+  // PRINCIPAL MENU
+  //
+  // The principal is a faculty member with the isPrincipal
+  // flag, so the personal pages stay on the /faculty paths
+  // they already share. Only the two pages that belong to
+  // the office itself are new.
+  // =====================================================
+
+  const principalMenuItems = [
+    {
+      title: "Dashboard",
+      icon: <FaUniversity />,
+      path: "/principal-dashboard",
+    },
+    {
+      title: "Leave Approvals",
+      icon: <FaClipboardList />,
+      path: "/principal/leave-approvals",
+    },
+    {
+      title: "Notices",
+      icon: <FaBullhorn />,
+      path: "/faculty/notices",
+    },
+    {
+      title: "Timetable",
+      icon: <FaCalendarAlt />,
+      path: "/faculty/timetable",
+    },
+    {
+      title: "My Leave",
+      icon: <FaHourglassHalf />,
+      path: "/faculty/myleave",
+    },
+    {
+      title: "Library",
+      icon: <FaBook />,
+      path: "/faculty/library",
+    },
+    {
+      title: "Profile",
+      icon: <FaUserTie />,
+      path: "/faculty/profile",
+    },
+    {
+      title: "Settings",
+      icon: <FaCog />,
+      path: "/settings",
+    },
+  ];
+
+
+  // =====================================================
   // STUDENT MENU
   // =====================================================
 
@@ -303,16 +353,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   // SELECT MENU BASED ON ROLE
   // =====================================================
 
-  // An HOD is a faculty member with the isHod flag, so
-  // the role check comes first and isHod refines it.
+  // The role comes first, then the flags refine it. The
+  // principal is tested before the HOD because the office
+  // outranks a department, and an account may carry both
+  // flags at once.
   const menuItems =
     user?.role === "admin"
       ? adminMenuItems
       : user?.role === "faculty"
-      ? user?.isHod
-        ? hodMenuItems
-        : facultyMenuItems
-      : studentMenuItems;
+        ? user?.isPrincipal
+          ? principalMenuItems
+          : user?.isHod
+            ? hodMenuItems
+            : facultyMenuItems
+        : studentMenuItems;
 
 
   // =====================================================

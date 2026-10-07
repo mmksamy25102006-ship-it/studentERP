@@ -1015,7 +1015,7 @@
 .fa-table {
   width: 100%;
 
-  min-width: 780px;
+  min-width: 900px;
 
   border-collapse: collapse;
 
@@ -1051,10 +1051,14 @@
 }
 
 .fa-table th:nth-child(3) {
-  width: 280px;
+  width: 260px;
 }
 
 .fa-table th:nth-child(4) {
+  width: 150px;
+}
+
+.fa-table th:nth-child(5) {
   width: 260px;
 }
 
@@ -1142,6 +1146,96 @@
   color: var(--fa-muted);
 
   font-size: 9px;
+}
+
+/* =========================================================
+   LIFETIME ATTENDANCE
+
+   Total present against total recorded periods, across
+   every date and subject. Bands follow the same 90 / 75
+   cut-offs the statistics card uses.
+   ========================================================= */
+
+.fa-lifetime {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.fa-lifetime-value {
+  font-size: 14px;
+
+  font-weight: 800;
+
+  line-height: 1;
+}
+
+.fa-lifetime-value.good {
+  color: var(--fa-green);
+}
+
+.fa-lifetime-value.fair {
+  color: var(--fa-primary);
+}
+
+.fa-lifetime-value.low {
+  color: var(--fa-red);
+}
+
+.fa-lifetime-count {
+  color: var(--fa-muted);
+
+  font-size: 9px;
+
+  font-weight: 700;
+}
+
+.fa-lifetime-bar {
+  display: block;
+
+  width: 100%;
+
+  max-width: 110px;
+
+  height: 4px;
+
+  border-radius: 999px;
+
+  background: var(--fa-surface-3);
+
+  overflow: hidden;
+}
+
+.fa-lifetime-bar-fill {
+  display: block;
+
+  height: 100%;
+
+  border-radius: 999px;
+
+  transition: width 0.3s ease;
+}
+
+.fa-lifetime-bar-fill.good {
+  background: var(--fa-green);
+}
+
+.fa-lifetime-bar-fill.fair {
+  background: var(--fa-primary);
+}
+
+.fa-lifetime-bar-fill.low {
+  background: var(--fa-red);
+}
+
+.fa-lifetime-empty {
+  color: var(--fa-muted-2);
+
+  font-size: 10px;
+
+  font-weight: 700;
 }
 
 /* =========================================================
@@ -1773,6 +1867,34 @@
     display: flex;
     align-items: center;
     min-width: 0;
+
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  /* Lifetime percentage sits on its own full-width row
+     so it never squeezes the mark buttons. */
+  .fa-table td:nth-child(4) {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .fa-lifetime {
+    flex-direction: row;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    width: 100%;
+  }
+
+  .fa-lifetime-bar {
+    max-width: none;
+
+    flex: 1 1 80px;
   }
 
   .fa-student {
@@ -1815,10 +1937,13 @@
   }
 
   /* Attendance buttons */
-  .fa-table td:nth-child(4) {
+  .fa-table td:nth-child(5) {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+
+    grid-column: 2;
+    grid-row: 1;
   }
 
   .fa-attendance-actions {

@@ -206,6 +206,37 @@ const isHod = (req, res, next) => {
   next();
 };
 
+// Head of Department OR Principal
+//
+// The faculty leave queue was readable by the HOD (own
+// department only) and by the admin (as countersigner for
+// HOD leave). The principal takes that countersigner seat
+// over, and being above departments reads the whole queue.
+// The two roles are kept apart because their scoping in
+// the controller is opposite.
+const isHodOrPrincipal = (req, res, next) => {
+  const isHead =
+    req.user.role === "faculty" &&
+    req.user.isHod === true;
+
+  const isPrincipal =
+    req.user.role === "faculty" &&
+    req.user.isPrincipal === true;
+
+  if (
+    !isHead &&
+    !isPrincipal &&
+    req.user.role !== "admin"
+  ) {
+    return res.status(403).json({
+      success: false,
+      message: "Approval access only.",
+    });
+  }
+
+  next();
+};
+
 module.exports = {
   verifyToken,
   isAdmin,
@@ -213,6 +244,7 @@ module.exports = {
   isStudent,
   isFacultyOrAdmin,
   isHod,
+  isHodOrPrincipal,
   ownsStudent,
   ownsFaculty,
   normaliseId,

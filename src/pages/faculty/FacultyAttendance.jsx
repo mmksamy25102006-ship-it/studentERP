@@ -38,6 +38,19 @@ const FacultyAttendance = () => {
 
   const [students, setStudents] = useState([]);
 
+  /* -------------------------------------------------------
+     Every attendance record this faculty member can read,
+     used for the lifetime percentage column in the table.
+
+     Kept separate from `students`, which only carries the
+     roster and the status for the period being marked.
+     Loaded on mount so the percentages show up before a
+     class has been picked, and refreshed after a save.
+     ------------------------------------------------------- */
+
+  const [attendanceRecords, setAttendanceRecords] =
+    useState([]);
+
   const [loading, setLoading] = useState(true);
 
   const [saving, setSaving] = useState(false);
@@ -320,6 +333,39 @@ const FacultyAttendance = () => {
   }, []);
 
   /* =======================================================
+     LOAD ATTENDANCE RECORDS FOR THE LIFETIME COLUMN
+
+     loadSelectedPeriodAttendance only runs once a date,
+     period and subject are chosen, which would leave the
+     percentage column empty on first paint. Failures here
+     are logged but do not raise the page error banner -
+     marking attendance must still work if totals are slow.
+     ======================================================= */
+
+  useEffect(() => {
+    const loadAttendanceRecords = async () => {
+      try {
+        const response =
+          await API.get("/attendance");
+
+        setAttendanceRecords(
+          Array.isArray(response.data)
+            ? response.data
+            : response.data?.attendance ||
+              []
+        );
+      } catch (err) {
+        console.error(
+          "Attendance totals loading error:",
+          err
+        );
+      }
+    };
+
+    loadAttendanceRecords();
+  }, []);
+
+  /* =======================================================
      LOAD EXISTING ATTENDANCE
      
      DATE + PERIOD + SUBJECT
@@ -346,6 +392,10 @@ const FacultyAttendance = () => {
             ? response.data
             : response.data?.attendance ||
               [];
+
+        // Feed the same pull into the lifetime totals so
+        // the percentage column tracks what was just saved.
+        setAttendanceRecords(attendanceData);
 
         /* -----------------------------------------------
            FIND RECORDS FOR CURRENT CLASS
@@ -692,6 +742,73 @@ const FacultyAttendance = () => {
         status: "Present",
       }))
     );
+  };
+
+  /* =======================================================
+     LIFETIME ATTENDANCE PER STUDENT
+
+     One unit per recorded period, present against absent,
+     across every date and subject in the collection - the
+     same basis the student's own attendance page uses.
+
+     Keys are upper-cased because attendance records have
+     been written with mixed-case student ids, and a plain
+     object match would miss some of them.
+     ======================================================= */
+
+  const attendanceStats = useMemo(() => {
+    const key = (value) =>
+      String(value || "").trim().toUpperCase();
+
+    const stats = {};
+
+    attendanceRecords.forEach((record) => {
+      const studentId =
+        key(record.studentId) ||
+        key(record.rollNo);
+
+      if (!studentId) return;
+
+      if (!stats[studentId]) {
+        stats[studentId] = {
+          present: 0,
+          total: 0,
+        };
+      }
+
+      stats[studentId].total += 1;
+
+      if (
+        String(record.status || "").trim().toLowerCase() ===
+        "present"
+      ) {
+        stats[studentId].present += 1;
+      }
+    });
+
+    return stats;
+  }, [attendanceRecords]);
+
+  const getLifetimeAttendance = (student) => {
+    const key = (value) =>
+      String(value || "").trim().toUpperCase();
+
+    const stat =
+      attendanceStats[
+        key(student.studentId)
+      ] || attendanceStats[key(student.rollNo)];
+
+    if (!stat || stat.total === 0) {
+      return null;
+    }
+
+    return {
+      total: stat.total,
+      present: stat.present,
+      percent: Math.round(
+        (stat.present / stat.total) * 100
+      ),
+    };
   };
 
   /* =======================================================
@@ -1392,6 +1509,10 @@ const FacultyAttendance = () => {
                 </th>
 
                 <th>
+                  TOTAL ATTENDANCE
+                </th>
+
+                <th>
                   ATTENDANCE
                 </th>
 
@@ -1407,7 +1528,7 @@ const FacultyAttendance = () => {
                 <tr>
 
                   <td
-                    colSpan="4"
+                    colSpan="5"
                     className="fa-empty-cell"
                   >
                     No students found
@@ -1421,7 +1542,25 @@ const FacultyAttendance = () => {
                   (
                     student,
                     index
-                  ) => (
+                  ) => {
+                    const lifetime =
+                      getLifetimeAttendance(
+                        student
+                      );
+
+                    /* Same 90 / 75 cut-offs the
+                       statistics card labels Excellent,
+                       Good and Needs Attention. */
+                    const lifetimeBand =
+                      !lifetime
+                        ? ""
+                        : lifetime.percent >= 90
+                          ? "good"
+                          : lifetime.percent >= 75
+                            ? "fair"
+                            : "low";
+
+                    return (
 
                     <tr
                       key={
@@ -1490,6 +1629,39 @@ const FacultyAttendance = () => {
 
                       </td>
 
+                      {/* LIFETIME ATTENDANCE */}
+
+                      <td>
+                        {lifetime ? (
+                          <div className="fa-lifetime">
+                            <span
+                              className={`fa-lifetime-value ${lifetimeBand}`}
+                            >
+                              {lifetime.percent}%
+                            </span>
+
+                            <span className="fa-lifetime-count">
+                              {lifetime.present}/
+                              {lifetime.total}{" "}
+                              periods
+                            </span>
+
+                            <span className="fa-lifetime-bar">
+                              <span
+                                className={`fa-lifetime-bar-fill ${lifetimeBand}`}
+                                style={{
+                                  width: `${lifetime.percent}%`,
+                                }}
+                              />
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="fa-lifetime-empty">
+                            No records yet
+                          </span>
+                        )}
+                      </td>
+
                       {/* STATUS */}
 
                       <td>
@@ -1546,7 +1718,8 @@ const FacultyAttendance = () => {
 
                     </tr>
 
-                  )
+                    );
+                  }
                 )
 
               )}

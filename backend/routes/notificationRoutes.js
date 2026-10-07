@@ -12,6 +12,24 @@ const {
 
 
 // ========================================
+// PER-USER READ STATE
+//
+// Notices are a single broadcast collection shared by every
+// signed-in user, so the old `read` boolean was shared too:
+// the first person to hit "Mark all read" flipped it for the
+// whole campus and everyone else's badge dropped to zero.
+// readBy carries the ids of the people who have actually
+// read a notice; `read` is only still consulted so notices
+// written before readBy existed keep their old state.
+// ========================================
+
+const isReadBy = (notification, userId) =>
+  notification.read === true ||
+  (Array.isArray(notification.readBy) &&
+    notification.readBy.includes(userId));
+
+
+// ========================================
 // CREATE NOTIFICATION
 // Only faculty and admin may post a notice.
 // ========================================
@@ -81,10 +99,30 @@ router.get(
   async (req, res) => {
   try {
 
-    const notifications = await Notification.find()
-      .sort({ createdAt: -1 });
+    const userId = String(req.user._id);
 
-    res.json(notifications);
+    // Notices this user cleared are dropped for them only,
+    // so nobody else loses them. $ne also matches docs that
+    // predate the field.
+    const notifications = await Notification.find({
+      dismissedBy: { $ne: userId },
+    }).sort({ createdAt: -1 });
+
+    // Same documents for everyone, but `read` is reported
+    // from this requester's point of view. The id arrays are
+    // dropped - they are per user bookkeeping and this list
+    // is refetched every 30 seconds.
+    res.json(
+      notifications.map((notification) => {
+        const plain = notification.toObject();
+
+        plain.read = isReadBy(notification, userId);
+        delete plain.readBy;
+        delete plain.dismissedBy;
+
+        return plain;
+      })
+    );
 
   } catch (err) {
 
@@ -197,8 +235,13 @@ router.get(
   async (req, res) => {
   try {
 
+    const userId = String(req.user._id);
+
     const count = await Notification.countDocuments({
-      read: false,
+      // $ne matches missing fields too, so notices stored
+      // before readBy existed still count as unread.
+      read: { $ne: true },
+      readBy: { $ne: userId },
     });
 
     res.json({
@@ -229,7 +272,12 @@ router.put(
       await Notification.findByIdAndUpdate(
         req.params.id,
         {
-          read: true,
+          // Only this person is done with the notice. Setting
+          // the shared `read` flag here is what used to wipe
+          // everyone else's badge.
+          $addToSet: {
+            readBy: String(req.user._id),
+          },
         },
         {
           new: true,
@@ -244,7 +292,12 @@ router.put(
 
     }
 
-    res.json(notification);
+    // The stored flag is untouched, but for this caller the
+    // notice is read now and the client uses this response.
+    res.json({
+      ...notification.toObject(),
+      read: true,
+    });
 
   } catch (err) {
 
@@ -266,18 +319,66 @@ router.put(
   async (req, res) => {
   try {
 
-    await Notification.updateMany(
+    const userId = String(req.user._id);
+
+    const result = await Notification.updateMany(
       {
-        read: false,
+        // Only notices this caller has not read yet.
+        readBy: { $ne: userId },
       },
       {
-        $set: {
-          read: true,
+        $addToSet: {
+          readBy: userId,
         },
       }
     );
-res.json({
+
+    res.json({
       message: "All notifications marked as read",
+      updated: result.modifiedCount || 0,
+    });
+
+  } catch (err) {
+
+    res.status(500).json({
+      message: err.message,
+    });
+
+  }
+});
+
+
+// ========================================
+// CLEAR THE CALLER'S INBOX
+//
+// The Clear button used to empty React state only, which
+// meant the 30 second poll put everything back. The ids are
+// recorded per user instead, so clearing sticks and affects
+// nobody else. Placed before "/:id" so the static path wins.
+// ========================================
+
+router.put(
+  "/dismiss-all",
+  verifyToken,
+  async (req, res) => {
+  try {
+
+    const userId = String(req.user._id);
+
+    await Notification.updateMany(
+      {
+        dismissedBy: { $ne: userId },
+      },
+      {
+        $addToSet: {
+          dismissedBy: userId,
+          readBy: userId,
+        },
+      }
+    );
+
+    res.json({
+      message: "Notifications cleared",
     });
 
   } catch (err) {

@@ -72,10 +72,18 @@ const getFacultyRequests = async (req, res) => {
       filter.type = type;
     }
 
+    // The principal outranks every department, so their
+    // list is not narrowed to a department. Declared here
+    // because the hodOnly branch below also needs it.
+    const isPrincipal =
+      req.user.role === "faculty" &&
+      req.user.isPrincipal === true;
+
     // An HOD only ever sees their own department.
     // The value comes from the token, not the query
     // string, so it cannot be widened.
     if (
+      !isPrincipal &&
       req.user.role === "faculty" &&
       req.user.isHod === true
     ) {
@@ -100,13 +108,13 @@ const getFacultyRequests = async (req, res) => {
       filter.department = String(department).trim();
     }
 
-    // The admin is the countersigner for HOD leave, since an
-    // HOD may not action their own request. The admin queue
-    // defaults to those requests only, so ordinary faculty
-    // leave still routes through the department HOD and the
-    // admin does not rubber stamp it as well.
+    // Countersigning HOD leave sits with whoever is above
+    // the HOD: the admin, and now the principal. Both can
+    // narrow their queue to just those requests, so ordinary
+    // faculty leave still routes through the department HOD
+    // rather than being rubber stamped twice.
     if (
-      req.user.role === "admin" &&
+      (req.user.role === "admin" || isPrincipal) &&
       hodOnly === "true"
     ) {
       const heads = await User.find({
@@ -158,7 +166,15 @@ const getFacultyRequestStats = async (req, res) => {
 
     const filter = {};
 
+    // Same two rules as the list: the principal is not tied
+    // to a department, and both of them may narrow the count
+    // to HOD leave.
+    const isPrincipal =
+      req.user.role === "faculty" &&
+      req.user.isPrincipal === true;
+
     if (
+      !isPrincipal &&
       req.user.role === "faculty" &&
       req.user.isHod === true
     ) {
@@ -182,7 +198,7 @@ const getFacultyRequestStats = async (req, res) => {
     // Matches the list so the admin cards and the table
     // count the same set.
     if (
-      req.user.role === "admin" &&
+      (req.user.role === "admin" || isPrincipal) &&
       hodOnly === "true"
     ) {
       const heads = await User.find({
@@ -457,7 +473,15 @@ const updateFacultyRequestStatus = async (req, res) => {
     // department. The list endpoint is already scoped,
     // so this closes the same hole on a direct call
     // with a guessed id.
+    //
+    // The principal has no department to be scoped to and
+    // outranks every HOD, so the check is skipped for them.
+    const isPrincipal =
+      req.user.role === "faculty" &&
+      req.user.isPrincipal === true;
+
     if (
+      !isPrincipal &&
       req.user.role === "faculty" &&
       req.user.isHod === true
     ) {

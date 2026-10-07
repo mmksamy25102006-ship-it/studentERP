@@ -64,6 +64,12 @@ export const AuthProvider = ({ children }) => {
       // pages and approval rights.
       isHod: userData.isHod === true,
 
+      // Same arrangement one level up: the principal signs
+      // in through the faculty login, and this flag is what
+      // unlocks the principal pages and the college wide
+      // leave queue.
+      isPrincipal: userData.isPrincipal === true,
+
       department: userData.department || "",
       year: userData.year || "",
       phone: userData.phone || "",

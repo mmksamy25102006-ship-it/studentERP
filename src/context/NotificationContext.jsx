@@ -66,11 +66,22 @@ export const NotificationProvider = ({ children }) => {
   // FETCH NOTIFICATIONS FROM MONGODB
   // ========================================
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = async (shouldApply = null) => {
 
     try {
 
       const response = await API.get("/notifications");
+
+      /*
+      The request outlived the effect that issued it: a
+      preference changed or the user signed out while this was
+      in flight. The result is dropped rather than written back
+      into state that was deliberately cleared.
+      */
+
+      if (shouldApply && !shouldApply()) {
+        return;
+      }
 
       setNotifications(response.data);
 
@@ -141,29 +152,50 @@ export const NotificationProvider = ({ children }) => {
     // While it is off, hold no data and stop polling so
     // the app is not hitting the endpoint for something
     // the user muted.
+    //
+    // The set of already alerted ids is deliberately kept.
+    // Clearing it would make every notice the user had
+    // already seen fire a fresh popup on the next poll after
+    // switching notifications back on. Anything created
+    // while muted is not in the set, so those still alert
+    // once, which is the behaviour you want.
     if (!preferences.enabled) {
       setNotifications([]);
       setLoading(false);
 
-      alertedIdsRef.current.clear();
-
       return;
     }
 
+    /*
+    Bounds every request this effect issues. Cleanup flips it
+    to false, so a response that lands after a preference
+    change cannot resurrect state or raise an alert.
+    */
+
+    let cancelled = false;
+
+    const shouldApply = () => !cancelled;
+
     // Fetch immediately
-    fetchNotifications();
+    fetchNotifications(shouldApply);
 
 
     // Check for new notifications every 30 seconds
     const interval = setInterval(() => {
 
-      fetchNotifications();
+      fetchNotifications(shouldApply);
 
     }, 30000);
 
 
     // Cleanup interval
-    return () => clearInterval(interval);
+    return () => {
+
+      cancelled = true;
+
+      clearInterval(interval);
+
+    };
 
   }, [isAuthenticated, preferences.enabled, notify]);
 
@@ -290,20 +322,49 @@ export const NotificationProvider = ({ children }) => {
   // CLEAR ALL NOTIFICATIONS
   // ========================================
 
-  const clearNotifications = () => {
+  const clearNotifications = async () => {
 
-    setNotifications([]);
+    try {
+
+      /*
+      Clearing is a per user action on the server, not just
+      a local wipe: the old version emptied state and the
+      30 second poll brought everything straight back.
+      */
+
+      await API.put(
+        "/notifications/dismiss-all"
+      );
+
+      setNotifications([]);
+
+    } catch (error) {
+
+      console.error(
+        "Failed to clear notifications:",
+        error
+      );
+
+    }
 
   };
 
 
   // ========================================
   // UNREAD COUNT
+
+  // This is the number the Topbar bell and the Settings row
+  // badge render, so it is what the "In-app alerts"
+  // preference has to switch off. The inbox list itself is
+  // untouched: turning off badges should not hide the
+  // notifications the user can still open and read.
   // ========================================
 
-  const unreadCount = notifications.filter(
-    (item) => item.read === false
-  ).length;
+  const unreadCount = preferences.inApp
+    ? notifications.filter(
+        (item) => item.read === false
+      ).length
+    : 0;
 
 
   // ========================================

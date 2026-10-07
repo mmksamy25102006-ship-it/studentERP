@@ -94,6 +94,21 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
 
+    // -----------------------------------------
+    // PRINCIPAL
+    //
+    // The principal is an ordinary faculty login - there is
+    // no separate role in the login form - so the flag is
+    // what unlocks the principal pages, the college wide
+    // faculty leave queue and the right to countersign an
+    // HOD's own leave.
+    // -----------------------------------------
+
+    isPrincipal: {
+      type: Boolean,
+      default: false,
+    },
+
     experience: {
       type: String,
       default: "",

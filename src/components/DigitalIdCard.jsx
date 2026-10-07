@@ -261,9 +261,11 @@ const DigitalIdCard = ({ user, onClose }) => {
   const email = showValue(user?.email);
 
   const roleLabel =
-    user?.isHod === true
-      ? "Head of Department"
-      : ROLE_LABELS[user?.role] || "Identity Card";
+    user?.isPrincipal === true
+      ? "Principal"
+      : user?.isHod === true
+        ? "Head of Department"
+        : ROLE_LABELS[user?.role] || "Identity Card";
 
   /*
   The QR encodes the public verification URL for a
@@ -531,11 +533,13 @@ const DigitalIdCard = ({ user, onClose }) => {
                     <div className="idc-field">
                       <span>Role</span>
                       <strong>
-                        {user?.isHod === true
-                          ? "HOD"
-                          : String(
-                              user?.role || "student"
-                            ).toUpperCase()}
+                        {user?.isPrincipal === true
+                          ? "PRINCIPAL"
+                          : user?.isHod === true
+                            ? "HOD"
+                            : String(
+                                user?.role || "student"
+                              ).toUpperCase()}
                       </strong>
                     </div>
 
@@ -588,7 +592,7 @@ const DigitalIdCard = ({ user, onClose }) => {
                   <div className="idc-qr">
                     <QRCode
                       value={qrValue}
-                      size={104}
+                      size={86}
                       bgColor="#ffffff"
                       fgColor="#0b1220"
                     />

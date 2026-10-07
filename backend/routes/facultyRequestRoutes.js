@@ -14,7 +14,7 @@ const {
 const {
   verifyToken,
   isFaculty,
-  isHod,
+  isHodOrPrincipal,
 } = require("../middleware/authMiddleware");
 
 const router = express.Router();
@@ -25,7 +25,9 @@ const router = express.Router();
 // request body, so a caller cannot file or cancel a
 // request as another faculty member.
 //
-// Approval rights are restricted to the HOD with isHod.
+// Approval rights are restricted to the HOD (own
+// department), the principal (college wide) and the admin
+// (support access). isHodOrPrincipal enforces that.
 // =====================================================
 
 // -----------------------------------------
@@ -44,21 +46,21 @@ router.get(
 );
 
 // -----------------------------------------
-// HOD REVIEW
+// HOD / PRINCIPAL REVIEW
 // -----------------------------------------
 
 // Static routes first so "/stats" is not matched by "/:id"
 router.get(
   "/stats",
   verifyToken,
-  isHod,
+  isHodOrPrincipal,
   getFacultyRequestStats
 );
 
 router.get(
   "/",
   verifyToken,
-  isHod,
+  isHodOrPrincipal,
   getFacultyRequests
 );
 
@@ -80,7 +82,7 @@ router.post(
 router.put(
   "/:id/status",
   verifyToken,
-  isHod,
+  isHodOrPrincipal,
   updateFacultyRequestStatus
 );
 

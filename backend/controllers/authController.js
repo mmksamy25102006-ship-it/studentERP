@@ -228,6 +228,11 @@ const login = async (req, res) => {
         // faculty member who heads a department
         isHod: !!user.isHod,
 
+        // Same idea one level up: the principal keeps the
+        // faculty role and gets the principal pages from
+        // this flag.
+        isPrincipal: !!user.isPrincipal,
+
         department: user.department || "",
         year: user.year || "",
         phone: user.phone || "",

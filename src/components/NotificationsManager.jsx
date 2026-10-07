@@ -146,7 +146,6 @@ const NotificationsManager = ({ onClose }) => {
 
   const {
     notifications,
-    unreadCount,
     markAllAsRead,
     clearNotifications,
     loading,
@@ -663,7 +662,7 @@ const NotificationsManager = ({ onClose }) => {
                 <button
                   type="button"
                   disabled={
-                    unreadCount === 0 ||
+                    counts.unread === 0 ||
                     !preferences.enabled
                   }
                   onClick={markAllAsRead}
@@ -681,7 +680,7 @@ const NotificationsManager = ({ onClose }) => {
                   onClick={() => {
                     if (
                       window.confirm(
-                        "Clear every notification from this device?"
+                        "Clear every notification from your inbox? This cannot be undone."
                       )
                     ) {
                       clearNotifications();

@@ -15,6 +15,7 @@ import {
   FaClock,
   FaIdCard,
   FaUserTie,
+  FaUniversity,
 } from "react-icons/fa";
 
 import "./Faculty.css";
@@ -32,6 +33,7 @@ const emptyForm = {
   experience: "",
   email: "",
   isHod: false,
+  isPrincipal: false,
 };
 
 // =====================================================
@@ -134,6 +136,7 @@ const Faculty = () => {
       experience: "",
       email: "",
       isHod: false,
+      isPrincipal: false,
     });
 
     setErrors({});
@@ -156,6 +159,7 @@ const Faculty = () => {
       experience: item.experience || "",
       email: item.email || "",
       isHod: item.isHod === true,
+      isPrincipal: item.isPrincipal === true,
     });
 
     setErrors({});
@@ -270,6 +274,7 @@ const Faculty = () => {
             designation: formData.designation,
             experience: formData.experience.trim(),
             isHod: formData.isHod === true,
+            isPrincipal: formData.isPrincipal === true,
           }
         );
 
@@ -312,6 +317,7 @@ const Faculty = () => {
             experience:
               formData.experience.trim(),
             isHod: formData.isHod === true,
+            isPrincipal: formData.isPrincipal === true,
           }
         );
 
@@ -983,6 +989,14 @@ const Faculty = () => {
                       Head of Department
                     </option>
 
+                    {/* Listed so a seeded or flagged
+                        principal round-trips through this
+                        form instead of showing a blank
+                        designation. */}
+                    <option value="Principal">
+                      Principal
+                    </option>
+
                   </select>
 
                   {errors.designation && (
@@ -1082,6 +1096,37 @@ const Faculty = () => {
                     Grants the HOD dashboard, department
                     list and approval rights for faculty
                     leave and permission
+                  </small>
+
+                </div>
+
+                {/* PRINCIPAL
+                    Same arrangement as the HOD: a flag on
+                    an ordinary faculty login, no separate
+                    role in the login form. The principal
+                    outranks every department, so the flag
+                    also unlocks the college wide leave
+                    queue. */}
+
+                <div className="form-group">
+
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      name="isPrincipal"
+                      checked={formData.isPrincipal}
+                      onChange={handleChange}
+                    />
+
+                    <FaUniversity />
+
+                    Principal
+                  </label>
+
+                  <small className="form-hint">
+                    Grants the principal dashboard and
+                    approval rights over faculty leave in
+                    every department, including HOD leave
                   </small>
 
                 </div>

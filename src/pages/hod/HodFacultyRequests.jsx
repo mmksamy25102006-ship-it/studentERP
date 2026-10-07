@@ -47,6 +47,14 @@ const HodFacultyRequests = () => {
   // for them to hand it to.
   const isAdmin = user?.role === "admin";
 
+  // The principal signs in as faculty with the isPrincipal
+  // flag. They sit above every department, so unlike the
+  // admin they are shown the whole queue rather than only
+  // the HOD leave that needs countersigning.
+  const isPrincipal =
+    user?.role === "faculty" &&
+    user?.isPrincipal === true;
+
   const [requests, setRequests] = useState([]);
   const [stats, setStats] = useState({
     total: 0,
@@ -145,7 +153,7 @@ const HodFacultyRequests = () => {
 
       notify(
         error.response?.status === 403
-          ? isAdmin
+          ? isAdmin || isPrincipal
             ? "This account cannot review faculty leave."
             : "This account does not have Head of Department access."
           : error.response?.data?.message ||
@@ -155,7 +163,7 @@ const HodFacultyRequests = () => {
     } finally {
       setLoading(false);
     }
-  }, [tab, statusFilter, search, isAdmin]);
+  }, [tab, statusFilter, search, isAdmin, isPrincipal]);
 
   useEffect(() => {
     load();
@@ -323,9 +331,11 @@ const HodFacultyRequests = () => {
         </h1>
 
         <p>
-          {isAdmin
-            ? "Review leave and permission requests from every faculty member, including HOD leave that needs countersigning"
-            : "Review leave and permission requests from faculty members in your department"}
+          {isPrincipal
+            ? "Review leave and permission requests from every faculty member across all departments, including HOD leave that needs countersigning"
+            : isAdmin
+              ? "Review leave and permission requests from every faculty member, including HOD leave that needs countersigning"
+              : "Review leave and permission requests from faculty members in your department"}
         </p>
       </div>
 

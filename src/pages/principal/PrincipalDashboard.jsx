@@ -1,23 +1,37 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FaUserGraduate,
   FaChalkboardTeacher,
-  FaBook,
   FaMoneyBillWave,
   FaUniversity,
   FaBell,
+  FaFileSignature,
 } from "react-icons/fa";
 
-import API from "./../api";
+import { useNavigate } from "react-router-dom";
 
-import "./AdminDashboard.css";
+import API from "./../../api";
 
-const AdminDashboard = () => {
+// The admin layout is role agnostic once the class names are
+// ignored, so it is shared rather than copied. Nothing here
+// renders with the word "admin" in it except the classes.
+import "./../AdminDashboard.css";
+
+const PrincipalDashboard = () => {
+  const navigate = useNavigate();
 
   const [students, setStudents] = useState([]);
   const [faculty, setFaculty] = useState([]);
-  const [courses, setCourses] = useState([]);
   const [fees, setFees] = useState([]);
+
+  // Every faculty leave awaiting a decision, HOD leave
+  // included. Unlike the admin, whose queue is narrowed to
+  // HOD leave only, the principal is shown the lot.
+  const [leavePending, setLeavePending] = useState(null);
+
+  const [pendingRequests, setPendingRequests] = useState(
+    []
+  );
 
 
   /* =========================
@@ -54,22 +68,54 @@ const AdminDashboard = () => {
             ? feeRes.data.fees
             : []
         );
-
-        // The backend has no Course collection yet, so the
-        // Courses card stays at zero rather than reading
-        // stale localStorage.
-        setCourses([]);
       } catch {
         // Backend unavailable. Keep the dashboard usable
         // with empty states instead of crashing.
         setStudents([]);
         setFaculty([]);
-        setCourses([]);
         setFees([]);
       }
     };
 
     loadData();
+  }, []);
+
+
+  /* =========================
+        LEAVE QUEUE
+  ========================= */
+
+  useEffect(() => {
+    const loadLeave = async () => {
+      try {
+        // No hodOnly: the principal's queue is the whole
+        // college, and the stats route already reports a
+        // pending count so no status filter is needed there.
+        const [statsRes, listRes] = await Promise.all([
+          API.get("/faculty-requests/stats"),
+          API.get("/faculty-requests", {
+            params: { status: "pending" },
+          }),
+        ]);
+
+        setLeavePending(
+          Number(statsRes.data?.stats?.pending ?? 0)
+        );
+
+        setPendingRequests(
+          Array.isArray(listRes.data?.requests)
+            ? listRes.data.requests
+            : []
+        );
+      } catch {
+        // Older backend or network failure. Stay quiet
+        // rather than showing a wrong number as fact.
+        setLeavePending(null);
+        setPendingRequests([]);
+      }
+    };
+
+    loadLeave();
   }, []);
 
 
@@ -101,26 +147,23 @@ const AdminDashboard = () => {
       className: "faculty-card",
     },
     {
-      title: "Courses",
-      value: courses.length,
-      icon: <FaBook />,
-      className: "courses-card",
-    },
-    {
       title: "Fee Collection",
       value: `₹${totalFees.toLocaleString("en-IN")}`,
       icon: <FaMoneyBillWave />,
       className: "fees-card",
     },
+    {
+      title: "Leave Pending",
+      value:
+        leavePending === null ? "-" : leavePending,
+      icon: <FaFileSignature />,
+      className: `hod-leave-card ${
+        leavePending > 0 ? "hod-leave-pending" : ""
+      }`,
+      hint: "Needs your approval",
+      onClick: () => navigate("/principal/leave-approvals"),
+    },
   ];
-
-
-  /* =========================
-        RECENT STUDENTS
-  ========================= */
-
-  const recentStudents =
-    students.slice(-5).reverse();
 
 
   /* =========================
@@ -151,7 +194,7 @@ const AdminDashboard = () => {
           </div>
 
           <div>
-            <h1>Admin Dashboard</h1>
+            <h1>Principal Dashboard</h1>
 
             <p>
               College ERP Management System
@@ -161,7 +204,7 @@ const AdminDashboard = () => {
         </div>
 
         <div className="admin-header-badge">
-          Administrator
+          Principal
         </div>
 
       </div>
@@ -238,7 +281,7 @@ const AdminDashboard = () => {
       <div className="dashboard-grid">
 
         {/* =========================
-              RECENT STUDENTS
+              PENDING LEAVE
         ========================= */}
 
         <div className="table-card">
@@ -246,14 +289,14 @@ const AdminDashboard = () => {
           <div className="section-heading-admin">
 
             <div className="section-icon students-heading-admin">
-              <FaUserGraduate />
+              <FaFileSignature />
             </div>
 
             <div>
-              <h2>Recent Students</h2>
+              <h2>Pending Leave</h2>
 
               <p>
-                Recently added students
+                Faculty and HOD requests awaiting your decision
               </p>
             </div>
 
@@ -266,51 +309,53 @@ const AdminDashboard = () => {
 
               <thead>
                 <tr>
-                  <th>Register No</th>
-                  <th>Name</th>
+                  <th>Faculty</th>
+                  <th>Type</th>
+                  <th>Period</th>
                   <th>Department</th>
-                  <th>Semester</th>
                 </tr>
               </thead>
 
               <tbody>
 
-                {recentStudents.length > 0 ? (
+                {pendingRequests.length > 0 ? (
 
-                  recentStudents.map(
-                    (student, index) => (
+                  pendingRequests
+                    .slice(0, 5)
+                    .map((request, index) => (
 
                       <tr
-                        key={
-                          student.id ||
-                          student.regNo ||
-                          index
-                        }
+                        key={request._id || index}
                       >
 
                         <td className="student-id">
-                          {student.regNo ||
-                            student.id ||
+                          {request.facultyName ||
+                            request.facultyId ||
                             "-"}
                         </td>
 
                         <td>
-                          {student.name || "-"}
+                          {request.type === "leave"
+                            ? request.leaveType || "Leave"
+                            : "Permission"}
                         </td>
 
                         <td>
-                          {student.department || "-"}
+                          {request.fromDate
+                            ? `${request.fromDate} to ${
+                                request.toDate || "-"
+                              }`
+                            : "-"}
                         </td>
 
                         <td>
-                          {student.semester ||
-                            student.year ||
-                            "-"}
+                          {request.department || "-"}
                         </td>
 
                       </tr>
 
                     )
+
                   )
 
                 ) : (
@@ -321,7 +366,7 @@ const AdminDashboard = () => {
                       colSpan="4"
                       className="empty-state"
                     >
-                      No students available
+                      No pending leave requests
                     </td>
 
                   </tr>
@@ -333,6 +378,21 @@ const AdminDashboard = () => {
             </table>
 
           </div>
+
+          {pendingRequests.length > 5 && (
+
+            <button
+              type="button"
+              className="card-hint"
+              style={{ margin: "12px 24px 20px" }}
+              onClick={() =>
+                navigate("/principal/leave-approvals")
+              }
+            >
+              View all {leavePending ?? ""} pending requests
+            </button>
+
+          )}
 
         </div>
 
@@ -388,4 +448,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default PrincipalDashboard;

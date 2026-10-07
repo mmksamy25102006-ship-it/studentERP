@@ -72,13 +72,19 @@ const Login = () => {
       alert("Login Successful");
 
       // Redirect based on role. A Head of Department signs
-      // in as faculty but lands on the HOD dashboard.
+      // in as faculty but lands on the HOD dashboard, and
+      // the principal - also a faculty login - lands on the
+      // principal dashboard.
       if (user.role === "student") {
         navigate("/dashboard");
       } else if (user.role === "faculty") {
-        navigate(
-          user.isHod ? "/hod-dashboard" : "/faculty-dashboard"
-        );
+        if (user.isPrincipal) {
+          navigate("/principal-dashboard");
+        } else {
+          navigate(
+            user.isHod ? "/hod-dashboard" : "/faculty-dashboard"
+          );
+        }
       } else if (user.role === "admin") {
         navigate("/admin-dashboard");
       } else {

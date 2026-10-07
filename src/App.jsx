@@ -56,6 +56,13 @@ import HodFacultyRequests from "./pages/hod/HodFacultyRequests";
 import HodStudentRequests from "./pages/hod/HodStudentRequests";
 import HodDepartment from "./pages/hod/HodDepartment";
 
+// Principal
+// The principal is a faculty member with the isPrincipal
+// flag, so these sit next to the HOD pages. The leave queue
+// reuses the HOD component - the scoping is done on the
+// server from the same flag.
+import PrincipalDashboard from "./pages/principal/PrincipalDashboard";
+
 // Admin
 import Department from "./pages/admin/Department";
 import Result from "./pages/admin/Result";
@@ -131,9 +138,11 @@ function RequireRole({ roles, children }) {
     user?.role === "admin"
       ? "/admin-dashboard"
       : user?.role === "faculty"
-        ? user?.isHod
-          ? "/hod-dashboard"
-          : "/faculty-dashboard"
+        ? user?.isPrincipal
+          ? "/principal-dashboard"
+          : user?.isHod
+            ? "/hod-dashboard"
+            : "/faculty-dashboard"
         : user?.role === "student"
           ? "/dashboard"
           : "/";
@@ -149,6 +158,35 @@ function FacultyOnly({ children }) {
   // The HOD is a faculty member, so "faculty" covers both.
   return (
     <RequireRole roles={["faculty"]}>{children}</RequireRole>
+  );
+}
+
+function PrincipalOnly({ children }) {
+  const { user } = useAuth();
+
+  // The role alone is not enough: every principal is a
+  // faculty member, so without the flag a plain faculty
+  // account would open these pages. The backend rejects the
+  // API calls as well, but the page should never render.
+  if (user?.role === "faculty" && user?.isPrincipal) {
+    return children;
+  }
+
+  return (
+    <Navigate
+      to={
+        user?.role === "admin"
+          ? "/admin-dashboard"
+          : user?.role === "faculty"
+            ? user?.isHod
+              ? "/hod-dashboard"
+              : "/faculty-dashboard"
+            : user?.role === "student"
+              ? "/dashboard"
+              : "/"
+      }
+      replace
+    />
   );
 }
 
@@ -616,6 +654,33 @@ function DashboardLayout() {
             />
 
             {/* =========================================
+                PRINCIPAL
+
+                A faculty login carrying the isPrincipal
+                flag. Personal pages (leave, notices,
+                profile, timetable) stay on the /faculty
+                paths because the principal is still faculty.
+            ========================================= */}
+
+            <Route
+              path="/principal-dashboard"
+              element={
+                <PrincipalOnly>
+                  <PrincipalDashboard />
+                </PrincipalOnly>
+              }
+            />
+
+            <Route
+              path="/principal/leave-approvals"
+              element={
+                <PrincipalOnly>
+                  <HodFacultyRequests />
+                </PrincipalOnly>
+              }
+            />
+
+            {/* =========================================
                 DEFAULT
             ========================================= */}
 
@@ -630,9 +695,11 @@ function DashboardLayout() {
                 ) : user?.role === "faculty" ? (
                   <Navigate
                     to={
-                      user?.isHod
-                        ? "/hod-dashboard"
-                        : "/faculty-dashboard"
+                      user?.isPrincipal
+                        ? "/principal-dashboard"
+                        : user?.isHod
+                          ? "/hod-dashboard"
+                          : "/faculty-dashboard"
                     }
                     replace
                   />
