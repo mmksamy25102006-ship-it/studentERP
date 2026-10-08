@@ -1,6 +1,5 @@
 // src/components/DashboardCards.jsx
 
-import React from "react";
 import {
   FaClipboardCheck,
   FaBookOpen,

@@ -1,6 +1,6 @@
-import React, {
+import {
   createContext,
-  useContext,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -18,13 +18,6 @@ import API from "./../api";
 // ========================================
 
 const NotificationContext = createContext();
-
-
-// ========================================
-// API URL
-// ========================================
-
-const API_URL = "https://studenterp-5wuj.onrender.com/api/notifications";
 
 
 // ========================================
@@ -66,11 +59,12 @@ export const NotificationProvider = ({ children }) => {
   // FETCH NOTIFICATIONS FROM MONGODB
   // ========================================
 
-  const fetchNotifications = async (shouldApply = null) => {
+  const fetchNotifications = useCallback(
+    async (shouldApply = null) => {
 
-    try {
+      try {
 
-      const response = await API.get("/notifications");
+        const response = await API.get("/notifications");
 
       /*
       The request outlived the effect that issued it: a
@@ -130,7 +124,9 @@ export const NotificationProvider = ({ children }) => {
 
     }
 
-  };
+  },
+  [notify]
+  );
 
 
   // ========================================
@@ -197,7 +193,7 @@ export const NotificationProvider = ({ children }) => {
 
     };
 
-  }, [isAuthenticated, preferences.enabled, notify]);
+  }, [isAuthenticated, preferences.enabled, notify, fetchNotifications]);
 
 
   // ========================================

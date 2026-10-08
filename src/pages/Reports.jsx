@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FaChartBar,
   FaFilePdf,
@@ -177,7 +177,7 @@ const downloadPDF=(title)=>{
 const downloadExcel=(title)=>{
 
 
- let data=[];
+ let data;
 
 
  if(title==="Student Report")

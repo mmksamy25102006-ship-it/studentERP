@@ -1,4 +1,4 @@
-import React, {
+import {
   useCallback,
   useEffect,
   useMemo,
@@ -15,7 +15,6 @@ import {
   FaExclamationTriangle,
   FaPaperPlane,
   FaBan,
-  FaBookOpen,
   FaUserGraduate,
   FaStickyNote,
   FaAward,

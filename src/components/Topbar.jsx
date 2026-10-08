@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import {
   FaBars,
@@ -9,7 +9,6 @@ import {
   FaExpand,
   FaCompress,
   FaUserCircle,
-  FaUserGraduate,
   FaSignOutAlt,
   FaCog,
 } from "react-icons/fa";
@@ -163,7 +162,16 @@ const Topbar = ({
 
 className="menu-btn"
 
-onClick={() => setSidebarOpen(!sidebarOpen)}
+onClick={() => {
+  const next = !sidebarOpen;
+
+  setSidebarOpen(next);
+
+  localStorage.setItem(
+    "sidebarCollapsed",
+    String(!next)
+  );
+}}
 
 >
 

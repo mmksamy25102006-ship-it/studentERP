@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import {
   FaBullhorn,
   FaCalendarAlt,
@@ -12,11 +16,7 @@ const Notices = () => {
   const [notices, setNotices] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchNotifications();
-  }, []);
-
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     try {
       const res = await API.get("/notifications");
 
@@ -26,7 +26,11 @@ const Notices = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
 
   const filteredNotices = notices.filter(
     (notice) =>

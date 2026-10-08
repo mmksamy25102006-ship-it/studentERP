@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   FaBrain,
   FaChartLine,
@@ -21,8 +21,8 @@ const Prediction = () => {
     const att = Number(attendance);
     const mark = Number(internal);
 
-    let prediction = "";
-    let color = "";
+    let prediction;
+    let color;
 
     if (att >= 90 && mark >= 85) {
       prediction = "Excellent (Expected Grade: O)";

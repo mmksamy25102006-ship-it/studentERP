@@ -1,4 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import "./Attendance.css";
 import API from "../api";
 import { useAuth } from "../context/AuthContext";
@@ -479,7 +484,7 @@ const Attendance = () => {
      GET ATTENDANCE STATUS
      ======================================================= */
 
-  const getAttendanceStatus = (
+  const getAttendanceStatus = useCallback((
     classItem,
     date
   ) => {
@@ -557,7 +562,7 @@ const Attendance = () => {
     }
 
     return normalizeStatus(record);
-  };
+  }, [attendance]);
 
   /* =======================================================
      TODAY ATTENDANCE
@@ -577,8 +582,8 @@ const Attendance = () => {
     );
   }, [
     todayClasses,
-    attendance,
     today,
+    getAttendanceStatus,
   ]);
 
   /* =======================================================

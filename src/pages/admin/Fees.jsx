@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import "./Fees.css";
 import {
   FaPlus,
@@ -29,11 +29,7 @@ const Fees = () => {
   // FETCH FEES FROM BACKEND
   // =====================================================
 
-  useEffect(() => {
-    fetchFees();
-  }, []);
-
-  const fetchFees = async () => {
+  const fetchFees = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -54,7 +50,11 @@ const Fees = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchFees();
+  }, [fetchFees]);
 
   // =====================================================
   // FORM CHANGE

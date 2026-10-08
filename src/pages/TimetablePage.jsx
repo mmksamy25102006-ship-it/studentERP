@@ -1,8 +1,6 @@
-import React from "react";
 import {
   FaCalendarAlt,
   FaClock,
-  FaBook,
 } from "react-icons/fa";
 import "./TimetablePage.css";
 

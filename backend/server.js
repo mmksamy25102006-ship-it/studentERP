@@ -5,7 +5,6 @@ const dns = require("dns");
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
 
@@ -131,7 +130,7 @@ app.use((req, res) => {
 // Global Error Handler
 // =========================
 
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
   console.error(err.stack);
 
   res.status(500).json({

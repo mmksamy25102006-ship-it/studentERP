@@ -1,11 +1,10 @@
 // src/components/ChatBot.jsx
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   FaRobot,
   FaPaperPlane,
   FaTimes,
-  FaComments,
 } from "react-icons/fa";
 import "./ChatBot.css";
 

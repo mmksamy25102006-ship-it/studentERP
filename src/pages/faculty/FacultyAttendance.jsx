@@ -1,6 +1,7 @@
 // src/pages/faculty/FacultyAttendance.jsx
 
-import React, {
+import {
+  useCallback,
   useEffect,
   useMemo,
   useState,
@@ -372,7 +373,7 @@ const FacultyAttendance = () => {
      ======================================================= */
 
   const loadSelectedPeriodAttendance =
-    async () => {
+    useCallback(async () => {
       if (
         !selectedDate ||
         !selectedPeriod ||
@@ -496,7 +497,9 @@ const FacultyAttendance = () => {
             "Unable to load attendance for this period."
         );
       }
-    };
+    },
+    [selectedDate, selectedPeriod, subject]
+  );
 
   /* =======================================================
      LOAD ATTENDANCE WHEN CLASS CHANGES
@@ -516,6 +519,7 @@ const FacultyAttendance = () => {
     selectedPeriod,
     subject,
     loading,
+    loadSelectedPeriodAttendance,
   ]);
 
   /* =======================================================

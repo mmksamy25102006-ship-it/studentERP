@@ -6,7 +6,6 @@ const Fee = require("../models/Fee");
 const {
   verifyToken,
   isAdmin,
-  isFacultyOrAdmin,
 } = require("../middleware/authMiddleware");
 
 // =====================================================

@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import API from "./../api";
 import "./Notification.css";
 
 function StudentNotification() {
   const [notifications, setNotifications] = useState([]);
 
-  useEffect(() => {
-    loadNotifications();
-  }, []);
-
-  const loadNotifications = async () => {
+  const loadNotifications = useCallback(async () => {
     try {
       const res = await API.get("/notifications");
 
@@ -17,7 +17,11 @@ function StudentNotification() {
     } catch (error) {
       console.error("Failed to load notifications:", error);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadNotifications();
+  }, [loadNotifications]);
 
   return (
     <div className="student-notification">

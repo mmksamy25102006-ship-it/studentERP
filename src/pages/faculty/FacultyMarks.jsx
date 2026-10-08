@@ -1,4 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useMemo,
+  useEffect,
+  useState,
+} from "react";
 import {
   FaSave,
   FaUserGraduate,
@@ -37,73 +42,6 @@ const initialStudents = [
     id: 4,
     rollNo: "22CS004",
     name: "Sneha",
-  },
-];
-
-/* =========================================================
-   SUBJECTS
-========================================================= */
-
-const defaultSubjects = [
-  {
-    subject: "Data Structures",
-    credits: 4,
-    internal1: 0,
-    internal2: 0,
-    assignment: 0,
-    lab: 0,
-    grade: "-",
-    gradePoints: 0,
-  },
-  {
-    subject: "Operating Systems",
-    credits: 4,
-    internal1: 0,
-    internal2: 0,
-    assignment: 0,
-    lab: 0,
-    grade: "-",
-    gradePoints: 0,
-  },
-  {
-    subject: "Computer Networks",
-    credits: 3,
-    internal1: 0,
-    internal2: 0,
-    assignment: 0,
-    lab: 0,
-    grade: "-",
-    gradePoints: 0,
-  },
-  {
-    subject: "DBMS",
-    credits: 3,
-    internal1: 0,
-    internal2: 0,
-    assignment: 0,
-    lab: 0,
-    grade: "-",
-    gradePoints: 0,
-  },
-  {
-    subject: "AI & Machine Learning",
-    credits: 4,
-    internal1: 0,
-    internal2: 0,
-    assignment: 0,
-    lab: 0,
-    grade: "-",
-    gradePoints: 0,
-  },
-  {
-    subject: "Software Engineering",
-    credits: 3,
-    internal1: 0,
-    internal2: 0,
-    assignment: 0,
-    lab: 0,
-    grade: "-",
-    gradePoints: 0,
   },
 ];
 
@@ -196,7 +134,7 @@ const FacultyMarks = () => {
      LOAD FACULTY SUBJECTS
   ======================================================= */
 
-  const fetchFacultySubjects = async () => {
+  const fetchFacultySubjects = useCallback(async () => {
     if (!facultyId) {
       setFacultySubjects([]);
       return [];
@@ -241,13 +179,110 @@ const FacultyMarks = () => {
 
       return [];
     }
-  };
+  }, [facultyId, selectedSemester]);
 
+  /* =======================================================
+     LOAD SELECTED STUDENT SUBJECTS
+  ======================================================= */
+
+  const loadStudentSubjects = useCallback((
+    student,
+    assignments = facultySubjects
+  ) => {
+    /*
+     * Only subjects assigned to this faculty
+     * for the selected semester are displayed.
+     */
+
+    const assignedSubjects =
+      assignments.map(
+        (assignment) =>
+          assignment.subject
+      );
+
+    if (
+      assignedSubjects.length === 0
+    ) {
+      setSubjects([]);
+      return;
+    }
+
+    const savedSubjects =
+      Array.isArray(
+        student?.subjects
+      )
+        ? student.subjects
+        : [];
+
+    const mergedSubjects =
+      assignments.map(
+        (assignment) => {
+          const savedSubject =
+            savedSubjects.find(
+              (item) =>
+                item.subject ===
+                assignment.subject
+            );
+
+          return {
+            subject:
+              assignment.subject,
+
+            credits:
+              Number(
+                savedSubject?.credits ??
+                  assignment.credits ??
+                  3
+              ),
+
+            internal1:
+              Number(
+                savedSubject?.internal1 ||
+                  0
+              ),
+
+            internal2:
+              Number(
+                savedSubject?.internal2 ||
+                  0
+              ),
+
+            assignment:
+              Number(
+                savedSubject?.assignment ||
+                  0
+              ),
+
+            lab:
+              Number(
+                savedSubject?.lab ||
+                  0
+              ),
+
+            grade:
+              savedSubject?.grade ||
+              "-",
+
+            gradePoints:
+              Number(
+                savedSubject?.gradePoints ||
+                  0
+              ),
+
+            facultyId,
+          };
+        }
+      );
+
+    setSubjects(
+      mergedSubjects
+    );
+  }, [facultyId, facultySubjects]);
   /* =======================================================
      LOAD ALL STUDENTS + MARKS
   ======================================================= */
 
-  const fetchStudentsAndMarks = async () => {
+  const fetchStudentsAndMarks = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
@@ -467,105 +502,7 @@ const FacultyMarks = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  /* =======================================================
-     LOAD SELECTED STUDENT SUBJECTS
-  ======================================================= */
-
-  const loadStudentSubjects = (
-    student,
-    assignments = facultySubjects
-  ) => {
-    /*
-     * Only subjects assigned to this faculty
-     * for the selected semester are displayed.
-     */
-
-    const assignedSubjects =
-      assignments.map(
-        (assignment) =>
-          assignment.subject
-      );
-
-    if (
-      assignedSubjects.length === 0
-    ) {
-      setSubjects([]);
-      return;
-    }
-
-    const savedSubjects =
-      Array.isArray(
-        student?.subjects
-      )
-        ? student.subjects
-        : [];
-
-    const mergedSubjects =
-      assignments.map(
-        (assignment) => {
-          const savedSubject =
-            savedSubjects.find(
-              (item) =>
-                item.subject ===
-                assignment.subject
-            );
-
-          return {
-            subject:
-              assignment.subject,
-
-            credits:
-              Number(
-                savedSubject?.credits ??
-                  assignment.credits ??
-                  3
-              ),
-
-            internal1:
-              Number(
-                savedSubject?.internal1 ||
-                  0
-              ),
-
-            internal2:
-              Number(
-                savedSubject?.internal2 ||
-                  0
-              ),
-
-            assignment:
-              Number(
-                savedSubject?.assignment ||
-                  0
-              ),
-
-            lab:
-              Number(
-                savedSubject?.lab ||
-                  0
-              ),
-
-            grade:
-              savedSubject?.grade ||
-              "-",
-
-            gradePoints:
-              Number(
-                savedSubject?.gradePoints ||
-                  0
-              ),
-
-            facultyId,
-          };
-        }
-      );
-
-    setSubjects(
-      mergedSubjects
-    );
-  };
+  }, [facultyId, selectedSemester, selectedRollNo, loadStudentSubjects, fetchFacultySubjects]);
 
   /* =======================================================
      INITIAL LOAD
@@ -576,6 +513,7 @@ const FacultyMarks = () => {
   }, [
     facultyId,
     selectedSemester,
+    fetchStudentsAndMarks,
   ]);
 
   /* =======================================================

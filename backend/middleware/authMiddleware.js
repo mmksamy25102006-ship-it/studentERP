@@ -37,7 +37,7 @@ const verifyToken = async (req, res, next) => {
     req.user = user;
 
     next();
-  } catch (error) {
+  } catch {
     return res.status(401).json({
       success: false,
       message: "Invalid or expired token.",

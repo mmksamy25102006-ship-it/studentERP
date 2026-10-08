@@ -1,6 +1,6 @@
 // src/components/Sidebar.jsx
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -455,9 +455,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         <button
           type="button"
           className="collapse-btn"
-          onClick={() =>
-            setSidebarOpen(!sidebarOpen)
-          }
+          onClick={() => {
+  const next = !sidebarOpen;
+
+  setSidebarOpen(next);
+
+  localStorage.setItem(
+    "sidebarCollapsed",
+    String(!next)
+  );
+}}
           title={
             sidebarOpen
               ? "Collapse Sidebar"

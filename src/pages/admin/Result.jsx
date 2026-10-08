@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./Result.css";
 
 import {
@@ -104,7 +104,7 @@ export default function Result() {
 
     const percentage = ((total / 500) * 100).toFixed(2);
 
-    let grade = "";
+    let grade;
 
     if (percentage >= 90) grade = "A+";
     else if (percentage >= 80) grade = "A";

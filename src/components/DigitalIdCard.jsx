@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import QRCode from "react-qr-code";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FaMoneyBillWave,
   FaCheckCircle,
@@ -28,7 +28,7 @@ const Fees = () => {
         localStorage.getItem("rollNo") ||
         ""
       );
-    } catch (error) {
+    } catch {
       return (
         localStorage.getItem("studentId") ||
         localStorage.getItem("rollNo") ||
@@ -162,6 +162,9 @@ const Fees = () => {
     const receiptNumber =
       fee.receiptNo ||
       fee.receiptNumber ||
+      // Date.now runs on click, not while rendering, so a
+      // timestamp is a safe unique receipt suffix.
+      // eslint-disable-next-line react-hooks/purity
       `FEE-${Date.now()}`;
 
     // Open a new window for the printable receipt

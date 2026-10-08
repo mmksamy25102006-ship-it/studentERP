@@ -1,6 +1,6 @@
 // src/pages/faculty/FacultyAssignments.jsx
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   FaPlus,

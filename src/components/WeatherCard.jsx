@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   FaCloudSun,
   FaTemperatureHigh,
@@ -9,17 +8,13 @@ import {
 import "./WeatherCard.css";
 
 const WeatherCard = () => {
-  const [weather, setWeather] = useState({
+  const weather = {
     city: "Chennai",
     temperature: 32,
     condition: "Partly Cloudy",
     humidity: 74,
     wind: 14,
-  });
-
-  useEffect(() => {
-    // Replace this with API call later
-  }, []);
+  };
 
   return (
     <div className="weather-card">

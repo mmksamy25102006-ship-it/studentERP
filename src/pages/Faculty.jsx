@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 import {
   FaChalkboardTeacher,
@@ -65,11 +69,7 @@ const Faculty = () => {
   // FETCH FACULTY FROM DATABASE
   // =====================================================
 
-  useEffect(() => {
-    fetchFaculty();
-  }, []);
-
-  const fetchFaculty = async () => {
+  const fetchFaculty = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -97,7 +97,11 @@ const Faculty = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchFaculty();
+  }, [fetchFaculty]);
 
   // =====================================================
   // GENERATE NEXT FACULTY ID

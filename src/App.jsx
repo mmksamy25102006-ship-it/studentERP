@@ -1,4 +1,5 @@
-import React from "react";
+import { useState } from "react";
+
 import { useAuth } from "./context/AuthContext";
 
 import {
@@ -216,7 +217,7 @@ function RequireAuth({ children }) {
 
 function DashboardLayout() {
   // ONE SIDEBAR STATE FOR THE ENTIRE ERP
-  const [sidebarOpen, setSidebarOpen] = React.useState(() => {
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
     const saved = localStorage.getItem("sidebarCollapsed");
 
     if (saved === null) {
@@ -247,20 +248,6 @@ function DashboardLayout() {
   // ===================================================
   // SIDEBAR TOGGLE
   // ===================================================
-
-  const handleSidebarToggle = () => {
-    setSidebarOpen((prev) => {
-      const newValue = !prev;
-
-      // Save collapsed state
-      localStorage.setItem(
-        "sidebarCollapsed",
-        String(!newValue)
-      );
-
-      return newValue;
-    });
-  };
 
   // ===================================================
   // LAYOUT
