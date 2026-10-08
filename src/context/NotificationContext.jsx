@@ -60,7 +60,7 @@ export const NotificationProvider = ({ children }) => {
   // ========================================
 
   const fetchNotifications = useCallback(
-    async (shouldApply = null) => {
+    async (shouldApply = null, isRetry = false) => {
 
       try {
 
@@ -108,15 +108,36 @@ export const NotificationProvider = ({ children }) => {
 
     } catch (error) {
 
+      /*
+      A failure with no HTTP response is the transport
+      itself: the Render free instance was cold starting or
+      redeploying, or the connection dropped in between. The
+      browser already logs that failed request, so replaying
+      the full AxiosError here only stacks noise on top of
+      it. The caller schedules one short retry; the 30
+      second poll remains the fallback after that.
+      */
+      if (!error.response) {
+        if (isRetry) {
+          console.warn(
+            "Notifications unreachable; will retry on the next poll."
+          );
+        }
+
+        return "network";
+      }
+
       // A 401 before login (the login page has no token)
       // is expected and not something to log. Everything
       // else is a real failure.
-      if (error.response?.status !== 401) {
+      if (error.response.status !== 401) {
         console.error(
           "Failed to fetch notifications:",
           error
         );
       }
+
+      return "error";
 
     } finally {
 
@@ -172,14 +193,42 @@ export const NotificationProvider = ({ children }) => {
 
     const shouldApply = () => !cancelled;
 
+    let retryTimer = null;
+
+    /*
+    A transport failure returns "network": one short retry,
+    which usually lands once the sleeping Render instance is
+    back up. The 30 second interval stays the fallback when
+    even that retry comes back empty.
+    */
+
+    const poll = async (isRetry = false) => {
+      const outcome = await fetchNotifications(
+        shouldApply,
+        isRetry
+      );
+
+      if (
+        outcome === "network" &&
+        !isRetry &&
+        !cancelled
+      ) {
+        clearTimeout(retryTimer);
+
+        retryTimer = setTimeout(() => {
+          poll(true);
+        }, 5000);
+      }
+    };
+
     // Fetch immediately
-    fetchNotifications(shouldApply);
+    poll();
 
 
     // Check for new notifications every 30 seconds
     const interval = setInterval(() => {
 
-      fetchNotifications(shouldApply);
+      poll();
 
     }, 30000);
 
@@ -190,6 +239,8 @@ export const NotificationProvider = ({ children }) => {
       cancelled = true;
 
       clearInterval(interval);
+
+      clearTimeout(retryTimer);
 
     };
 

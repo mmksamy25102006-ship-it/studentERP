@@ -122,6 +122,8 @@ const FacultyMarks = () => {
 
   const [facultySubjects, setFacultySubjects] = useState([]);
 
+  const [allMarks, setAllMarks] = useState([]);
+
   const [subjects, setSubjects] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -398,6 +400,8 @@ const FacultyMarks = () => {
         backendMarks = [];
       }
 
+      setAllMarks(backendMarks);
+
       /*
        * Keep students that already have marks
        * in the list.
@@ -528,7 +532,7 @@ const FacultyMarks = () => {
   ======================================================= */
 
   const handleStudentChange =
-    async (rollNo) => {
+    (rollNo) => {
       setSelectedRollNo(
         rollNo
       );
@@ -536,59 +540,28 @@ const FacultyMarks = () => {
       setMessage("");
       setError("");
 
-      try {
-        const response =
-          await API.get(
-            `/marks/student/${encodeURIComponent(
-              rollNo
-            )}`
-          );
+      /*
+       * The full marks list fetched with the page is keyed by
+       * rollNo + semester, so switching students reads it
+       * locally instead of asking the server again. The old
+       * /marks/student/:rollNo request answered 404 for every
+       * student who simply has no marks for this semester yet
+       * - correct, but a red console entry for a normal
+       * state - and it returned the latest semester's
+       * document regardless of the selected semester.
+       */
 
-        const markData =
-          Array.isArray(
-            response.data
-          )
-            ? response.data.find(
-                (item) =>
-                  item.semester ===
-                  selectedSemester
-              )
-            : response.data?.marks
-              ? response.data.marks.find(
-                  (item) =>
-                    item.semester ===
-                    selectedSemester
-                )
-              : response.data;
+      const markData =
+        allMarks.find(
+          (item) =>
+            item.rollNo === rollNo &&
+            item.semester === selectedSemester
+        ) || null;
 
-        loadStudentSubjects(
-          markData,
-          facultySubjects
-        );
-      } catch (err) {
-        /*
-         * 404 means the student has no marks yet.
-         * This is NOT a fatal error.
-         *
-         * We still show the subjects assigned
-         * to the logged-in faculty.
-         */
-
-        if (
-          err.response?.status !==
-          404
-        ) {
-          console.error(
-            "LOAD STUDENT MARKS ERROR:",
-            err
-          );
-        }
-
-        loadStudentSubjects(
-          null,
-          facultySubjects
-        );
-      }
+      loadStudentSubjects(
+        markData,
+        facultySubjects
+      );
     };
 
   /* =======================================================
