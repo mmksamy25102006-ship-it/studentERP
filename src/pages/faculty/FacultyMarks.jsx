@@ -187,7 +187,7 @@ const FacultyMarks = () => {
 
   const loadStudentSubjects = useCallback((
     student,
-    assignments = facultySubjects
+    assignments
   ) => {
     /*
      * Only subjects assigned to this faculty
@@ -277,7 +277,7 @@ const FacultyMarks = () => {
     setSubjects(
       mergedSubjects
     );
-  }, [facultyId, facultySubjects]);
+  }, [facultyId]);
   /* =======================================================
      LOAD ALL STUDENTS + MARKS
   ======================================================= */
@@ -506,14 +506,21 @@ const FacultyMarks = () => {
 
   /* =======================================================
      INITIAL LOAD
+
+     Only faculty or semester changes reload everything.
+     The loader must not be a dependency here: its identity
+     changes with the selected student and with data it
+     fetches itself, so depending on it would make every
+     load trigger the next one forever. Student changes
+     fetch their own marks in handleStudentChange.
   ======================================================= */
 
   useEffect(() => {
     fetchStudentsAndMarks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     facultyId,
     selectedSemester,
-    fetchStudentsAndMarks,
   ]);
 
   /* =======================================================
