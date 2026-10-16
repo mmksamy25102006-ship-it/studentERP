@@ -126,18 +126,21 @@ const Login = () => {
           <h1>
             {formData.role === "student" && (
               <>
+              kamaraj college <br />
                 Student
                 <span>ERP</span>
               </>
             )}
             {formData.role === "faculty" && (
               <>
+              kamaraj college <br />
                 Faculty
                 <span>ERP</span>
               </>
             )}
             {formData.role === "admin" && (
               <>
+              kamaraj college <br />
                 Admin
                 <span>ERP</span>
               </>
@@ -216,7 +219,7 @@ const Login = () => {
               <input
                 type="email"
                 name="email"
-                placeholder="you@nexus.edu"
+                placeholder="you@gmail.com"
                 value={formData.email}
                 onChange={handleChange}
                 autoComplete="email"
@@ -290,11 +293,11 @@ const Login = () => {
 
         {/* Footer */}
         <div className="login-footer">
-          Secure access — StudentERB Management System
+          Secure access — ERP Management System
         </div>
 
         <div className="copyright">
-          © 2026 NEXUS ERP
+          © 2026 kamaraj ERP
         </div>
 
       </div>

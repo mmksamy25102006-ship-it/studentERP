@@ -318,7 +318,7 @@ const NotificationsManager = ({ onClose }) => {
               </h2>
 
               <p>
-                Choose what NEXUS ERP is allowed to
+                Choose what kamaraj college ERP is allowed to
                 interrupt you about
               </p>
             </div>
@@ -345,7 +345,7 @@ const NotificationsManager = ({ onClose }) => {
 
             <p>
               {preferences.enabled
-                ? "NEXUS ERP is checking for new notices every 30 seconds."
+                ? "kamaraj college ERP is checking for new notices every 30 seconds."
                 : "Nothing is being fetched. The bell badge stays hidden."}
             </p>
           </div>

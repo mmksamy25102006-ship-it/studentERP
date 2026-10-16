@@ -399,7 +399,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       </div>
         {sidebarOpen ? (
           <div>
-            <h2>NEXUS ERP</h2>
+            <h2>kamaraj</h2>
+            <h3>college ERP</h3>
             <span>AI College Assistant</span>
           </div>
         ) : (

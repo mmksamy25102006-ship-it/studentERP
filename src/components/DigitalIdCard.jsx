@@ -41,7 +41,7 @@ const ROLE_LABELS = {
 };
 
 const INSTITUTION = {
-  name: "NEXUS ERP",
+  name: "kamaraj college ERP",
   tagline: "Institute of Technology & Management",
 };
 
@@ -402,7 +402,7 @@ const DigitalIdCard = ({ user, onClose }) => {
             <div>
               <h2>Digital ID Card</h2>
               <p>
-                Live record from the NEXUS ERP database
+                Live record from the kamaraj college ERP database
               </p>
             </div>
           </div>

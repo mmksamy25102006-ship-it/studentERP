@@ -14,7 +14,7 @@ const ChatBot = () => {
   const [messages, setMessages] = useState([
     {
       sender: "bot",
-      text: "👋 Hello! Welcome to NEXUS ERP.\nHow can I help you today?",
+      text: "👋 Hello! Welcome to kamaraj college ERP.\nHow can I help you today?",
     },
   ]);
 

@@ -237,7 +237,7 @@ const Settings = ({
         </h1>
 
         <p>
-          Personalize your NEXUS ERP experience
+          Personalize your kamaraj college ERP experience
         </p>
 
       </div>
